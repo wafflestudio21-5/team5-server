@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class Waffle5gramserverApplication
 
 fun main(args: Array<String>) {
-	runApplication<Waffle5gramserverApplication>(*args)
+    runApplication<Waffle5gramserverApplication>(*args)
 }
