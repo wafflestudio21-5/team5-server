@@ -29,3 +29,4 @@ replay_pid*
 build
 !/**/src/**/bin
 !/**/src/**/build
+!gradle/wrapper/gradle-wrapper.jar
