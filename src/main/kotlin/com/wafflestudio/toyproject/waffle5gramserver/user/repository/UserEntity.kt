@@ -21,6 +21,7 @@ class UserEntity (
     val createdAt: LocalDateTime,
     val modifiedAt: LocalDateTime,
     val pronoun: String?,
+    @Column(columnDefinition = "TEXT")
     val profileImage: String?,
     @Column(columnDefinition = "TEXT")
     val bio: String?
