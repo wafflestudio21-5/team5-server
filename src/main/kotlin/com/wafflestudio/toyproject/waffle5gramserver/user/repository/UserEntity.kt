@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import java.util.Date
 
 @Entity(name = "users")
-class UserEntity (
+class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -25,4 +25,4 @@ class UserEntity (
     val profileImage: String?,
     @Column(columnDefinition = "TEXT")
     val bio: String?
-    )
+)
