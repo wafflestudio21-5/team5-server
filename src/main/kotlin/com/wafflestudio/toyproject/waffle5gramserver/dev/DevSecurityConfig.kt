@@ -1,6 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.dev
 
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -26,8 +25,7 @@ class DevSecurityConfig {
                 }
             }
             authorizeHttpRequests {
-                authorize(PathRequest.toH2Console(), permitAll)
-                authorize(anyRequest, authenticated)
+                authorize(anyRequest, permitAll)
             }
             formLogin { }
             httpBasic { }

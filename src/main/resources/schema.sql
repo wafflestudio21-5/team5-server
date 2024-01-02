@@ -10,7 +10,7 @@ create table users (
     created_at datetime not null,
     modified_at datetime not null,
     pronoun varchar(255),
-    profile_image text,
+    profile_image_url text,
     bio text,
     primary key (id),
     unique (username)

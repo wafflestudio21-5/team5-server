@@ -1,28 +1,21 @@
 package com.wafflestudio.toyproject.waffle5gramserver.user.repository
 
+import com.wafflestudio.toyproject.waffle5gramserver.BaseModificationAuditingEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import java.time.LocalDateTime
 import java.util.Date
 
 @Entity(name = "users")
-class UserEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+class UserEntity (
+    @Column(unique = true)
     val username: String,
-    val name: String,
+    var name: String,
     val password: String,
     val birthday: Date,
     val isPrivate: Boolean,
-    val createdAt: LocalDateTime,
-    val modifiedAt: LocalDateTime,
     val pronoun: String?,
     @Column(columnDefinition = "TEXT")
-    val profileImage: String?,
+    val profileImageUrl: String?,
     @Column(columnDefinition = "TEXT")
     val bio: String?
-)
+): BaseModificationAuditingEntity ()
