@@ -11,10 +11,10 @@ import java.util.Date
 
 @Component
 @Profile("dev")
-class DevCommandLineRunner (
+class DevCommandLineRunner(
     private val userRepository: UserRepository,
     private val txManager: PlatformTransactionManager
-    ): CommandLineRunner {
+) : CommandLineRunner {
 
     private val txTemplate = TransactionTemplate(txManager)
 

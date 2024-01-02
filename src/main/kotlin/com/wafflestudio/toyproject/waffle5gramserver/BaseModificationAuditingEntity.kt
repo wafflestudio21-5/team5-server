@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-abstract class BaseModificationAuditingEntity: BaseAuditingEntity () {
+abstract class BaseModificationAuditingEntity : BaseAuditingEntity() {
     @LastModifiedDate
     protected var modifiedAt: LocalDateTime = LocalDateTime.MIN
 }

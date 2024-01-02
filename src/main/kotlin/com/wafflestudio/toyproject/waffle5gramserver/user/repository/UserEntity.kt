@@ -6,7 +6,7 @@ import jakarta.persistence.Entity
 import java.util.Date
 
 @Entity(name = "users")
-class UserEntity (
+class UserEntity(
     @Column(unique = true)
     val username: String,
     var name: String,
@@ -18,4 +18,4 @@ class UserEntity (
     val profileImageUrl: String?,
     @Column(columnDefinition = "TEXT")
     val bio: String?
-): BaseModificationAuditingEntity ()
+) : BaseModificationAuditingEntity()
