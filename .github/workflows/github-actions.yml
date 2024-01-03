@@ -1,9 +1,9 @@
-name: CI/CD using github actions & docker
+name: CI/CD using github actions & docker including ktlint
 
 # event trigger
 on:
   push:
-    branches: [ "main", "feat/deploy" ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
