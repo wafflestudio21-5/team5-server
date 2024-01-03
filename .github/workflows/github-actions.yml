@@ -45,14 +45,30 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/waffle5gram
 
       ## deploy to EC2
-      - name: Deploy
-        uses: appleboy/ssh-action@v1.0.2
+#      - name: Deploy
+#        uses: appleboy/ssh-action@v1.0.2
+#        with:
+#          host: ${{ secrets.HOST }} # EC2 퍼블릭 IPv4 DNS
+#          username: ${{ secrets.USERNAME }}
+#          key: ${{ secrets.PRIVATE_KEY }}
+#          script_stop: true
+#          script: |
+#            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/waffle5gram
+#            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
+#            sudo docker image prune -f
+
+      # Set up SSH keys
+      - name: Add SSH keys
+        uses: webfactory/ssh-agent@v0.8.0
         with:
-          host: ${{ secrets.HOST }} # EC2 퍼블릭 IPv4 DNS
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          script_stop: true
-          script: |
+          ssh-private-key: ${{ secrets.PRIVATE_KEY }}
+
+      # Deploy to EC2
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << EOF
+            cd /home/ubuntu/waffle5gram
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/waffle5gram
             sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
             sudo docker image prune -f
+          EOF
