@@ -49,8 +49,8 @@ jobs:
         uses: appleboy/ssh-action@v1.0.2
         with:
           host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
           script_stop: true
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/waffle5gram
