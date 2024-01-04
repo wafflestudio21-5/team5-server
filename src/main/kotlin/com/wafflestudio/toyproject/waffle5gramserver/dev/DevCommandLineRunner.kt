@@ -37,10 +37,11 @@ class DevCommandLineRunner(
         txTemplate.execute {
             // JPA auditing is not working
             // https://stackoverflow.com/questions/56823730/spring-data-jpa-auditing-not-working-for-the-jparepository-update-method-with-m
-            // userRepository.updateNameById(2, "Modified name")
+            userRepository.updateNameById(2, "Modified name of id 2")
+            userRepository.flush()
 
             // JPA auditing is working
-            userRepository.findById(2).get().name = "Modified name"
+            userRepository.findById(3).get().name = "Modified name of id 3"
         }
     }
 }
