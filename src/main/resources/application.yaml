@@ -5,5 +5,5 @@ spring.profiles.active: dev
 spring:
   config:
     import:
-      - application-dev.yaml
-      - application-prod.yaml
+    - application-dev.yaml
+    - application-prod.yaml
