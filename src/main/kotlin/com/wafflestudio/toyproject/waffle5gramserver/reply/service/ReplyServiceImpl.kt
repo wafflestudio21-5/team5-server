@@ -4,12 +4,14 @@ import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentR
 import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyEntity
 import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyRepository;
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
+import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import org.springframework.stereotype.Service;
 
 @Service
 class ReplyServiceImpl(
         private val replyRepository: ReplyRepository,
         private val commentRepository: CommentRepository,
+        private val userRepository: UserRepository,
 ) : ReplyService {
 
         override fun getReplies(commentId: Long, page: Long, limit: Long): List<Reply> {
@@ -20,15 +22,14 @@ class ReplyServiceImpl(
                 val parentComment = commentRepository.findById(commentId)
                         .orElseThrow { throw IllegalArgumentException("Comment not found") }
 
-                // val author = userRepository.findById(userId)
+                val author = userRepository.findById(1L)
+                        .orElseThrow { throw IllegalArgumentException("User not found") }
 
                 val created = replyRepository.save(
                         ReplyEntity(
                                 content = content,
                                 comment = parentComment,
-                                author = UserEntity(
-                                        nickname = "nickname",
-                                )
+                                user = author
                         )
                 )
 
@@ -53,7 +54,7 @@ class ReplyServiceImpl(
 }
 
 private fun ReplyBrief(replyEntity: ReplyEntity) = ReplyBrief(
-        replyId = replyEntity.id,
+        replyId = replyEntity.replyId(),
         content = replyEntity.content,
 )
 

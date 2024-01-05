@@ -7,43 +7,46 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/api/v1")
 class ReplyController(
     private val replyService: ReplyService,
 ) {
 
-    @GetMapping("api/v1/comments/{commentId}/replies")
+    @GetMapping("/comments/{commentId}/replies")
     fun getReplies(
-        @PathVariable commentId: Long,
-        @RequestParam page: Long,
-        @RequestParam limit: Long,
+        @PathVariable("commentId") commentId: Long,
+        @RequestParam(defaultValue = "1", required = false) page: Long,
+        @RequestParam(defaultValue = "1", required = false) limit: Long,
     ): RepliesResponse {
         return RepliesResponse(replyService.getReplies(commentId, page, limit))
     }
 
-    @PostMapping("api/v1/comments/{commentId}/replies")
+    @PostMapping("/comments/{commentId}/replies")
     fun createReply(
-        @PathVariable commentId: Long,
-        @RequestParam content: String,
+        @PathVariable("commentId") commentId: Long,
+        @RequestBody content: String,
         // @Authenticated user: User,
     ) {
         replyService.createReply(commentId, content)
     }
 
-    @PutMapping("api/v1/replies/{replyId}")
+    @PutMapping("/replies/{replyId}")
     fun updateReply(
-        @PathVariable replyId: Long,
-        @RequestParam content: String,
+        @PathVariable("replyId") replyId: Long,
+        @RequestBody content: String,
     ) {
         replyService.updateReply(replyId, content)
     }
 
     @DeleteMapping("api/v1/replies/{replyId}")
     fun deleteReply(
-        @PathVariable replyId: Long,
+        @PathVariable("replyId") replyId: Long,
     ) {
         return replyService.deleteReply(replyId)
     }
