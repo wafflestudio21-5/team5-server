@@ -1,11 +1,10 @@
-package com.wafflestudio.toyproject.waffle5gramserver.reply.service;
+package com.wafflestudio.toyproject.waffle5gramserver.reply.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentRepository
 import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyEntity
-import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyRepository;
-import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
+import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service
 
 @Service
 class ReplyServiceImpl(
