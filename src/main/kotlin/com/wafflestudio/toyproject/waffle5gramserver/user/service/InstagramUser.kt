@@ -8,9 +8,9 @@ import java.util.Date
 
 data class InstagramUser(
     val id: Long,
-    val username: String,
+    @JvmField val username: String,
     val name: String,
-    val password: String,
+    @JvmField val password: String,
     val birthday: Date,
     val isPrivate: Boolean,
     val createdAt: LocalDateTime,
@@ -18,7 +18,7 @@ data class InstagramUser(
     val pronoun: String?,
     val profileImageUrl: String?,
     val bio: String?
-): UserDetails {
+) : UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableSetOf(SimpleGrantedAuthority("ROLE_USER"))
