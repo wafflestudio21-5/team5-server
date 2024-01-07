@@ -1,0 +1,16 @@
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
+
+###
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "waffle5",
+  "password": "testPassword"
+}
