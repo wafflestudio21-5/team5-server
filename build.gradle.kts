@@ -27,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("io.awspring.cloud:spring-cloud-starter-aws:2.4.4")
 
     runtimeOnly("com.h2database:h2")
 
