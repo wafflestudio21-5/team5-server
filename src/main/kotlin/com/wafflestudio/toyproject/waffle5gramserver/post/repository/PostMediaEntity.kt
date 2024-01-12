@@ -8,10 +8,6 @@ class PostMediaEntity (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    var post: PostEntity,
-
     @Column(name = "media_url", nullable = false)
     var mediaUrl: String = "",
 
@@ -21,8 +17,8 @@ class PostMediaEntity (
 
     @Column(name = "media_order", nullable = false)
     var mediaOrder: Int = 0,
-    )
 
-enum class MediaType {
-    IMAGE, VIDEO
-}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    var post: PostEntity,
+    )
