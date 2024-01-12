@@ -17,9 +17,11 @@ class FeedServiceImpl (
 
     override fun getHomeFeed(userId: Long, pageable: Pageable): Page<PostDetail> {
         val posts = postRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable)
+//        val posts = postRepository.findAllByFollowingAndUnliked(userId, pageable)
+
         return posts.map { post:PostEntity ->
             val liked = postLikeRepository.countByPostIdAndUserId(post.id, userId) > 0
-            PostMapper.toPostDetailDTO(post, false)
+            PostMapper.toPostDetailDTO(post, liked)
         }
     }
 
