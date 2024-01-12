@@ -1,12 +1,10 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.repository
 
+import com.wafflestudio.toyproject.waffle5gramserver.BaseAuditingEntity
 import jakarta.persistence.*
 
 @Entity(name = "post_medias")
 class PostMediaEntity (
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L,
 
     @Column(name = "media_url", nullable = false)
     var mediaUrl: String = "",
@@ -21,4 +19,4 @@ class PostMediaEntity (
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     var post: PostEntity,
-    )
+) : BaseAuditingEntity()

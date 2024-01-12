@@ -1,8 +1,10 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.mapper
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMedia
 
 class PostMapper {
     companion object {
@@ -22,6 +24,7 @@ class PostMapper {
                 id = entity.id,
                 userId = entity.user.id,
                 content = entity.content,
+                media = entity.medias.map { media -> toPostMediaDTO(media) },
                 liked = liked,
                 likeCount = 0,
                 commentCount = commentCount,
@@ -30,6 +33,17 @@ class PostMapper {
                 hideLike = entity.likeCountDisplayed,
                 createdAt = entity.createdAt,
                 updatedAt = entity.modifiedAt
+            )
+        }
+
+        private fun toPostMediaDTO(media: PostMediaEntity): PostMedia {
+            return PostMedia(
+                id = media.id,
+                postId = media.post.id,
+                order = media.mediaOrder,
+                url = media.mediaUrl,
+                mediaType = media.mediaType,
+                createdAt = media.createdAt,
             )
         }
     }
