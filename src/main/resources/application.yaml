@@ -7,4 +7,3 @@ spring:
     import:
     - application-dev.yaml
     - application-prod.yaml
-    - application-dev-secure.yaml

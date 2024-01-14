@@ -10,4 +10,5 @@ data class PostMedia(
     val url: String,
     val mediaType: MediaType,
     val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
 )

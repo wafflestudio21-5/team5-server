@@ -19,14 +19,11 @@ class CommentEntity(
     var id: Long = 0L,
     @Column(nullable = false)
     val text: String = "",
-
     @Column(nullable = false)
     val createdAt: Date,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     val post: PostEntity,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: UserEntity,

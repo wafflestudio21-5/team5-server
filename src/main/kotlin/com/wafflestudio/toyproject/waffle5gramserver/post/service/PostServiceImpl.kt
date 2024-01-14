@@ -16,29 +16,39 @@ class PostServiceImpl(
     private val userRepository: UserRepository,
     private val postLikeRepository: PostLikeRepository,
 ) : PostService {
-
-    override fun get(postId: Long, userId: Long): PostDetail {
+    override fun get(
+        postId: Long,
+        userId: Long,
+    ): PostDetail {
         TODO()
     }
 
     @Transactional
-    override fun create(content: String, fileUrls: List<String>, disableComment: Boolean, hideLike: Boolean, userId: Long): PostBrief {
+    override fun create(
+        content: String,
+        fileUrls: List<String>,
+        disableComment: Boolean,
+        hideLike: Boolean,
+        userId: Long,
+    ): PostBrief {
         val user = userRepository.findById(userId).orElseThrow { UserNotFoundException() }
 
-        val post = PostEntity(
-            content = content,
-            commentDisplayed = disableComment,
-            likeCountDisplayed = hideLike,
-            user = user,
-        )
+        val post =
+            PostEntity(
+                content = content,
+                commentDisplayed = disableComment,
+                likeCountDisplayed = hideLike,
+                user = user,
+            )
 
         fileUrls.forEachIndexed { index, url ->
-            val postMedia = PostMediaEntity(
-                mediaUrl = url,
-                mediaOrder = index,
-                mediaType = MediaType.IMAGE,
-                post = post,
-            )
+            val postMedia =
+                PostMediaEntity(
+                    mediaUrl = url,
+                    mediaOrder = index,
+                    mediaType = MediaType.IMAGE,
+                    post = post,
+                )
             post.addMedia(postMedia)
         }
 
@@ -47,7 +57,11 @@ class PostServiceImpl(
     }
 
     @Transactional
-    override fun patch(postId: Long, content: String, userId: Long): PostBrief {
+    override fun patch(
+        postId: Long,
+        content: String,
+        userId: Long,
+    ): PostBrief {
         val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
         if (post.user.id != userId) {
             throw PostNotAuthorizedException()
@@ -58,7 +72,10 @@ class PostServiceImpl(
     }
 
     @Transactional
-    override fun delete(postId: Long, userId: Long) {
+    override fun delete(
+        postId: Long,
+        userId: Long,
+    ) {
         val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
         if (post.user.id != userId) {
             throw PostNotAuthorizedException()

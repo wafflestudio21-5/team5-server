@@ -1,46 +1,103 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.controller
 
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAlreadyLikedException
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotAuthorizedException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotFoundException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotLikedException
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostService
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.UserNotFoundException
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PostController(private val postService: PostService) {
+@RequestMapping("/api/v1")
+class PostController(
+    private val postService: PostService,
+) {
     @PostMapping("/posts")
     fun createPost(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam("content") content: String,
-        @RequestParam("hideComments", defaultValue = "false") hideComments: Boolean,
-        @RequestParam("hideLikes", defaultValue = "false") hideLikes: Boolean,
-        @RequestParam("files") files: List<String>,
-    ): ResponseEntity<Any> {
+        @RequestBody request: CreatePostRequest,
+    ): ResponseEntity<PostBrief> {
         // 게시물 생성 로직 처리
-        val post = postService.create(content = content, fileUrls = files, disableComment = hideComments, hideLike = hideLikes, userId = user.id)
-        return ResponseEntity.ok(post)
+        val post =
+            postService.create(
+                content = request.content,
+                fileUrls = request.files,
+                disableComment = request.hideComments,
+                hideLike = request.hideLikes,
+                userId = user.id,
+            )
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(post)
     }
 
     @GetMapping("/posts/{postId}")
-    fun getPost(@AuthenticationPrincipal user: InstagramUser, @PathVariable postId: Long): PostDetail {
-        return postService.get(postId = postId, userId = user.id)
+    fun getPost(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable postId: Long,
+    ): ResponseEntity<PostDetail> {
+        val postDetail = postService.get(postId = postId, userId = user.id)
+        return ResponseEntity.ok(postDetail)
     }
 
     @DeleteMapping("/posts/{postId}")
-    fun deletePost(@AuthenticationPrincipal user: InstagramUser, @PathVariable postId: Long) {
-        return postService.delete(postId = postId, userId = user.id)
+    fun deletePost(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable postId: Long,
+    ): ResponseEntity<Unit> {
+        postService.delete(postId = postId, userId = user.id)
+        return ResponseEntity.ok().build()
     }
 
     @PutMapping("/posts/{postId}")
-    fun updatePost(@AuthenticationPrincipal user: InstagramUser, @PathVariable postId: Long, @RequestParam content: String): PostBrief {
-        return postService.patch(postId = postId, content = content, userId = user.id)
+    fun updatePost(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable postId: Long,
+        @RequestBody request: UpdatePostRequest,
+    ): ResponseEntity<PostBrief> {
+        val updatedPost =
+            postService.patch(
+                postId = postId,
+                content = request.content,
+                user.id,
+            )
+        return ResponseEntity.ok(updatedPost)
+    }
+
+    @ExceptionHandler(PostException::class)
+    fun handleException(e: PostException): ResponseEntity<Any> {
+        return when (e) {
+            is PostNotFoundException -> ResponseEntity.notFound().build()
+            is PostNotAuthorizedException -> ResponseEntity.status(403).build()
+            is UserNotFoundException -> ResponseEntity.status(404).build()
+            is PostAlreadyLikedException, is PostNotLikedException -> ResponseEntity.status(409).build()
+            else -> ResponseEntity.status(500).build()
+        }
     }
 }
+
+data class CreatePostRequest(
+    val content: String,
+    val hideComments: Boolean = false,
+    val hideLikes: Boolean = false,
+    val files: List<String>,
+)
+
+data class UpdatePostRequest(
+    val content: String,
+)
