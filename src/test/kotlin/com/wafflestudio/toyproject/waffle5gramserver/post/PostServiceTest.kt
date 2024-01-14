@@ -40,10 +40,8 @@ class PostServiceTest @Autowired constructor(
             password = "password123",
             birthday = Date(),
             isPrivate = false,
-            createdAt = LocalDateTime.now(),
-            modifiedAt = LocalDateTime.now(),
             pronoun = "they/them",
-            profileImage = "https://wafflestudio.com/images/icon_intro.svg",
+            profileImageUrl = "https://wafflestudio.com/images/icon_intro.svg",
             bio = "This is a test bio"
         )
         return userRepository.save(user)
