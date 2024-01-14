@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/feed")
-class FeedController (
+class FeedController(
     private val feedService: FeedService
 ) {
     @GetMapping("/timeline")
@@ -25,8 +25,8 @@ class FeedController (
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam("page", defaultValue = "1") page: Int,
         @RequestParam("size", defaultValue = "10") size: Int,
-    ) : ResponseEntity<Any> {
-        val pageable : Pageable = PageRequest.of(page - 1, size)
+    ): ResponseEntity<Any> {
+        val pageable: Pageable = PageRequest.of(page - 1, size)
         val postsPage: Page<PostDetail> = feedService.getHomeFeed(userId = user.id, pageable = pageable)
 
         val feedResponse = FeedResponse(

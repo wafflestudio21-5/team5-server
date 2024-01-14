@@ -1,10 +1,16 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.repository
 
 import com.wafflestudio.toyproject.waffle5gramserver.BaseAuditingEntity
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 
 @Entity(name = "post_medias")
-class PostMediaEntity (
+class PostMediaEntity(
 
     @Column(name = "media_url", nullable = false)
     var mediaUrl: String = "",
