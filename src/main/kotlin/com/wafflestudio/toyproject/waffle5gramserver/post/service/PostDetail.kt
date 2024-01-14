@@ -16,5 +16,5 @@ data class PostDetail(
     val disableComment: Boolean,
     val hideLike: Boolean,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
+    val modifiedAt: LocalDateTime,
 )
