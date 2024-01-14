@@ -8,18 +8,23 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
-class PostLikeServiceImpl (
+class PostLikeServiceImpl(
     private val postLikeRepository: PostLikeRepository,
     private val postRepository: PostRepository,
-    private val userRepository: UserRepository
-): PostLikeService {
-
-    override fun exists(postId: Long, userId: Long): Boolean {
+    private val userRepository: UserRepository,
+) : PostLikeService {
+    override fun exists(
+        postId: Long,
+        userId: Long,
+    ): Boolean {
         return postLikeRepository.findByPostIdAndUserId(postId, userId) != null
     }
 
     @Transactional
-    override fun create(postId: Long, userId: Long) {
+    override fun create(
+        postId: Long,
+        userId: Long,
+    ) {
         if (postRepository.findById(postId).isEmpty) throw PostNotFoundException()
         if (userRepository.findById(userId).isEmpty) throw UserNotFoundException()
 
@@ -29,12 +34,15 @@ class PostLikeServiceImpl (
             PostLikeEntity(
                 postId = postId,
                 userId = userId,
-            )
+            ),
         )
     }
 
     @Transactional
-    override fun delete(postId: Long, userId: Long) {
+    override fun delete(
+        postId: Long,
+        userId: Long,
+    ) {
         val like = postLikeRepository.findByPostIdAndUserId(postId, userId) ?: throw PostNotLikedException()
         postLikeRepository.delete(like)
     }

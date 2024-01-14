@@ -9,7 +9,7 @@ class PostMapper {
             return PostBrief(
                 id = entity.id,
                 content = entity.content,
-                createdAt = entity.createdAt
+                createdAt = entity.createdAt,
             )
         }
     }
