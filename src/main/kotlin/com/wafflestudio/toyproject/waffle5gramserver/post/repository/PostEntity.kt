@@ -1,18 +1,18 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.repository
 
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentEntity
+import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.Column
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
-import jakarta.persistence.CascadeType
-import jakarta.persistence.FetchType
 import org.hibernate.annotations.UpdateTimestamp
-import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
 import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
 
