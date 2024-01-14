@@ -15,9 +15,9 @@ import java.time.LocalDateTime
 abstract class BaseAuditingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected var id: Long = -1L
+    var id: Long = 0L
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    protected var createdAt: LocalDateTime = LocalDateTime.MIN
+    var createdAt: LocalDateTime = LocalDateTime.now()
 }
