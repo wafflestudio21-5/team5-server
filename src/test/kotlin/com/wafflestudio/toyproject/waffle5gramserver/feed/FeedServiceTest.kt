@@ -70,7 +70,7 @@ class FeedServiceTest @Autowired constructor(
             createPost("FirstTestContent$i", testUser1, i.toLong())
         }
 
-        for (i in 1 .. 5) {
+        for (i in 1..5) {
             createPost("SecondTestContent$i", testUser2, i.toLong())
         }
 
