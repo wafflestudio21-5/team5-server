@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class PostDetail(
     val id: Long,
-    val userId: Long,
+    val author: Long,
     val content: String,
     val media: List<PostMedia>,
     val liked: Boolean,
