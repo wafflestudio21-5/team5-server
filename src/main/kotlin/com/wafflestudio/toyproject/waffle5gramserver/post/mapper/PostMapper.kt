@@ -5,6 +5,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEn
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMedia
+import java.time.LocalDateTime
 
 class PostMapper {
     companion object {
@@ -19,7 +20,7 @@ class PostMapper {
         fun toPostDetailDTO(entity: PostEntity, liked: Boolean): PostDetail {
             return PostDetail(
                 id = entity.id,
-                userId = entity.user.id,
+                author = entity.user.id,
                 content = entity.content,
                 media = entity.medias.map { media -> toPostMediaDTO(media) },
                 liked = liked,
@@ -38,7 +39,8 @@ class PostMapper {
                 order = media.mediaOrder,
                 url = media.mediaUrl,
                 mediaType = media.mediaType,
-                createdAt = media.createdAt,
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now()
             )
         }
     }
