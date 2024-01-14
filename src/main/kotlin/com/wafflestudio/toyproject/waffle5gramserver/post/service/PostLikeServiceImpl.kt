@@ -8,11 +8,11 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
-class PostLikeServiceImpl (
+class PostLikeServiceImpl(
     private val postLikeRepository: PostLikeRepository,
     private val postRepository: PostRepository,
     private val userRepository: UserRepository
-): PostLikeService {
+) : PostLikeService {
 
     override fun exists(postId: Long, userId: Long): Boolean {
         return postLikeRepository.findByPostIdAndUserId(postId, userId) != null
