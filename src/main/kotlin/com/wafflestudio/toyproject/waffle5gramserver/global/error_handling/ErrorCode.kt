@@ -20,12 +20,19 @@ enum class ErrorCode(
     INTERNAL_SERVER_ERROR(500, "G006", "내부 서버 오류입니다."),
 
     // User Exceptions
-
-    // Private Exceptions
+    MEMBER_NOT_FOUND(400, "M001", "존재 하지 않는 유저입니다."), // 예시
 
     // Follow Exceptions
+    FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."), // 예시
 
     // Post Exceptions
+    POST_NOT_FOUND(400, "F001", "존재하지 않는 게시물입니다."), // 예시
+
+    // Feed Exceptions
+
+    // Search Exceptions
+
+    // Alarm Exceptions
 
     // other else
 }
