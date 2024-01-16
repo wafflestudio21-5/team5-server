@@ -6,8 +6,8 @@ Business layer에서 발생하는 에러들에 대해서 공통적으로 처리�
  */
 class BusinessException : RuntimeException {
 
-    private var errorCode: ErrorCode? = null
-    private var errors: List<ErrorResponse.FieldError> = ArrayList()
+    var errorCode: ErrorCode
+    var errors: List<ErrorResponse.FieldError> = ArrayList()
 
     constructor(message: String, errorCode: ErrorCode) : super(message) {
         this.errorCode = errorCode

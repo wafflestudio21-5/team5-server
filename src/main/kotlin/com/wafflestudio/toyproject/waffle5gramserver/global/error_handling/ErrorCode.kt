@@ -14,6 +14,10 @@ enum class ErrorCode(
     // Global Exceptions
     INPUT_VALUE_INVALID(400, "G001", "유효하지 않은 입력입니다."),
     INPUT_TYPE_INVALID(400, "G002", "입력 타입이 유효하지 않습니다."),
+    HTTP_MESSAGE_NOT_READABLE(400, "G003", "request message body가 없거나 값 타입이 올바르지 않습니다."),
+    METHOD_NOT_ALLOWED(405, "G004", "허용되지 않은 HTTP method입니다."),
+    HTTP_HEADER_INVALID(400, "G005", "request header가 유효하지 않습니다."),
+    INTERNAL_SERVER_ERROR(500, "G006", "내부 서버 오류입니다."),
 
     // User Exceptions
 
