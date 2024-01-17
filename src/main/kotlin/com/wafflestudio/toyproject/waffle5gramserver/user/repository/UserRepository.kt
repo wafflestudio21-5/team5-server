@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 
 interface UserRepository : JpaRepository<UserEntity, Long> {
+    fun findByUsername(username: String): UserEntity?
 
     @Modifying
     @Query(value = "update users u set u.name = :name where u.id = :id")

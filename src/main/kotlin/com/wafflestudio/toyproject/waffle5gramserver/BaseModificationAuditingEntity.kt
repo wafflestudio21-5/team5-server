@@ -10,5 +10,5 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseModificationAuditingEntity : BaseAuditingEntity() {
     @LastModifiedDate
-    protected var modifiedAt: LocalDateTime = LocalDateTime.MIN
+    var modifiedAt: LocalDateTime = LocalDateTime.now()
 }
