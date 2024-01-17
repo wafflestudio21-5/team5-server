@@ -7,7 +7,7 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 
-class SignUpRequestValidator: ConstraintValidator<ValidSignUpRequest, SignUpRequestDto> {
+class SignUpRequestValidator : ConstraintValidator<ValidSignUpRequest, SignUpRequestDto> {
     override fun isValid(signUpRequestDto: SignUpRequestDto?, context: ConstraintValidatorContext?): Boolean {
         if (signUpRequestDto == null) return false
         return when (signUpRequestDto.contactType) {

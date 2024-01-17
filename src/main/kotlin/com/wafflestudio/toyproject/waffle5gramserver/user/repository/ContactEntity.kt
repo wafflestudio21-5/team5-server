@@ -17,4 +17,4 @@ class ContactEntity(
     val contactType: ContactType,
     val contactValue: String,
     val isConfirmed: Boolean
-): BaseAuditingEntity()
+) : BaseAuditingEntity()

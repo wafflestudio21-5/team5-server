@@ -47,11 +47,13 @@ class UserAuthServiceImpl(
             bio = null
         )
         userEntity = userRepository.save(userEntity)
-        userEntity.contacts.add(ContactEntity(
-            user = userEntity,
-            contactType = contactType,
-            contactValue = contact,
-            isConfirmed = isConfirmed
-        ))
+        userEntity.contacts.add(
+            ContactEntity(
+                user = userEntity,
+                contactType = contactType,
+                contactValue = contact,
+                isConfirmed = isConfirmed
+            )
+        )
     }
 }
