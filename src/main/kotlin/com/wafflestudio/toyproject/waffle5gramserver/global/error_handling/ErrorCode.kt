@@ -22,13 +22,13 @@ enum class ErrorCode(
     FILE_CONVERT_FAIL(500, "G008", "변환할 수 없는 파일입니다."),
 
     // User Exceptions
-    MEMBER_NOT_FOUND(400, "M001", "존재 하지 않는 유저입니다."), // 예시
+    MEMBER_NOT_FOUND(404, "M001", "존재 하지 않는 유저입니다."), // 예시
 
     // Follow Exceptions
     FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."), // 예시
 
     // Post Exceptions
-    POST_NOT_FOUND(400, "F001", "존재하지 않는 게시물입니다."), // 예시
+    POST_NOT_FOUND(404, "P001", "존재하지 않는 게시물입니다."), // 예시
 
     // Feed Exceptions
 

@@ -8,13 +8,13 @@ enum class ResultCode(
 ) {
 
     // User Result
-    REGISTER_SUCCESS(200, "M001", "회원가입에 성공하였습니다."), // 예시
+    REGISTER_SUCCESS(201, "M001", "회원가입에 성공하였습니다."), // 예시
 
     // Post Result
     GET_MEMBER_POSTS_SUCCESS(200, "P001", "회원의 게시물 조회에 성공하였습니다."),
 
     // Follow Result
-    FOLLOW_SUCCESS(200, "F001", "회원 팔로우를 성공하였습니다."),
+    FOLLOW_SUCCESS(201, "F001", "회원 팔로우를 성공하였습니다."),
 
     // Feed Result
     FIND_POST_PAGE_SUCCESS(200, "FE001", "게시물 목록 페이지 조회에 성공하였습니다."),
