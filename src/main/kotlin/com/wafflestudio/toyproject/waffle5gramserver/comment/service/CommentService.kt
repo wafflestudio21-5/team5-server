@@ -1,8 +1,28 @@
 package com.wafflestudio.toyproject.waffle5gramserver.comment.service
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+
 interface CommentService {
-    fun getComments()
-    fun createComment(postId: Long, content: String): CommentBrief
-    fun updateComment(commentId: Long, content: String): CommentBrief
-    fun deleteComment(commentId: Long)
+    fun getComments(
+        postId: Long,
+        pageable: Pageable,
+    ): Page<Comment>
+
+    fun create(
+        postId: Long,
+        content: String,
+        userId: Long,
+    ): Comment
+
+    fun patch(
+        commentId: Long,
+        content: String,
+        userId: Long,
+    ): Comment
+
+    fun delete(
+        commentId: Long,
+        userId: Long,
+    )
 }
