@@ -12,3 +12,22 @@ spring:
     password: 1234
   jpa:
     defer-datasource-initialization: true
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_S3_ACCESS_KEY}
+      secretKey: ${AWS_S3_SECRET_KEY}
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: waffle5grambucket
+    stack:
+      auto: false
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: debug

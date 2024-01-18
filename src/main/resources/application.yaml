@@ -1,10 +1,11 @@
 server:
   port: 8080
 
-spring.profiles.active: credentials
+spring.profiles.active: dev
 spring:
   config:
     import:
     - application-dev.yaml
     - application-prod.yaml
+    - application-dev-secure.yaml
     - application-credentials.yaml
