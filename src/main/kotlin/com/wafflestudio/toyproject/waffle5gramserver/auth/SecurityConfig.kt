@@ -115,8 +115,7 @@ class SecurityConfig {
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf(
-            "https://www.waffle5gram.com",
-            "http://localhost:5173"
+            "https://www.waffle5gram.com"
         )
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")
