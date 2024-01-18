@@ -1,0 +1,21 @@
+### Cors allowed
+POST /api/v1/auth/login
+Host: localhost:8080
+Origin: http://localhost:5173
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
+
+### Invalid Cors request
+POST /api/v1/auth/login
+Host: localhost:8080
+Origin: http://localhost:5174
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
