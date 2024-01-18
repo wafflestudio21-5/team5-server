@@ -13,10 +13,10 @@ ErrorResponse의 사용 양상 상 인스턴스를 만들지 않고 메서드를
  */
 class ErrorResponse {
 
-    private var status: Int = 0
-    private var code: String = ""
-    private var message: String = ""
-    private var errors: List<FieldError> = arrayListOf()
+    var status: Int = 0
+    var code: String = ""
+    var message: String = ""
+    var errors: List<FieldError> = arrayListOf()
 
     constructor(errorcode: ErrorCode, errors: List<FieldError>) {
         this.status = errorcode.status
