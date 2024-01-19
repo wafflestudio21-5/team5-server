@@ -1,6 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.feed.controller
 
-import com.wafflestudio.toyproject.waffle5gramserver.feed.repository.PageInfo
 import com.wafflestudio.toyproject.waffle5gramserver.feed.service.FeedService
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
