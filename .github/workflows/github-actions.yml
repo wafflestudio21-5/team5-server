@@ -58,6 +58,6 @@ jobs:
           script: |
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/waffle5gram
-            sudo docker run -d -e SPRING_PROFILE=${{ env.PROFILE }} -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
+            sudo docker run -d -e SPRING_PROFILE=${{ vars.PROFILE }} -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
             sudo docker image prune -f
 
