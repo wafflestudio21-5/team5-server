@@ -24,10 +24,3 @@ cloud:
       bucket: waffle5grambucket
     stack:
       auto: false
-
-logging:
-  level:
-    com:
-      amazonaws:
-        util:
-          EC2MetadataUtils: debug
