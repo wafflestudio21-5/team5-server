@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import java.util.Date
+import java.time.LocalDateTime
 
 @Entity(name = "comments")
 class CommentEntity(
@@ -18,9 +18,9 @@ class CommentEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
     @Column(nullable = false)
-    val text: String = "",
+    var text: String = "",
     @Column(nullable = false)
-    val createdAt: Date,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     val post: PostEntity,
