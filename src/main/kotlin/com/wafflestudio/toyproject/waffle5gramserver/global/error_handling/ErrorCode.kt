@@ -17,12 +17,12 @@ enum class ErrorCode(
     HTTP_MESSAGE_NOT_READABLE(400, "G003", "request message body가 없거나 값 타입이 올바르지 않습니다."),
     METHOD_NOT_ALLOWED(405, "G004", "허용되지 않은 HTTP method입니다."),
     HTTP_HEADER_INVALID(400, "G005", "request header가 유효하지 않습니다."),
-    INTERNAL_SERVER_ERROR(500, "G006", "내부 서버 오류입니다."),
     ENTITY_TYPE_INVALID(500, "G007", "올바르지 않은 entity type 입니다."),
     FILE_CONVERT_FAIL(500, "G008", "변환할 수 없는 파일입니다."),
 
     // User Exceptions
-    MEMBER_NOT_FOUND(404, "M001", "존재 하지 않는 유저입니다."), // 예시
+    MEMBER_NOT_FOUND(404, "M001", "존재 하지 않는 유저입니다."),
+    USER_ALREADY_EXIST(409, "M002", "이미 존재하는 유저입니다."),
 
     // Follow Exceptions
     FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."), // 예시
@@ -37,4 +37,5 @@ enum class ErrorCode(
     // Alarm Exceptions
 
     // other else
+    // INTERNAL_SERVER_ERROR(500, "G006", "내부 서버 오류입니다."),
 }

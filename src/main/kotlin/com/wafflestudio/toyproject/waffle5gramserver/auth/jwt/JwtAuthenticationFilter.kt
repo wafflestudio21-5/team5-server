@@ -1,6 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.auth.jwt
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUserService
 import io.jsonwebtoken.JwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -16,7 +17,8 @@ import java.lang.IllegalArgumentException
 @Component
 class JwtAuthenticationFilter(
     private val jwtUtils: JwtUtils,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val instagramUserService: InstagramUserService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -28,8 +30,9 @@ class JwtAuthenticationFilter(
             val token = jwtUtils.getTokenFromRequest(request)
             if (token != null) {
                 val username = jwtUtils.validateAccessToken(token)
+                val instagramUser = instagramUserService.loadUserByUsername(username)
                 SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
-                    username, null, setOf(SimpleGrantedAuthority("ROLE_USER"))
+                    instagramUser, null, setOf(SimpleGrantedAuthority("USER"))
                 )
             }
             filterChain.doFilter(request, response)

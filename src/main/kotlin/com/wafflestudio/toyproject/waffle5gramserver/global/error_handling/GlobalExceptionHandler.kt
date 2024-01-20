@@ -3,7 +3,6 @@ package com.wafflestudio.toyproject.waffle5gramserver.global.error_handling
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode.HTTP_HEADER_INVALID
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode.HTTP_MESSAGE_NOT_READABLE
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode.INPUT_VALUE_INVALID
-import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode.INTERNAL_SERVER_ERROR
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode.METHOD_NOT_ALLOWED
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
@@ -26,12 +25,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
-
-    @ExceptionHandler
-    protected fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
-        val response: ErrorResponse = ErrorResponse.of(INTERNAL_SERVER_ERROR)
-        return ResponseEntity<ErrorResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR)
-    } // 정체불명의 모든 내부 서버 오류를 handle
 
     @ExceptionHandler
     protected fun handleBusinessException(e: BusinessException): ResponseEntity<ErrorResponse> {
@@ -98,4 +91,11 @@ class GlobalExceptionHandler {
         val response: ErrorResponse = ErrorResponse.of(INPUT_VALUE_INVALID, e.requestPartName)
         return ResponseEntity<ErrorResponse>(response, BAD_REQUEST)
     } // 파일 업로드를 위해 MultiparFile 사용 시 이미지 업로드에 실패하여 발생하는 오류를 handle
+
+    /* @ExceptionHandler
+    protected fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
+        val response: ErrorResponse = ErrorResponse.of(INTERNAL_SERVER_ERROR)
+        return ResponseEntity<ErrorResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR)
+    } // 정체불명의 모든 내부 서버 오류를 handle
+     */
 }
