@@ -1,10 +1,14 @@
 package com.wafflestudio.toyproject.waffle5gramserver.reply.service
 
-data class Reply (
-    val replyId: Long,
-    val parentCommentId: Long,
+import java.time.LocalDateTime
+
+data class Reply(
+    val id: Long,
+    val commentId: Long,
     val userId: Long,
-    val author: String,
+    val username: String,
+    val userProfileImageUrl: String?,
     val content: String,
-    val createdAt: String,
+    val likeCount: Long,
+    val createdAt: LocalDateTime,
 )
