@@ -7,6 +7,16 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:8080/api/v1/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDU3MzAzMTZ9.Sj9pXU82SSt71gzGWgb0v76B_YdYhH5ksnWJ8nfpmJ8
+
+{
+  "content": "Here's my latest travel photo!",
+  "files": ["https://example.com/path/to/image.jpg"]
+}
+
+### 로그인 실패
 POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 

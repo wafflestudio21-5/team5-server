@@ -63,7 +63,7 @@ class SecurityConfig {
     ): SecurityFilterChain {
 
         val authorizedHttpMethod = listOf(
-            HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE
+            HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE
         )
         http.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter::class.java)
         http {
@@ -80,7 +80,6 @@ class SecurityConfig {
                 authorizedHttpMethod.forEach {
                     authorize(it, "/api/v1/**", hasAuthority("USER"))
                 }
-                authorize(HttpMethod.GET, "/api/v1/**", permitAll)
                 authorize(anyRequest, denyAll)
             }
             cors {
