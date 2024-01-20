@@ -1,5 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.auth.service
 
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.global_exception.EntityAlreadyExistException
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.ContactEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.ContactType
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
@@ -36,6 +38,9 @@ class UserAuthServiceImpl(
         birthday: Date,
         isConfirmed: Boolean
     ) {
+        if (userRepository.existsByUsername(username)) {
+            throw EntityAlreadyExistException(ErrorCode.USER_ALREADY_EXIST)
+        }
         var userEntity = UserEntity(
             username = username,
             name = name,

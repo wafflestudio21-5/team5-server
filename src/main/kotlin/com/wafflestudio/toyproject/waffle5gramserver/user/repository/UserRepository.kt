@@ -10,4 +10,6 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
     @Modifying
     @Query(value = "update users u set u.name = :name where u.id = :id")
     fun updateNameById(id: Long, name: String)
+
+    fun existsByUsername(username: String): Boolean
 }

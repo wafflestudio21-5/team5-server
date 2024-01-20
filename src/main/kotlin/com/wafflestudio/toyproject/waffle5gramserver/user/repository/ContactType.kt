@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 
 enum class ContactType {
-    PHONE, EMAIL;
+    PHONE, EMAIL, NONE;
 
     companion object {
         @JsonCreator
@@ -13,7 +13,7 @@ enum class ContactType {
             return when (value.lowercase()) {
                 "phone" -> PHONE
                 "email" -> EMAIL
-                else -> throw IllegalArgumentException("Invalid contact type")
+                else -> NONE
             }
         }
     }

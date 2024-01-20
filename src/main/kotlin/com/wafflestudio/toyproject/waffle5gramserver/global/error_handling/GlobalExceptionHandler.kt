@@ -29,6 +29,8 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler
     protected fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
+        println(e.message)
+        println(e.stackTrace)
         val response: ErrorResponse = ErrorResponse.of(INTERNAL_SERVER_ERROR)
         return ResponseEntity<ErrorResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR)
     } // 정체불명의 모든 내부 서버 오류를 handle
