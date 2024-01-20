@@ -19,7 +19,8 @@ class CommentServiceImpl(
     private val commentRepository: CommentRepository,
     private val userRepository: UserRepository,
     private val postRepository: PostRepository,
-    private val commentLikeRepository: CommentLikeRepository, private val replyRepository: ReplyRepository,
+    private val commentLikeRepository: CommentLikeRepository,
+    private val replyRepository: ReplyRepository,
 ) : CommentService {
     override fun getComments(
         postId: Long,
