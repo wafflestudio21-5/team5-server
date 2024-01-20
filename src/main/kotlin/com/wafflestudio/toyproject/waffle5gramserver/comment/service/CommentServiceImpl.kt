@@ -6,6 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentR
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotFoundException
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.UserNotFoundException
+import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
@@ -18,7 +19,7 @@ class CommentServiceImpl(
     private val commentRepository: CommentRepository,
     private val userRepository: UserRepository,
     private val postRepository: PostRepository,
-    private val commentLikeRepository: CommentLikeRepository,
+    private val commentLikeRepository: CommentLikeRepository, private val replyRepository: ReplyRepository,
 ) : CommentService {
     override fun getComments(
         postId: Long,
@@ -81,6 +82,7 @@ class CommentServiceImpl(
 
     fun convertToDTO(comment: CommentEntity): Comment {
         val likeCount = commentLikeRepository.countByCommentId(comment.id)
+        val replyCount = replyRepository.countByCommentId(comment.id)
         return Comment(
             id = comment.id,
             postId = comment.post.id,
@@ -90,6 +92,7 @@ class CommentServiceImpl(
             text = comment.text,
             createdAt = comment.createdAt,
             likeCount = likeCount,
+            replyCount = replyCount,
         )
     }
 }
