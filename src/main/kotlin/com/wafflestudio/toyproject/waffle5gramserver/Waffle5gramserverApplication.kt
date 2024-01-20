@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 
 @EnableJpaAuditing
 @SpringBootApplication
+@EnableJpaAuditing
 class Waffle5gramserverApplication
 
 fun main(args: Array<String>) {
