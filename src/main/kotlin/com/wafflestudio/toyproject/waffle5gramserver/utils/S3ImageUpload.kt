@@ -2,10 +2,10 @@ package com.wafflestudio.toyproject.waffle5gramserver.utils
 
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.ObjectMetadata
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.util.UUID
 
 @Service
 class S3ImageUpload(
@@ -15,7 +15,7 @@ class S3ImageUpload(
 
     @Transactional
     fun uploadImage(image: MultipartFile): String {
-        val fileName = image.originalFilename
+        val fileName = UUID.randomUUID().toString() + "-" + image.originalFilename
         val metadata = ObjectMetadata()
         metadata.contentType = image.contentType
         metadata.contentLength = image.size
