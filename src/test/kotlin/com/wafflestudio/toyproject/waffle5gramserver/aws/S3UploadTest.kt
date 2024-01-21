@@ -1,4 +1,4 @@
-package com.wafflestudio.toyproject.waffle5gramserver.aws;
+package com.wafflestudio.toyproject.waffle5gramserver.aws
 
 import com.amazonaws.services.s3.AmazonS3Client
 import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Paths

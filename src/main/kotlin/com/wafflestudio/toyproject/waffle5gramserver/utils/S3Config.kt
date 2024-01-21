@@ -20,12 +20,12 @@ class S3Config(
 
     @Bean
     fun amazonS3Client(): AmazonS3Client {
-        val basicAWSCredentials: BasicAWSCredentials = BasicAWSCredentials(accessKey,secretKey)
+        val basicAWSCredentials: BasicAWSCredentials = BasicAWSCredentials(accessKey, secretKey)
         return AmazonS3ClientBuilder
             .standard()
             .withRegion(region)
             .withCredentials(AWSStaticCredentialsProvider(basicAWSCredentials))
             .build()
-        as AmazonS3Client
+            as AmazonS3Client
     }
 }
