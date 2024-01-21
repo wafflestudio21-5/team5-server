@@ -5,6 +5,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,20 +24,20 @@ class FeedController(
     @GetMapping("/timeline")
     fun getFeedWithRecommendation(
         @AuthenticationPrincipal user: InstagramUser,
-        pageable: Pageable
+        @PageableDefault(size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ): ResponseEntity<Any> {
-        val postsPage: Page<PostDetail> = feedService.getHomeFeed(userId = user.id, pageable = pageable)
+        val postsPage: Slice<PostDetail> = feedService.getHomeFeed(userId = user.id, pageable = pageable)
 
         val feedResponse = FeedResponse(
             posts = postsPage.content,
             pageInfo = PageInfo(
-                currentPage = postsPage.number,
-                pageSize = postsPage.size,
-                totalItems = postsPage.totalElements,
-                totalPages = postsPage.totalPages
+                page = postsPage.number + 1,
+                size = postsPage.size,
+                offset = postsPage.pageable.offset,
+                hasNext = postsPage.hasNext(),
+                elements = postsPage.numberOfElements
             )
         )
-
         return ResponseEntity.ok(feedResponse)
     }
 

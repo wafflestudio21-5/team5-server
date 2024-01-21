@@ -17,13 +17,13 @@ class PostMapper {
             )
         }
 
-        fun toPostDetailDTO(entity: PostEntity, liked: Boolean): PostDetail {
+        fun toPostDetailDTO(entity: PostEntity): PostDetail {
             return PostDetail(
                 id = entity.id,
                 author = entity.user,
                 content = entity.content,
                 media = entity.medias.map { media -> toPostMediaDTO(media) },
-                liked = liked,
+                liked = false,
                 likeCount = 0,
                 commentCount = entity.comments.size,
                 hideLike = entity.likeCountDisplayed,
