@@ -3,7 +3,6 @@ package com.wafflestudio.toyproject.waffle5gramserver.feed.controller
 import com.wafflestudio.toyproject.waffle5gramserver.feed.service.FeedService
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.domain.Sort

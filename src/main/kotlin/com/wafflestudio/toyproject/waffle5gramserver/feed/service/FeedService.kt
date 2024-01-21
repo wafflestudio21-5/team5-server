@@ -1,7 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.feed.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 
