@@ -21,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.intercept.AuthorizationFilter
 import org.springframework.security.web.util.matcher.DispatcherTypeRequestMatcher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -55,11 +58,12 @@ class SecurityConfig {
     @Bean
     fun devSecureFilterChain(
         http: HttpSecurity,
-        jwtAuthenticationFilter: JwtAuthenticationFilter
+        jwtAuthenticationFilter: JwtAuthenticationFilter,
+        corsConfigurationSource: CorsConfigurationSource
     ): SecurityFilterChain {
 
         val authorizedHttpMethod = listOf(
-            HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE
+            HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE
         )
         http.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter::class.java)
         http {
@@ -76,8 +80,10 @@ class SecurityConfig {
                 authorizedHttpMethod.forEach {
                     authorize(it, "/api/v1/**", hasAuthority("USER"))
                 }
-                authorize(HttpMethod.GET, "/api/v1/**", permitAll)
                 authorize(anyRequest, denyAll)
+            }
+            cors {
+                configurationSource = corsConfigurationSource
             }
             csrf { disable() }
             headers { frameOptions { disable() } }
@@ -102,5 +108,18 @@ class SecurityConfig {
         authenticationProvider.setUserDetailsService(userDetailsService)
         authenticationProvider.setPasswordEncoder(passwordEncoder)
         return ProviderManager(authenticationProvider)
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = listOf(
+            "https://www.waffle5gram.com"
+        )
+        configuration.allowedMethods = listOf("*")
+        configuration.allowedHeaders = listOf("*")
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
     }
 }

@@ -1,0 +1,21 @@
+### Cors allowed
+POST /api/v1/auth/login
+Host: localhost:8080
+Origin: https://www.waffle5gram.com/
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
+
+### Invalid Cors request
+POST /api/v1/auth/login
+Host: localhost:8080
+Origin: https://www.waffle105gram.com/
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
