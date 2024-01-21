@@ -11,8 +11,7 @@ import org.springframework.web.multipart.MultipartFile
 class S3ImageUpload(
     private val amazonS3Client: AmazonS3Client
 ) {
-    @Value("\${cloud.aws.s3.bucket}")
-    private lateinit var bucket: String
+    private final val bucket: String = "waffle5grambucket"
 
     @Transactional
     fun uploadImage(image: MultipartFile): String {
