@@ -5,7 +5,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEn
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMedia
-import java.time.LocalDateTime
 
 class PostMapper {
     companion object {
@@ -38,8 +37,6 @@ class PostMapper {
                 order = media.mediaOrder,
                 url = media.mediaUrl,
                 mediaType = media.mediaType,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
             )
         }
     }
