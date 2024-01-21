@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class FeedIntegrationTest @Autowired constructor(
     private val mvc: MockMvc
 ) {
+    @Transactional
     @Test
     fun `피드 테스트`() {
         val token = obtainBearerToken("user-0", "password-0")

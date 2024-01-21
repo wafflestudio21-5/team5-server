@@ -21,12 +21,6 @@ class FeedServiceTest @Autowired constructor(
     private val postRepository: PostRepository,
     private val userRepository: UserRepository
 ) {
-    @BeforeEach
-    fun setUp() {
-        userRepository.deleteAll()
-        postRepository.deleteAll()
-    }
-
     private fun createPost(content: String, user: UserEntity, interval: Long = 0): Long {
         val post = PostEntity(
             content = content,
