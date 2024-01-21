@@ -4,20 +4,19 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import org.springframework.beans.factory.annotation.Value
+import com.wafflestudio.toyproject.waffle5gramserver.properties.S3properties
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class S3Config {
-    @Value("\${cloud.aws.credentials.accessKey}")
-    private lateinit var accessKey: String
-
-    @Value("\${cloud.aws.credentials.secretKey}")
-    private lateinit var secretKey: String
-
-    @Value("\${cloud.aws.region.static}")
-    private lateinit var region: String
+@ConfigurationPropertiesScan
+class S3Config(
+    s3properties: S3properties
+) {
+    private val region: String = s3properties.region.static
+    private val accessKey: String = s3properties.credentials.accessKey
+    private val secretKey: String = s3properties.credentials.secretKey
 
     @Bean
     fun amazonS3Client(): AmazonS3Client {

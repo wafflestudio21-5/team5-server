@@ -40,6 +40,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 
     implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 tasks.withType<KotlinCompile> {
