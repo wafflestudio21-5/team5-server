@@ -12,3 +12,7 @@ spring:
     password: 1234
   jpa:
     defer-datasource-initialization: true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
