@@ -1,0 +1,13 @@
+### 로그인
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
+
+### 피드 조회
+GET http://localhost:8080/api/v1/feed/timeline
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDU4MDUzNTd9.FxQLR8cQSPZ5XUuz2UJWTQ-4gwlqFnVJfBVeA7ob3jo
+
