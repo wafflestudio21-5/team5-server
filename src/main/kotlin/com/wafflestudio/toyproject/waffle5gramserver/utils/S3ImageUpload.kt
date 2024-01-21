@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.ObjectMetadata
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 
 @Service
@@ -12,6 +13,8 @@ class S3ImageUpload(
 ) {
     @Value("\${cloud.aws.s3.bucket}")
     private lateinit var bucket: String
+
+    @Transactional
     fun uploadImage(image: MultipartFile): String {
         val fileName = image.originalFilename
         val metadata = ObjectMetadata()
@@ -23,14 +26,9 @@ class S3ImageUpload(
         return uploadFileURL.toString()
     }
 
-    fun downloadImage(imageUrl: String): ByteArray {
-        val fileName = imageUrl.split("/").last()
-        val s3Object = amazonS3Client.getObject(bucket, fileName)
-        return s3Object.objectContent.readAllBytes()
-    }
-
-    fun deleteImage(imageUrl: String) {
+    fun deleteImage(imageUrl: String): String {
         val fileName = imageUrl.split("/").last()
         amazonS3Client.deleteObject(bucket, fileName)
+        return fileName
     }
 }
