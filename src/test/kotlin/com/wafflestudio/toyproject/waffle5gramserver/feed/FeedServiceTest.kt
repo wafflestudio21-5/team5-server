@@ -15,12 +15,14 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.util.Date
 
+@Transactional
 @SpringBootTest
 class FeedServiceTest @Autowired constructor(
     private val feedService: FeedService,
     private val postRepository: PostRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
+
     private fun createPost(content: String, user: UserEntity, interval: Long = 0): Long {
         val post = PostEntity(
             content = content,
@@ -61,11 +63,27 @@ class FeedServiceTest @Autowired constructor(
         val testUser2 = userRepository.findById(testUserId2).get()
 
         for (i in 1..20) {
-            createPost("FirstTestContent$i", testUser1, i.toLong())
+            val post = PostEntity(
+                content = "FirstTestContent$i",
+                likeCountDisplayed = true,
+                commentDisplayed = true,
+                createdAt = LocalDateTime.now().plus(i.toLong()),
+                modifiedAt = LocalDateTime.now(),
+                user = testUser1
+            )
+            postRepository.save(post)
         }
 
         for (i in 1..5) {
-            createPost("SecondTestContent$i", testUser2, i.toLong())
+            val post = PostEntity(
+                content = "SecondTestContent$i",
+                likeCountDisplayed = true,
+                commentDisplayed = true,
+                createdAt = LocalDateTime.now().plus(i.toLong()),
+                modifiedAt = LocalDateTime.now(),
+                user = testUser2
+            )
+            postRepository.save(post)
         }
 
         // when
