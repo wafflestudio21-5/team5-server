@@ -7,7 +7,20 @@ Content-Type: application/json
   "password": "password-0"
 }
 
-### 피드 조회
+### 피드 조회 (1)
 GET http://localhost:8080/api/v1/feed/timeline
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDU4MDUzNTd9.FxQLR8cQSPZ5XUuz2UJWTQ-4gwlqFnVJfBVeA7ob3jo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDU4MjU5NzN9.Y7LYcTgzqqBZUwvh2DR8MnGLqkvCm2lQuvIA6czUWKQ
 
+{
+  "page": 1,
+  "size": 10
+}
+
+### 피드 조회 (2)
+GET http://localhost:8080/api/v1/feed/timeline
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDU4MjU1MTF9.LNOs7Mqg2CygX75atFo8j_RFzKLQfTZl20IyHJwGXfI
+
+{
+  "page": 2,
+  "size": 10
+}
