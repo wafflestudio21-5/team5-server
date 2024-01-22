@@ -21,11 +21,11 @@ class PostMapper {
             return PostDetail(
                 id = entity.id,
                 author =
-                    PostAuthor(
-                        id = entity.user.id,
-                        username = entity.user.username,
-                        profileImageUrl = entity.user.profileImageUrl ?: "",
-                    ),
+                PostAuthor(
+                    id = entity.user.id,
+                    username = entity.user.username,
+                    profileImageUrl = entity.user.profileImageUrl ?: "",
+                ),
                 content = entity.content,
                 media = entity.medias.map { media -> toPostMediaDTO(media) },
                 liked = false,
