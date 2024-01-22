@@ -1,12 +1,9 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.MediaType
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.*
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -15,6 +12,8 @@ class PostServiceImpl(
     private val postRepository: PostRepository,
     private val userRepository: UserRepository,
     private val postLikeRepository: PostLikeRepository,
+    private val postMediaRepository: PostMediaRepository,
+    private val postImageService: PostImageService
 ) : PostService {
     override fun get(
         postId: Long,
@@ -49,6 +48,7 @@ class PostServiceImpl(
                     mediaType = MediaType.IMAGE,
                     post = post,
                 )
+            postMediaRepository.save(postMedia)
             post.addMedia(postMedia)
         }
 
@@ -80,6 +80,10 @@ class PostServiceImpl(
         if (post.user.id != userId) {
             throw PostNotAuthorizedException()
         }
+
+        val postMediaUrls = postMediaRepository.findAllByPostId(postId)
+        postImageService.deleteImages(postMediaUrls)
+
         postLikeRepository.deleteAllByPostId(postId)
         postRepository.delete(post)
     }

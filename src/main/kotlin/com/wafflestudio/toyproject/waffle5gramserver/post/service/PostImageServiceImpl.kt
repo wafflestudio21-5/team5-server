@@ -40,4 +40,11 @@ class PostImageServiceImpl(
 
         return imageUrls.sortedBy { it.keys.first() }.map { it.values.first() }
     }
+
+    override fun deleteImages(imageUrls: List<String>) {
+        // 비동기 처리
+        imageUrls.forEach {
+            s3ImageUpload.deleteImage(it)
+        }
+    }
 }

@@ -6,4 +6,8 @@ interface PostImageService {
     fun uploadImages(
         images: List<MultipartFile>
     ): List<String>
+
+    fun deleteImages(
+        imageUrls: List<String>
+    )
 }
