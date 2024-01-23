@@ -37,8 +37,8 @@ constructor(
     }
 
     private fun createUser(
-        isPrivate : Boolean,
-        username : String,
+        isPrivate: Boolean,
+        username: String,
     ): UserEntity {
         val user =
             UserEntity(
@@ -62,7 +62,7 @@ constructor(
         val isPrivate = testUser1.isPrivate
 
         // 테스트 실행
-        val userPrivateResponse = userPrivateService.toOpen(username,isPrivate)
+        val userPrivateResponse = userPrivateService.toOpen(username, isPrivate)
 
         // 검증
         Assertions.assertNotNull(userPrivateResponse)
@@ -77,7 +77,7 @@ constructor(
         val isPrivate = testUser2.isPrivate
 
         // 테스트 실행
-        val userPrivateResponse = userPrivateService.toPrivate(username,isPrivate)
+        val userPrivateResponse = userPrivateService.toPrivate(username, isPrivate)
 
         // 검증
         Assertions.assertNotNull(userPrivateResponse)

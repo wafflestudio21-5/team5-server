@@ -5,11 +5,9 @@ import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
-import org.hibernate.annotations.DynamicUpdate
 import java.util.Date
 
 @Entity(name = "users")
-@DynamicUpdate
 class UserEntity(
     @Column(unique = true)
     val username: String,

@@ -6,9 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.dto.UserPrivateRespons
 import com.wafflestudio.toyproject.waffle5gramserver.user.exception.PrivateChangeFailException
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 
 @Service
 class UserPrivateServiceImpl(
