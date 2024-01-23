@@ -11,5 +11,5 @@ data class Comment(
     val text: String,
     val createdAt: LocalDateTime,
     val likeCount: Long,
-//    val replyCount: Int,
+    val replyCount: Long,
 )

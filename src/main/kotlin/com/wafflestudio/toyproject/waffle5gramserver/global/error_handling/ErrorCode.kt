@@ -21,8 +21,10 @@ enum class ErrorCode(
     FILE_CONVERT_FAIL(500, "G008", "변환할 수 없는 파일입니다."),
 
     // User Exceptions
-    MEMBER_NOT_FOUND(404, "M001", "존재 하지 않는 유저입니다."),
-    USER_ALREADY_EXIST(409, "M002", "이미 존재하는 유저입니다."),
+    USER_NOT_FOUND(404, "U001", "존재 하지 않는 유저입니다."),
+    USER_ALREADY_EXIST(409, "U002", "이미 존재하는 유저입니다."),
+    ALREADY_PRIVATE(403, "U003", "이미 비공개 계정입니다."),
+    ALREADY_OPEN(403, "U004", "이미 공개 계정입니다."),
 
     // Follow Exceptions
     FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."), // 예시

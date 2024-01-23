@@ -15,7 +15,8 @@ data class InstagramUser(
     val isPrivate: Boolean,
     val createdAt: LocalDateTime,
     val modifiedAt: LocalDateTime,
-    val pronoun: String?,
+    val gender: String?,
+    val isCustomGender: Boolean,
     val profileImageUrl: String?,
     val bio: String?
 ) : UserDetails {

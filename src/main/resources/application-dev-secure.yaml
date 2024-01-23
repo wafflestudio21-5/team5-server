@@ -22,3 +22,7 @@ spring:
             scope:
               - email
               - public_profile
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true

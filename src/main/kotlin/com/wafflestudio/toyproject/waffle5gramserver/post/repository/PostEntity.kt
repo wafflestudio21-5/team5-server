@@ -23,6 +23,8 @@ class PostEntity(
     var id: Long = 0L,
     @Column(name = "content", nullable = false)
     var content: String = "",
+    @Column(name = "like_count", nullable = false)
+    var likeCount: Int = 0,
     @Column(name = "like_count_displayed", nullable = false)
     var likeCountDisplayed: Boolean = true,
     @Column(name = "comment_displayed", nullable = false)
@@ -43,5 +45,13 @@ class PostEntity(
 ) {
     fun addMedia(media: PostMediaEntity) {
         medias.add(media)
+    }
+
+    fun incrementLikeCount() {
+        likeCount += 1
+    }
+
+    fun decrementLikeCount() {
+        likeCount -= 1
     }
 }
