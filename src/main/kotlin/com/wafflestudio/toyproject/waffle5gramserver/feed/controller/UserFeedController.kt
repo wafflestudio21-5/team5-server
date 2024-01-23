@@ -26,7 +26,7 @@ class UserFeedController(
         return ResponseEntity.ok(postPreviews)
     }
 
-    // 3. 무한 스크롤을 통한 게시물 조회 API
+    // 2. 무한 스크롤을 통한 게시물 조회 API
     // 위로 스크롤하여 최신 게시물 로드
     @GetMapping("/newer")
     fun loadNewerPosts(
