@@ -1,14 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.controller
 
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAlreadyLikedException
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostException
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotAuthorizedException
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotFoundException
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotLikedException
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostService
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.UserNotFoundException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.*
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -27,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1")
 class PostController(
     private val postService: PostService,
+    private val postLikeService: PostLikeService,
+    private val postSaveService: PostSaveService,
 ) {
     @PostMapping("/posts")
     fun createPost(
@@ -79,14 +73,52 @@ class PostController(
         return ResponseEntity.ok(updatedPost)
     }
 
+    @PostMapping("/posts/{postId}/likes")
+    fun createPostLike(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable postId: Long,
+    ): ResponseEntity<Unit> {
+        postLikeService.create(postId, user.id)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @DeleteMapping("/posts/{postId}/likes")
+    fun deletePostLike(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable postId: Long,
+    ): ResponseEntity<Unit> {
+        postLikeService.delete(postId, user.id)
+        return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/posts/{postId}/saves")
+    fun createPostSave(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable postId: Long,
+    ): ResponseEntity<Unit> {
+        postSaveService.create(postId, user.id)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @DeleteMapping("/posts/{postId}/saves")
+    fun deletePostSave(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable postId: Long,
+    ): ResponseEntity<Unit> {
+        postSaveService.delete(postId, user.id)
+        return ResponseEntity.noContent().build()
+    }
+
     @ExceptionHandler(PostException::class)
     fun handleException(e: PostException): ResponseEntity<Any> {
         return when (e) {
             is PostNotFoundException -> ResponseEntity.notFound().build()
             is PostNotAuthorizedException -> ResponseEntity.status(403).build()
             is UserNotFoundException -> ResponseEntity.status(404).build()
-            is PostAlreadyLikedException, is PostNotLikedException -> ResponseEntity.status(409).build()
-            else -> ResponseEntity.status(500).build()
+            is PostAlreadyLikedException, is PostNotLikedException, is PostAlreadySavedException, is PostNotSavedException ->
+                ResponseEntity.status(
+                    409,
+                ).build()
         }
     }
 }
