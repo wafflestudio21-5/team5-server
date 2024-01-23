@@ -10,4 +10,8 @@ class PostAlreadyLikedException : PostException()
 
 class PostNotLikedException : PostException()
 
+class PostAlreadySavedException : PostException()
+
+class PostNotSavedException : PostException()
+
 class UserNotFoundException : PostException()
