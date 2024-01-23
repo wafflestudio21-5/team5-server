@@ -10,7 +10,7 @@ class PostSaveEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
-    var userId: Long = 0L,
-    var postId: Long = 0L,
+    val userId: Long = 0L,
+    val postId: Long = 0L,
     val createdAt: Long = 0L,
 )

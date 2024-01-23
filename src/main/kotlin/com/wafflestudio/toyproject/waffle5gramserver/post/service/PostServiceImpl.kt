@@ -83,7 +83,7 @@ class PostServiceImpl(
             throw PostNotAuthorizedException()
         }
         postLikeRepository.deleteAllByPostId(postId)
-        postSaveRepository.deleteAllbyPostId(postId)
+        postSaveRepository.deleteAllByPostId(postId)
         postRepository.delete(post)
     }
 }

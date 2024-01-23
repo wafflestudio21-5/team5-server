@@ -8,5 +8,5 @@ interface PostSaveRepository : JpaRepository<PostSaveEntity, Long> {
         postId: Long,
     ): PostSaveEntity?
 
-    fun deleteAllbyPostId(postId: Long)
+    fun deleteAllByPostId(postId: Long)
 }
