@@ -1,18 +1,22 @@
 package com.wafflestudio.toyproject.waffle5gramserver.user.repository
 
+import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import java.util.Optional
 
 interface UserRepository : JpaRepository<UserEntity, Long> {
+
+
     fun findByUsername(username: String): Optional<UserEntity>
 
     @Modifying
     @Query(value = "update users u set u.name = :name where u.id = :id")
     fun updateNameById(id: Long, name: String)
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(value = "update users u set u.isPrivate = :isPrivate where u.username = :username")
     fun updateIsPrivateByUsername(isPrivate: Boolean, username: String)
 

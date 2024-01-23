@@ -6,7 +6,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.dto.UserPrivateRespons
 import com.wafflestudio.toyproject.waffle5gramserver.user.exception.PrivateChangeFailException
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 
 @Service
 class UserPrivateServiceImpl(
@@ -17,7 +19,8 @@ class UserPrivateServiceImpl(
         username: String,
         isPrivate: Boolean,
     ): UserPrivateResponse {
-        if (isPrivate == true) { throw PrivateChangeFailException(ErrorCode.ALREADY_PRIVATE) } else { userRepository.updateIsPrivateByUsername(isPrivate = true, username = username) }
+        if (isPrivate == true) { throw PrivateChangeFailException(ErrorCode.ALREADY_PRIVATE) }
+        userRepository.updateIsPrivateByUsername(isPrivate = true, username = username)
         val user: UserEntity = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         return UserPrivateResponse(user.id, user.isPrivate)
@@ -27,7 +30,8 @@ class UserPrivateServiceImpl(
         username: String,
         isPrivate: Boolean,
     ): UserPrivateResponse {
-        if (isPrivate == false) { throw PrivateChangeFailException(ErrorCode.ALREADY_OPEN) } else { userRepository.updateIsPrivateByUsername(isPrivate = false, username = username) }
+        if (isPrivate == false) { throw PrivateChangeFailException(ErrorCode.ALREADY_OPEN) }
+        userRepository.updateIsPrivateByUsername(isPrivate = false, username = username)
         val user: UserEntity = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         return UserPrivateResponse(user.id, user.isPrivate)
