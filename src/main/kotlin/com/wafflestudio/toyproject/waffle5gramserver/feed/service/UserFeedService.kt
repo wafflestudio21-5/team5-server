@@ -9,8 +9,6 @@ interface UserFeedService {
         limit: Int,
     ): List<PostPreview>
 
-    fun getPostDetails(postId: Long): PostDetail
-
     fun loadNewerPosts(
         userId: Long,
         cursor: Long?,

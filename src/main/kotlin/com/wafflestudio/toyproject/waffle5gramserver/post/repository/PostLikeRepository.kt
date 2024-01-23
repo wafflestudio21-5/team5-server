@@ -8,7 +8,5 @@ interface PostLikeRepository : JpaRepository<PostLikeEntity, Long> {
         userId: Long,
     ): PostLikeEntity?
 
-    fun countByPostId(postId: Long): Long
-
     fun deleteAllByPostId(postId: Long)
 }

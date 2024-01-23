@@ -1,15 +1,18 @@
 package com.wafflestudio.toyproject.waffle5gramserver.feed.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotFoundException
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
 class UserFeedServiceImpl(
     private val postRepository: PostRepository,
+    private val postLikeRepository: PostLikeRepository,
+    private val postSaveRepository: PostSaveRepository,
 ) : UserFeedService {
     override fun getUserFeedPreview(
         userId: Long,
@@ -33,11 +36,6 @@ class UserFeedServiceImpl(
         }
     }
 
-    override fun getPostDetails(postId: Long): PostDetail {
-        val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
-        return PostMapper.toPostDetailDTO(post)
-    }
-
     override fun loadNewerPosts(
         userId: Long,
         cursor: Long?,
@@ -45,7 +43,11 @@ class UserFeedServiceImpl(
     ): List<PostDetail> {
         val pageable = PageRequest.of(0, limit)
         val posts = postRepository.findNewerPostsByUserIdAndCursor(userId, cursor, pageable)
-        return posts.map { post -> PostMapper.toPostDetailDTO(post) }
+        return posts.map { post ->
+            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, userId) != null
+            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, userId) != null
+            PostMapper.toPostDetailDTO(post, isLiked, isSaved)
+        }
     }
 
     override fun loadOlderPosts(
@@ -55,6 +57,10 @@ class UserFeedServiceImpl(
     ): List<PostDetail> {
         val pageable = PageRequest.of(0, limit)
         val posts = postRepository.findOlderPostsByUserIdAndCursor(userId, cursor, pageable)
-        return posts.map { post -> PostMapper.toPostDetailDTO(post) }
+        return posts.map { post ->
+            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, userId) != null
+            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, userId) != null
+            PostMapper.toPostDetailDTO(post, isLiked, isSaved)
+        }
     }
 }

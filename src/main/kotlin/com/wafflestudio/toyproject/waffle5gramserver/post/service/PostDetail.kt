@@ -9,6 +9,7 @@ data class PostDetail(
     val media: List<PostMedia>,
     val liked: Boolean,
     val likeCount: Int,
+    val saved: Boolean,
     val commentCount: Int,
     val hideLike: Boolean,
     val createdAt: LocalDateTime,
