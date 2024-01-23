@@ -22,7 +22,10 @@ class PostServiceImpl(
         postId: Long,
         userId: Long,
     ): PostDetail {
-        TODO()
+        val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
+        val postLike = postLikeRepository.findByPostIdAndUserId(postId, userId)
+        val postSave = postSaveRepository.findByPostIdAndUserId(postId, userId)
+        return PostMapper.toPostDetailDTO(post, postLike, postSave)
     }
 
     @Transactional
