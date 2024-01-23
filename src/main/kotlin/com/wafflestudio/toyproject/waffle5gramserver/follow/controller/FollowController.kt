@@ -1,6 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.follow.controller
 
-import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.PrivateException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.UserHimselfException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.service.FollowService
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
@@ -26,10 +25,10 @@ class FollowController(
     fun followNonPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam userId: Long,
-    ) : ResponseEntity<ResultResponse> {
+    ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         val followResponse = followService.postFollowNonPrivateUser(user, userId)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_SUCCESS,followResponse))
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_SUCCESS, followResponse))
     }
 
     // 유저 언팔로우
@@ -37,9 +36,9 @@ class FollowController(
     fun unfollowUser(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam userId: Long,
-    ) : ResponseEntity<ResultResponse> {
+    ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
-        followService.deleteFollowUser(user,userId)
+        followService.deleteFollowUser(user, userId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.UNFOLLOW_SUCCESS))
     }
 
@@ -48,9 +47,9 @@ class FollowController(
     fun deleteFollower(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam followerUserId: Long,
-    ) : ResponseEntity<ResultResponse> {
+    ): ResponseEntity<ResultResponse> {
         if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        followService.removeFollower(user,followerUserId)
+        followService.removeFollower(user, followerUserId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_FOLLOWER_SUCCESS))
     }
 }

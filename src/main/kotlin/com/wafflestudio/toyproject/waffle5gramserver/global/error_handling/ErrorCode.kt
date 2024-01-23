@@ -30,7 +30,7 @@ enum class ErrorCode(
     FOLLOWER_HIMSELF(409, "F002", "Follower user is himself."),
     USER_NOT_PRIVATE(403, "F003", "User account is not private."),
     FOLLOWER_NOT_PRIVATE(403, "F004", "Follower user account is not private."),
-    USER_PRIVATE_NOT_FOLLOWING(403,"F005","User account is private and not following."),
+    USER_PRIVATE_NOT_FOLLOWING(403, "F005", "User account is private and not following."),
 
     // Post Exceptions
     POST_NOT_FOUND(404, "P001", "존재하지 않는 게시물입니다."), // 예시

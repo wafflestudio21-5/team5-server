@@ -18,21 +18,21 @@ class FollowRetrieveServiceImpl(
         authuser: InstagramUser,
         followerUserId: Long
     ) {
-        //팔로워 여부 조회 -> 아직 마구현, 리턴타입은 없음, 에러로 get 결과 제어
+        // 팔로워 여부 조회 -> 아직 마구현, 리턴타입은 없음, 에러로 get 결과 제어
     }
 
     override fun getUserFollow(
         authuser: InstagramUser,
         userId: Long
     ) {
-        //유저 팔로우 여부 조회 -> 아직 마구현, 리턴타입은 없음, 에러로 get 결과 제어
+        // 유저 팔로우 여부 조회 -> 아직 마구현, 리턴타입은 없음, 에러로 get 결과 제어
     }
 
     override fun getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(
         authuser: InstagramUser,
         userId: Long
     ): CommonFollowResponse {
-        //유저의 팔로워 및 현재 유저의 팔로잉 공통 조회 -> 아직 미구현
+        // 유저의 팔로워 및 현재 유저의 팔로잉 공통 조회 -> 아직 미구현
         return CommonFollowResponse(1, mutableListOf())
     }
 
@@ -40,7 +40,7 @@ class FollowRetrieveServiceImpl(
         authuser: InstagramUser,
         userId: Long
     ): DiffFollowResponse {
-        //유저의 팔로워 중 현재 유저의 팔로잉이 아닌 목록 조회 -> 아직 미구현
+        // 유저의 팔로워 중 현재 유저의 팔로잉이 아닌 목록 조회 -> 아직 미구현
         return DiffFollowResponse(1, mutableListOf())
     }
 
@@ -48,15 +48,15 @@ class FollowRetrieveServiceImpl(
         authuser: InstagramUser,
         userId: Long
     ): CommonFollowResponse {
-        //유저의 팔로잉 및 현재 유저의 팔로잉 공통 목록 조회 -> 아직 미구현
-        return CommonFollowResponse(1,mutableListOf())
+        // 유저의 팔로잉 및 현재 유저의 팔로잉 공통 목록 조회 -> 아직 미구현
+        return CommonFollowResponse(1, mutableListOf())
     }
 
     override fun getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(
         authuser: InstagramUser,
         userId: Long
     ): DiffFollowResponse {
-        //유저의 팔로잉 중 현재 유저의 팔로잉이 아닌 목록 조회 -> 아직 미구현
+        // 유저의 팔로잉 중 현재 유저의 팔로잉이 아닌 목록 조회 -> 아직 미구현
         return DiffFollowResponse(1, mutableListOf())
     }
 }

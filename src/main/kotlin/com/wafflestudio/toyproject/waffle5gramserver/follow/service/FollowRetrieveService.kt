@@ -9,11 +9,11 @@ interface FollowRetrieveService {
 
     fun getUserFollow(authuser: InstagramUser, userId: Long)
 
-    fun getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, userId: Long) : CommonFollowResponse
+    fun getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, userId: Long): CommonFollowResponse
 
-    fun getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, userId: Long) : DiffFollowResponse
+    fun getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, userId: Long): DiffFollowResponse
 
-    fun getCommonFollowingBetweenUserAndAuthUser(authuser: InstagramUser, userId: Long) : CommonFollowResponse
+    fun getCommonFollowingBetweenUserAndAuthUser(authuser: InstagramUser, userId: Long): CommonFollowResponse
 
-    fun getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(authuser: InstagramUser, userId: Long) : DiffFollowResponse
+    fun getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(authuser: InstagramUser, userId: Long): DiffFollowResponse
 }

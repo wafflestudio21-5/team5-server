@@ -24,7 +24,7 @@ class FollowRetrieveController(
     fun retrieveFollower(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam followerUserId: Long,
-    ) : ResponseEntity<ResultResponse> {
+    ): ResponseEntity<ResultResponse> {
         if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
         followRetrieveService.getFollower(user, followerUserId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.RETRIEVE_FOLLOWER_SUCCESS))
@@ -35,9 +35,9 @@ class FollowRetrieveController(
     fun retrieveUserFollow(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam userId: Long,
-    ) : ResponseEntity<ResultResponse> {
+    ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        followRetrieveService.getUserFollow(user,userId)
+        followRetrieveService.getUserFollow(user, userId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_USER_FOLLOW_SUCCESS))
     }
 
@@ -46,9 +46,9 @@ class FollowRetrieveController(
     fun retrieveCommonUserBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam userId: Long,
-    ) : ResponseEntity<ResultResponse> {
-        val commonFollowResponse = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(user,userId)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWER_FOLLOWING,commonFollowResponse))
+    ): ResponseEntity<ResultResponse> {
+        val commonFollowResponse = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(user, userId)
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWER_FOLLOWING, commonFollowResponse))
     }
 
     // 유저의 팔로워 중 현재 유저의 팔로잉이 아닌 목록 조회
@@ -56,9 +56,9 @@ class FollowRetrieveController(
     fun retrieveDifferenceBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam userId: Long,
-    ) : ResponseEntity<ResultResponse> {
-        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(user,userId)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWER_FOLLOWING,diffFollowResponse))
+    ): ResponseEntity<ResultResponse> {
+        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(user, userId)
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWER_FOLLOWING, diffFollowResponse))
     }
 
     // 유저의 팔로잉 및 현재 유저의 팔로잉 공통 목록 조회
@@ -66,9 +66,9 @@ class FollowRetrieveController(
     fun retrieveCommonFollowingBetweenUserAndAuthUser(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam userId: Long,
-    ) : ResponseEntity<ResultResponse> {
-        val commonFollowResponse = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(user,userId)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWING_FOLLOWING,commonFollowResponse))
+    ): ResponseEntity<ResultResponse> {
+        val commonFollowResponse = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(user, userId)
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWING_FOLLOWING, commonFollowResponse))
     }
 
     // 유저의 팔로잉 중 현재 유저의 팔로잉이 아닌 목록 조회
@@ -76,8 +76,8 @@ class FollowRetrieveController(
     fun retrieveDifferenceBetweenUsersFollowingAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestParam userId: Long,
-    ) : ResponseEntity<ResultResponse> {
-        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(user,userId)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWING_FOLLOWING,diffFollowResponse))
+    ): ResponseEntity<ResultResponse> {
+        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(user, userId)
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWING_FOLLOWING, diffFollowResponse))
     }
 }
