@@ -6,6 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -15,6 +16,7 @@ class PostServiceImpl(
     private val postRepository: PostRepository,
     private val userRepository: UserRepository,
     private val postLikeRepository: PostLikeRepository,
+    private val postSaveRepository: PostSaveRepository,
 ) : PostService {
     override fun get(
         postId: Long,
@@ -81,6 +83,7 @@ class PostServiceImpl(
             throw PostNotAuthorizedException()
         }
         postLikeRepository.deleteAllByPostId(postId)
+        postSaveRepository.deleteAllbyPostId(postId)
         postRepository.delete(post)
     }
 }
