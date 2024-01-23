@@ -1,6 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.auth
 
 import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtAuthenticationFilter
+import com.wafflestudio.toyproject.waffle5gramserver.auth.service.CustomOAuth2UserService
 import jakarta.servlet.DispatcherType
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
@@ -59,7 +60,8 @@ class SecurityConfig {
     fun devSecureFilterChain(
         http: HttpSecurity,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
-        corsConfigurationSource: CorsConfigurationSource
+        corsConfigurationSource: CorsConfigurationSource,
+        customOAuth2UserService: CustomOAuth2UserService
     ): SecurityFilterChain {
 
         val authorizedHttpMethod = listOf(
@@ -90,6 +92,11 @@ class SecurityConfig {
             formLogin { disable() }
             httpBasic { disable() }
             logout { disable() }
+            oauth2Login {
+                userInfoEndpoint {
+                    userService = customOAuth2UserService
+                }
+            }
         }
         return http.build()
     }

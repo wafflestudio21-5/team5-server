@@ -12,14 +12,16 @@ class UserEntity(
     @Column(unique = true)
     val username: String,
     var name: String,
-    val password: String,
-    val birthday: Date,
-    val isPrivate: Boolean,
-    val pronoun: String?,
+    val password: String? = null,
+    val birthday: Date? = null,
+    val isPrivate: Boolean = false,
+    val pronoun: String? = null,
     @Column(columnDefinition = "TEXT")
-    val profileImageUrl: String?,
+    val profileImageUrl: String? = null,
     @Column(columnDefinition = "TEXT")
-    val bio: String?,
+    val bio: String? = null,
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val contacts: MutableList<ContactEntity> = mutableListOf()
+    val contacts: MutableList<ContactEntity> = mutableListOf(),
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val facebookUsers: MutableList<FacebookUserEntity> = mutableListOf()
 ) : BaseModificationAuditingEntity()

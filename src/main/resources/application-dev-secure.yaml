@@ -12,3 +12,13 @@ spring:
     password: 1234
   jpa:
     defer-datasource-initialization: true
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 1092347005237979
+            client-secret: 9deb6286e7d7c64409e29c58bd7415cc
+            scope:
+              - email
+              - public_profile
