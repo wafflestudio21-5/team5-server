@@ -1,6 +1,18 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.controller
 
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.*
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAlreadyLikedException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAlreadySavedException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostLikeService
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotAuthorizedException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotFoundException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotLikedException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotSavedException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostSaveService
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostService
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.UserNotFoundException
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
