@@ -20,7 +20,7 @@ class UserPrivateController(
     fun toPrivate(
         @AuthenticationPrincipal user: InstagramUser,
     ): ResponseEntity<ResultResponse> {
-        val userPrivateResponse: UserPrivateResponse = userPrivateService.toPrivate(user.username, user.isPrivate)
+        val userPrivateResponse: UserPrivateResponse = userPrivateService.toPrivate(user.id, user.isPrivate)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.TO_PRIVATE_CHANGE_SUCCESS, userPrivateResponse))
     }
 
@@ -28,7 +28,7 @@ class UserPrivateController(
     fun toOpen(
         @AuthenticationPrincipal user: InstagramUser,
     ): ResponseEntity<ResultResponse> {
-        val userPrivateResponse: UserPrivateResponse = userPrivateService.toOpen(user.username, user.isPrivate)
+        val userPrivateResponse: UserPrivateResponse = userPrivateService.toOpen(user.id, user.isPrivate)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.TO_OPEN_CHANGE_SUCCESS, userPrivateResponse))
     }
 }

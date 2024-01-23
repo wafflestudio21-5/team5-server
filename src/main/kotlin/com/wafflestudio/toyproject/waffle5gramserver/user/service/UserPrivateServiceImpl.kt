@@ -6,6 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.dto.UserPrivateRespons
 import com.wafflestudio.toyproject.waffle5gramserver.user.exception.PrivateChangeFailException
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,25 +14,27 @@ class UserPrivateServiceImpl(
     private val userRepository: UserRepository,
 ) : UserPrivateService {
 
+    @Transactional
     override fun toPrivate(
-        username: String,
+        userId: Long,
         isPrivate: Boolean,
     ): UserPrivateResponse {
         if (isPrivate == true) { throw PrivateChangeFailException(ErrorCode.ALREADY_PRIVATE) }
-        userRepository.updateIsPrivateByUsername(isPrivate = true, username = username)
-        val user: UserEntity = userRepository.findByUsername(username)
+        val user: UserEntity = userRepository.findById(userId)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        return UserPrivateResponse(user.id, user.isPrivate)
+        userRepository.updateIsPrivateById(isPrivate = true, Id = userId)
+        return UserPrivateResponse(user.id, true)
     }
 
+    @Transactional
     override fun toOpen(
-        username: String,
+        userId: Long,
         isPrivate: Boolean,
     ): UserPrivateResponse {
         if (isPrivate == false) { throw PrivateChangeFailException(ErrorCode.ALREADY_OPEN) }
-        userRepository.updateIsPrivateByUsername(isPrivate = false, username = username)
-        val user: UserEntity = userRepository.findByUsername(username)
+        val user: UserEntity = userRepository.findById(userId)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        return UserPrivateResponse(user.id, user.isPrivate)
+        userRepository.updateIsPrivateById(isPrivate = false, Id = userId)
+        return UserPrivateResponse(user.id, false)
     }
 }

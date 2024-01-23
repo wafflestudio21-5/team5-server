@@ -58,11 +58,11 @@ constructor(
     @Transactional
     fun `비공개 유저를 공개 유저로 전환`() {
         // 사용할 테스트 데이터 준비
-        val username = testUser1.username
+        val userId = testUser1.id
         val isPrivate = testUser1.isPrivate
 
         // 테스트 실행
-        val userPrivateResponse = userPrivateService.toOpen(username, isPrivate)
+        val userPrivateResponse = userPrivateService.toOpen(userId, isPrivate)
 
         // 검증
         Assertions.assertNotNull(userPrivateResponse)
@@ -73,11 +73,11 @@ constructor(
     @Transactional
     fun `공개 유저를 비공개 유저로 전환`() {
         // 사용할 테스트 데이터 준비
-        val username = testUser2.username
+        val userId = testUser2.id
         val isPrivate = testUser2.isPrivate
 
         // 테스트 실행
-        val userPrivateResponse = userPrivateService.toPrivate(username, isPrivate)
+        val userPrivateResponse = userPrivateService.toPrivate(userId, isPrivate)
 
         // 검증
         Assertions.assertNotNull(userPrivateResponse)

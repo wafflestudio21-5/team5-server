@@ -10,7 +10,7 @@ enum class ResultCode(
     // User Result
     REGISTER_SUCCESS(201, "M001", "회원가입에 성공하였습니다."), // 예시
     TO_PRIVATE_CHANGE_SUCCESS(200, "M002", "공개 계정으로의 전환에 성공하였습니다."),
-    TO_OPEN_CHANGE_SUCCESS(200, "M003", "배공개 계정으로의 전환에 성공하였습니다."),
+    TO_OPEN_CHANGE_SUCCESS(200, "M003", "비공개 계정으로의 전환에 성공하였습니다."),
 
     // Post Result
     GET_MEMBER_POSTS_SUCCESS(200, "P001", "회원의 게시물 조회에 성공하였습니다."),
