@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 
 @Entity(name = "follows")
-class FollowEntity (
+class FollowEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followerUserId")
     val follower: UserEntity,

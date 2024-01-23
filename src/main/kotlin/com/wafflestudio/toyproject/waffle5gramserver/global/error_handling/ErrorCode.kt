@@ -17,7 +17,6 @@ enum class ErrorCode(
     HTTP_MESSAGE_NOT_READABLE(400, "G003", "request message body가 없거나 값 타입이 올바르지 않습니다."),
     METHOD_NOT_ALLOWED(405, "G004", "허용되지 않은 HTTP method입니다."),
     HTTP_HEADER_INVALID(400, "G005", "request header가 유효하지 않습니다."),
-    ENTITY_TYPE_INVALID(500, "G007", "올바르지 않은 entity type 입니다."),
     FILE_CONVERT_FAIL(500, "G008", "변환할 수 없는 파일입니다."),
 
     // User Exceptions
@@ -27,7 +26,11 @@ enum class ErrorCode(
     ALREADY_OPEN(403, "U004", "이미 공개 계정입니다."),
 
     // Follow Exceptions
-    FOLLOW_ALREADY_EXIST(400, "F001", "이미 팔로우한 유저입니다."), // 예시
+    USER_HIMSELF(409, "F001", "User is himself."),
+    FOLLOWER_HIMSELF(409, "F002", "Follower user is himself."),
+    USER_NOT_PRIVATE(403, "F003", "User account is not private."),
+    FOLLOWER_NOT_PRIVATE(403, "F004", "Follower user account is not private."),
+    USER_PRIVATE_NOT_FOLLOWING(403,"F005","User account is private and not following."),
 
     // Post Exceptions
     POST_NOT_FOUND(404, "P001", "존재하지 않는 게시물입니다."), // 예시
