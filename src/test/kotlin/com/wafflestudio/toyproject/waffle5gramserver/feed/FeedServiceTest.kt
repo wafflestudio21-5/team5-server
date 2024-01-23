@@ -43,7 +43,8 @@ class FeedServiceTest @Autowired constructor(
             password = "testPassword",
             birthday = Date(),
             isPrivate = false,
-            pronoun = "testPronoun",
+            gender = "male",
+            isCustomGender = false,
             profileImageUrl = "testProfileImageUrl",
             bio = "testBio"
         )

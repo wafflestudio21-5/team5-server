@@ -57,7 +57,8 @@ constructor(
                 password = "password123",
                 birthday = Date(),
                 isPrivate = false,
-                pronoun = "they/them",
+                gender = "male",
+                isCustomGender = false,
                 profileImageUrl = "https://wafflestudio.com/images/icon_intro.svg",
                 bio = "This is a test bio",
             )

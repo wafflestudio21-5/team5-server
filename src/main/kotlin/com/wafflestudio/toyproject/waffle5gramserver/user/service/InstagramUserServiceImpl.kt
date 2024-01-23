@@ -24,7 +24,8 @@ class InstagramUserServiceImpl(
             isPrivate = userEntity.isPrivate,
             createdAt = userEntity.createdAt,
             modifiedAt = userEntity.modifiedAt,
-            pronoun = userEntity.pronoun,
+            gender = userEntity.gender,
+            isCustomGender = userEntity.isCustomGender,
             profileImageUrl = userEntity.profileImageUrl,
             bio = userEntity.bio
         )

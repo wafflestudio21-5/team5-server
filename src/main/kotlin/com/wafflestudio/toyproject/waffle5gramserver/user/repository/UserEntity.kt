@@ -15,7 +15,8 @@ class UserEntity(
     val password: String,
     val birthday: Date,
     val isPrivate: Boolean,
-    val pronoun: String?,
+    val gender: String?,
+    val isCustomGender: Boolean,
     @Column(columnDefinition = "TEXT")
     val profileImageUrl: String?,
     @Column(columnDefinition = "TEXT")
