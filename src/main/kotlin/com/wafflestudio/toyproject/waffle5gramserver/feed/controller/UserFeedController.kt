@@ -26,16 +26,6 @@ class UserFeedController(
         return ResponseEntity.ok(postPreviews)
     }
 
-    // 2. 특정 게시물의 상세 정보 조회 API
-    @GetMapping("/{postId}")
-    fun getPostDetails(
-        @PathVariable userId: Long,
-        @PathVariable postId: Long,
-    ): ResponseEntity<Any> {
-        val postDetails = userFeedService.getPostDetails(postId)
-        return ResponseEntity.ok(postDetails)
-    }
-
     // 3. 무한 스크롤을 통한 게시물 조회 API
     // 위로 스크롤하여 최신 게시물 로드
     @GetMapping("/newer")

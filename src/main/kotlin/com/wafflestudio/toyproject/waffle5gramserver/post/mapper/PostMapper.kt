@@ -1,9 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.mapper
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAuthor
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
@@ -21,22 +19,22 @@ class PostMapper {
 
         fun toPostDetailDTO(
             entity: PostEntity,
-            postLike: PostLikeEntity?,
-            postSave: PostSaveEntity?,
+            isLiked: Boolean,
+            isSaved: Boolean,
         ): PostDetail {
             return PostDetail(
                 id = entity.id,
                 author =
-                PostAuthor(
-                    id = entity.user.id,
-                    username = entity.user.username,
-                    profileImageUrl = entity.user.profileImageUrl ?: "",
-                ),
+                    PostAuthor(
+                        id = entity.user.id,
+                        username = entity.user.username,
+                        profileImageUrl = entity.user.profileImageUrl ?: "",
+                    ),
                 content = entity.content,
                 media = entity.medias.map { media -> toPostMediaDTO(media) },
-                liked = postLike != null,
+                liked = isLiked,
                 likeCount = entity.likeCount,
-                saved = postSave != null,
+                saved = isSaved,
                 commentCount = entity.comments.size,
                 hideLike = entity.likeCountDisplayed,
                 createdAt = entity.createdAt,

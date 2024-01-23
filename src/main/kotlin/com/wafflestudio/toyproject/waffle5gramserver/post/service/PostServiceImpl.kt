@@ -23,9 +23,9 @@ class PostServiceImpl(
         userId: Long,
     ): PostDetail {
         val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
-        val postLike = postLikeRepository.findByPostIdAndUserId(postId, userId)
-        val postSave = postSaveRepository.findByPostIdAndUserId(postId, userId)
-        return PostMapper.toPostDetailDTO(post, postLike, postSave)
+        val isLiked = postLikeRepository.findByPostIdAndUserId(postId, userId) != null
+        val isSaved = postSaveRepository.findByPostIdAndUserId(postId, userId) != null
+        return PostMapper.toPostDetailDTO(post, isLiked, isSaved)
     }
 
     @Transactional
