@@ -98,8 +98,8 @@ constructor(
         assertEquals(content, postBrief.content)
         // 추가적인 결과값 검증
         // 생성된 게시물이 DB에 저장되었는지 검증
-        //val post = postRepository.findById(postBrief.id).orElseThrow { Exception("Post not found") }
-        //assertEquals(1, post.id)
+        // val post = postRepository.findById(postBrief.id).orElseThrow { Exception("Post not found") }
+        // assertEquals(1, post.id)
     }
 
     @Test
