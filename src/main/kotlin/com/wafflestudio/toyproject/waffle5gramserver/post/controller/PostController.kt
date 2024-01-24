@@ -5,6 +5,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAlreadySav
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostException
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostImageService
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostLikeService
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotAuthorizedException
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotFoundException
@@ -15,6 +16,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostService
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.UserNotFoundException
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,27 +27,35 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/v1")
 class PostController(
     private val postService: PostService,
+    private val postImageService: PostImageService,
     private val postLikeService: PostLikeService,
     private val postSaveService: PostSaveService,
 ) {
-    @PostMapping("/posts")
+    @PostMapping(value = ["/posts"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun createPost(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestBody request: CreatePostRequest,
+        @RequestPart("content") content: String,
+        @RequestPart("hideComments") hideComments: String,
+        @RequestPart("hideLikes") hideLikes: String,
+        @RequestPart("files", required = false) files: List<MultipartFile>,
     ): ResponseEntity<PostBrief> {
+        val imageUrls = postImageService.uploadImages(files)
+
         // 게시물 생성 로직 처리
         val post =
             postService.create(
-                content = request.content,
-                fileUrls = request.files,
-                disableComment = request.hideComments,
-                hideLike = request.hideLikes,
+                content = content,
+                fileUrls = imageUrls,
+                disableComment = hideComments.toBoolean(),
+                hideLike = hideLikes.toBoolean(),
                 userId = user.id,
             )
 
@@ -134,13 +144,6 @@ class PostController(
         }
     }
 }
-
-data class CreatePostRequest(
-    val content: String,
-    val hideComments: Boolean = false,
-    val hideLikes: Boolean = false,
-    val files: List<String>,
-)
 
 data class UpdatePostRequest(
     val content: String,

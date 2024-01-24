@@ -5,6 +5,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.MediaType
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
@@ -16,6 +17,8 @@ class PostServiceImpl(
     private val postRepository: PostRepository,
     private val userRepository: UserRepository,
     private val postLikeRepository: PostLikeRepository,
+    private val postMediaRepository: PostMediaRepository,
+    private val postImageService: PostImageService,
     private val postSaveRepository: PostSaveRepository,
 ) : PostService {
     override fun get(
@@ -85,6 +88,10 @@ class PostServiceImpl(
         if (post.user.id != userId) {
             throw PostNotAuthorizedException()
         }
+
+        val postMediaUrls = postMediaRepository.findAllByPostId(postId)
+        postImageService.deleteImages(postMediaUrls)
+
         postLikeRepository.deleteAllByPostId(postId)
         postSaveRepository.deleteAllByPostId(postId)
         postRepository.delete(post)
