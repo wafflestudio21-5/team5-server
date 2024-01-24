@@ -27,8 +27,6 @@ class FeedServiceTest @Autowired constructor(
             content = content,
             likeCountDisplayed = true,
             commentDisplayed = true,
-            createdAt = LocalDateTime.now().plus(interval),
-            modifiedAt = LocalDateTime.now(),
             user = user
         )
         postRepository.save(post)
@@ -67,8 +65,6 @@ class FeedServiceTest @Autowired constructor(
                 content = "FirstTestContent$i",
                 likeCountDisplayed = true,
                 commentDisplayed = true,
-                createdAt = LocalDateTime.now().plus(i.toLong()),
-                modifiedAt = LocalDateTime.now(),
                 user = testUser1
             )
             postRepository.save(post)
@@ -79,8 +75,6 @@ class FeedServiceTest @Autowired constructor(
                 content = "SecondTestContent$i",
                 likeCountDisplayed = true,
                 commentDisplayed = true,
-                createdAt = LocalDateTime.now().plus(i.toLong()),
-                modifiedAt = LocalDateTime.now(),
                 user = testUser2
             )
             postRepository.save(post)
