@@ -47,7 +47,8 @@ class UserAuthServiceImpl(
             password = passwordEncoder.encode(rawPassword),
             birthday = birthday,
             isPrivate = false,
-            pronoun = null,
+            gender = null,
+            isCustomGender = false,
             profileImageUrl = null,
             bio = null
         )

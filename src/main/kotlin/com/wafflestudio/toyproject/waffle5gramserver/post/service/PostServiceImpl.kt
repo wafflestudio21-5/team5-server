@@ -1,9 +1,13 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.*
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.MediaType
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
-import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -14,12 +18,16 @@ class PostServiceImpl(
     private val postLikeRepository: PostLikeRepository,
     private val postMediaRepository: PostMediaRepository,
     private val postImageService: PostImageService
+    private val postSaveRepository: PostSaveRepository,
 ) : PostService {
     override fun get(
         postId: Long,
         userId: Long,
     ): PostDetail {
-        TODO()
+        val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
+        val isLiked = postLikeRepository.findByPostIdAndUserId(postId, userId) != null
+        val isSaved = postSaveRepository.findByPostIdAndUserId(postId, userId) != null
+        return PostMapper.toPostDetailDTO(post, isLiked, isSaved)
     }
 
     @Transactional
@@ -85,6 +93,7 @@ class PostServiceImpl(
         postImageService.deleteImages(postMediaUrls)
 
         postLikeRepository.deleteAllByPostId(postId)
+        postSaveRepository.deleteAllByPostId(postId)
         postRepository.delete(post)
     }
 }

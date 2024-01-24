@@ -25,10 +25,13 @@ class PostLikeServiceImpl(
         postId: Long,
         userId: Long,
     ) {
-        if (postRepository.findById(postId).isEmpty) throw PostNotFoundException()
+        val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
         if (userRepository.findById(userId).isEmpty) throw UserNotFoundException()
 
         if (exists(postId, userId)) throw PostAlreadyLikedException()
+
+        post.incrementLikeCount()
+        postRepository.save(post)
 
         postLikeRepository.save(
             PostLikeEntity(
@@ -43,7 +46,12 @@ class PostLikeServiceImpl(
         postId: Long,
         userId: Long,
     ) {
+        val post = postRepository.findById(postId).orElseThrow { PostNotFoundException() }
         val like = postLikeRepository.findByPostIdAndUserId(postId, userId) ?: throw PostNotLikedException()
+
+        post.decrementLikeCount()
+        postRepository.save(post)
+
         postLikeRepository.delete(like)
     }
 }

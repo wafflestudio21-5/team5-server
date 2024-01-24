@@ -32,7 +32,8 @@ class DevCommandLineRunner(
                     bio = "My bio $i",
                     isPrivate = false,
                     profileImageUrl = null,
-                    pronoun = null
+                    gender = "male",
+                    isCustomGender = false,
                 )
             )
             Thread.sleep(100)

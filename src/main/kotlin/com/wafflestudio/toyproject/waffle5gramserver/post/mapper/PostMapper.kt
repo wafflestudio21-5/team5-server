@@ -2,10 +2,10 @@ package com.wafflestudio.toyproject.waffle5gramserver.post.mapper
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAuthor
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMedia
-import java.time.LocalDateTime
 
 class PostMapper {
     companion object {
@@ -17,14 +17,24 @@ class PostMapper {
             )
         }
 
-        fun toPostDetailDTO(entity: PostEntity): PostDetail {
+        fun toPostDetailDTO(
+            entity: PostEntity,
+            isLiked: Boolean,
+            isSaved: Boolean,
+        ): PostDetail {
             return PostDetail(
                 id = entity.id,
-                author = entity.user,
+                author =
+                PostAuthor(
+                    id = entity.user.id,
+                    username = entity.user.username,
+                    profileImageUrl = entity.user.profileImageUrl ?: "",
+                ),
                 content = entity.content,
                 media = entity.medias.map { media -> toPostMediaDTO(media) },
-                liked = false,
-                likeCount = 0,
+                liked = isLiked,
+                likeCount = entity.likeCount,
+                saved = isSaved,
                 commentCount = entity.comments.size,
                 hideLike = entity.likeCountDisplayed,
                 createdAt = entity.createdAt,
@@ -38,8 +48,6 @@ class PostMapper {
                 order = media.mediaOrder,
                 url = media.mediaUrl,
                 mediaType = media.mediaType,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
             )
         }
     }

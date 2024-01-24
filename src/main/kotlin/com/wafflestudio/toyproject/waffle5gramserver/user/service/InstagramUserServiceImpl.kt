@@ -14,7 +14,7 @@ class InstagramUserServiceImpl(
             throw UsernameNotFoundException("User not found")
         }
         val userEntity = userRepository.findByUsername(username)
-            ?: throw UsernameNotFoundException("User not found")
+            .orElseThrow { UsernameNotFoundException("User not found") }
         return InstagramUser(
             id = userEntity.id,
             username = userEntity.username,
@@ -24,7 +24,8 @@ class InstagramUserServiceImpl(
             isPrivate = userEntity.isPrivate,
             createdAt = userEntity.createdAt,
             modifiedAt = userEntity.modifiedAt,
-            pronoun = userEntity.pronoun,
+            gender = userEntity.gender,
+            isCustomGender = userEntity.isCustomGender,
             profileImageUrl = userEntity.profileImageUrl,
             bio = userEntity.bio
         )
