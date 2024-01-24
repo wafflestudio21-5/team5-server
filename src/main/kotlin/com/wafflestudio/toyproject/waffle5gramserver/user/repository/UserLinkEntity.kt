@@ -2,7 +2,6 @@ package com.wafflestudio.toyproject.waffle5gramserver.user.repository
 
 import com.wafflestudio.toyproject.waffle5gramserver.BaseAuditingEntity
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
 import jakarta.persistence.FetchType
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne

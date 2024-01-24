@@ -22,5 +22,7 @@ class UserEntity(
     @Column(columnDefinition = "TEXT")
     val bio: String?,
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val contacts: MutableList<ContactEntity> = mutableListOf()
+    val contacts: MutableList<ContactEntity> = mutableListOf(),
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val userLinks: MutableList<UserLinkEntity> = mutableListOf(),
 ) : BaseModificationAuditingEntity()

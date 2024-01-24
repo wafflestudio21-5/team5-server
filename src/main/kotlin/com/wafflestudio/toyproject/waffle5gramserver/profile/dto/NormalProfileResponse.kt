@@ -1,0 +1,18 @@
+package com.wafflestudio.toyproject.waffle5gramserver.profile.dto
+
+import java.util.Date
+
+data class NormalProfileResponse(
+    val userId: Long,
+    val username: String,
+    val name: String,
+    val password: String?,
+    val birthday: Date,
+    val isPrivate: Boolean,
+    val gender: String?,
+    val isCustomGender: Boolean,
+    val profileImageUrl: String?,
+    val bio: String?,
+    val userLinks: MutableList<UserLinkdto>,
+    val contacts: MutableList<ContactResponse>,
+)
