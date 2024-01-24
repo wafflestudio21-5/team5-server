@@ -30,6 +30,7 @@ class FollowRetrieveServiceImpl(
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val follow = followRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, followee.id)
             ?: throw EntityNotFoundException(ErrorCode.NOT_FOLLOWER)
+        follow.equals(follow) //업로드가 안되어서 더미로 넣음
     }
 
     @Transactional
@@ -43,6 +44,7 @@ class FollowRetrieveServiceImpl(
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val follow = followRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, followee.id)
             ?: throw EntityNotFoundException(ErrorCode.USER_NOT_FOLLOW)
+        follow.equals(follow)//업로드가 안되어서 더미로 넣음
     }
 
     @Transactional
