@@ -31,6 +31,9 @@ enum class ErrorCode(
     USER_NOT_PRIVATE(403, "F003", "User account is not private."),
     FOLLOWER_NOT_PRIVATE(403, "F004", "Follower user account is not private."),
     USER_PRIVATE_NOT_FOLLOWING(403, "F005", "User account is private and not following."),
+    ALREADY_FOLLOW(403, "F006", "Already follow."),
+    REQUEST_NOT_FOUND(404, "F007", "Request not found."),
+    REQUEST_ALREADY_SENT(409, "F008", "Request is already sent."),
 
     // Post Exceptions
     POST_NOT_FOUND(404, "P001", "존재하지 않는 게시물입니다."), // 예시

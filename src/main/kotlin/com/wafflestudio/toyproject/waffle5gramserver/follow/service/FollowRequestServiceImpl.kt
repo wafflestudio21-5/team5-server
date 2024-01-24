@@ -2,11 +2,18 @@ package com.wafflestudio.toyproject.waffle5gramserver.follow.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.FollowRequestResponse
 import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.FollowResponse
+import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.PrivateException
+import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowEntity
 import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRepository
+import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRequestEntity
 import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRequestRepository
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.global_exception.EntityAlreadyExistException
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.global_exception.EntityNotFoundException
 import com.wafflestudio.toyproject.waffle5gramserver.user.dto.MiniProfile
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,56 +22,132 @@ class FollowRequestServiceImpl(
     private val followRepository: FollowRepository,
     private val userRepository: UserRepository,
 ) : FollowRequestService {
+    @Transactional
     override fun getFollowRequestToPrivateUser(
         authuser: InstagramUser,
         userId: Long,
     ): FollowRequestResponse {
-        // 비공개 유저 팔로우 요청 조회 -> 아직 미구현
-        return FollowRequestResponse(1, 1, 1)
+        val user = userRepository.findById(userId)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        if (!user.isPrivate) throw PrivateException(ErrorCode.FOLLOWER_NOT_PRIVATE)
+        if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) != null) {
+            throw EntityAlreadyExistException(ErrorCode.ALREADY_FOLLOW)
+        }
+        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId)
+        if (followRequest == null) throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
+        else {
+            return FollowRequestResponse(
+                followRequest.id,
+                followRequest.follower.id,
+                followRequest.followee.id
+            )
+        }
     }
 
+    @Transactional
     override fun postFollowToPrivateUser(
         authuser: InstagramUser,
         userId: Long
     ): FollowRequestResponse {
-        // 비공개 유저 팔로우 요청 -> 아직 미구현
-        return FollowRequestResponse(1, 1, 1)
+        val followee = userRepository.findById(userId)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        if (!followee.isPrivate) throw PrivateException(ErrorCode.FOLLOWER_NOT_PRIVATE)
+        if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) != null) {
+            throw EntityAlreadyExistException(ErrorCode.ALREADY_FOLLOW)
+        }
+        if (followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) != null) {
+            throw EntityAlreadyExistException(ErrorCode.REQUEST_ALREADY_SENT)
+        }
+        val follower = userRepository.findById(authuser.id)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        followRequestRepository.save(
+            FollowRequestEntity(
+                follower = follower,
+                followee = followee,
+            )
+        )
+        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId)
+        return FollowRequestResponse(followRequest!!.id, followRequest.follower.id, followRequest.followee.id)
     }
 
+    @Transactional
     override fun removeFollowRequestToPrivateUser(
         authuser: InstagramUser,
         userId: Long
     ) {
-        // 비공개 유저 팔로우 요청 취소 -> 아직 미구현, 리턴타입은 없음
+        val followee = userRepository.findById(userId)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId)
+        if (followRequest == null) throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
+        else followRequestRepository.delete(followRequest)
     }
 
+    @Transactional
     override fun getFollowRequestUserList(
         authuser: InstagramUser
     ): MutableList<MiniProfile> {
-        // 팔로우 요청 유저 목록 조회 -> 아직 미구현
-        return mutableListOf()
+        val followRequestList = followRequestRepository.findAllByFolloweeUserId(authuser.id)
+        val miniProfileList: MutableList<MiniProfile> = followRequestList.map { it ->
+            MiniProfile(
+                it.follower.id,
+                it.follower.username,
+                it.follower.name,
+                it.follower.profileImageUrl
+            )
+        }.toMutableList()
+        return miniProfileList
     }
 
+    @Transactional
     override fun getUserFollowRequest(
         authuser: InstagramUser,
         followerUserId: Long
     ): FollowRequestResponse {
-        // 유저 팔로우 요청 조회 -> 아직 미구현
-        return FollowRequestResponse(1, 1, 1)
+        val follower = userRepository.findById(followerUserId)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val followRequestResponse = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+        if (followRequestResponse == null) throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
+        else {
+            return FollowRequestResponse(
+                followRequestResponse.id,
+                followRequestResponse.follower.id,
+                followRequestResponse.followee.id,
+            )
+        }
     }
 
+    @Transactional
     override fun postFollowRequest(
         authuser: InstagramUser,
         followerUserId: Long
     ): FollowResponse {
-        // 팔로우 요청 수락 -> 아직 미구현
-        return FollowResponse(1, 1, 1)
+        // error handling
+        val follower = userRepository.findById(followerUserId)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val follow = followRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+        if (follow != null) throw EntityAlreadyExistException(ErrorCode.ALREADY_FOLLOW)
+        val followRequest =
+            followRequestRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+                ?: throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
+        // main logic
+        followRequestRepository.delete(followRequest)
+        val followee = userRepository.findById(authuser.id)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        followRepository.save(FollowEntity(follower, followee))
+        val followResponse = followRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, followee.id)
+        return FollowResponse(followResponse!!.id, followResponse.follower.id, followResponse.followee.id)
     }
 
+    @Transactional
     override fun removeFollowRequest(
         authuser: InstagramUser,
         followerUserId: Long
     ) {
-        // 팔로우 요청 거절 -> 아직 미구현, 리턴타입은 없음
+        val follower = userRepository.findById(followerUserId)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val followRequest =
+            followRequestRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+                ?: throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
+        followRequestRepository.delete(followRequest)
     }
 }
