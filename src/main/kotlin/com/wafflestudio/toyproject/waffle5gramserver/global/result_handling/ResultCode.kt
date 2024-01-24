@@ -16,7 +16,22 @@ enum class ResultCode(
     GET_MEMBER_POSTS_SUCCESS(200, "P001", "회원의 게시물 조회에 성공하였습니다."),
 
     // Follow Result
-    FOLLOW_SUCCESS(201, "F001", "회원 팔로우를 성공하였습니다."),
+    ALREADY_REQUEST_FOLLOW(200, "F001", "Already request follow."),
+    REQUEST_FOLLOW_SUCCESS(201, "F002", "Request follow is successful."),
+    DELETE_FOLLOW_SUCCESS(200, "F003", "Delete follow request is successful."),
+    FOLLOW_REQUEST_LIST_SUCCESS(200, "F004", "Retrieving follow request list is successful."),
+    GET_USER_FOLLOW_REQUEST_SUCCESS(200, "F005", "Retrieving user follow request is successful."),
+    ACCEPT_FOLLOW_REQUEST_SUCCESS(201, "F006", "Accepting follow request is successful."),
+    DECLINE_FOLLOW_REQUEST_SUCCESS(200, "F007", "Declining follow request is successful."),
+    FOLLOW_SUCCESS(201, "F008", "Follow is successful."),
+    UNFOLLOW_SUCCESS(200, "F009", "Unfollow is successful."),
+    DELETE_FOLLOWER_SUCCESS(200, "F010", "Deleting follower is successful."),
+    RETRIEVE_FOLLOWER_SUCCESS(200, "F011", "Retrieving follower is successful."),
+    GET_USER_FOLLOW_SUCCESS(200, "F012", "Retrieving user follow is successful."),
+    GET_COMMON_FOLLOWER_FOLLOWING(200, "F013", "Retrieving common user between user’s follower and auth user’s following is successful."),
+    GET_DIFF_FOLLOWER_FOLLOWING(200, "F014", "Retrieving difference between user’s follower and auth user’s following is successful."),
+    GET_COMMON_FOLLOWING_FOLLOWING(200, "F015", "Retrieving common following between user and auth user is successful."),
+    GET_DIFF_FOLLOWING_FOLLOWING(200, "F016", "Retrieving difference between user’s following and auth user’s following is successful."),
 
     // Feed Result
     FIND_POST_PAGE_SUCCESS(200, "FE001", "게시물 목록 페이지 조회에 성공하였습니다."),
