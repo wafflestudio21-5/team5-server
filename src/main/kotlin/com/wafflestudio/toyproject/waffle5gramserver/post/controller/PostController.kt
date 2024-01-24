@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/api/v1")
 class PostController(
     private val postService: PostService,
-    private val postImageService: PostImageService
+    private val postImageService: PostImageService,
     private val postLikeService: PostLikeService,
     private val postSaveService: PostSaveService,
 ) {

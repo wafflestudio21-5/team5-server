@@ -7,6 +7,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRep
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -17,7 +18,7 @@ class PostServiceImpl(
     private val userRepository: UserRepository,
     private val postLikeRepository: PostLikeRepository,
     private val postMediaRepository: PostMediaRepository,
-    private val postImageService: PostImageService
+    private val postImageService: PostImageService,
     private val postSaveRepository: PostSaveRepository,
 ) : PostService {
     override fun get(
