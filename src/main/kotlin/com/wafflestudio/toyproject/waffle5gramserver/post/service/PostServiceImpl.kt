@@ -57,7 +57,6 @@ class PostServiceImpl(
                     mediaType = MediaType.IMAGE,
                     post = post,
                 )
-            postMediaRepository.save(postMedia)
             post.addMedia(postMedia)
         }
 
