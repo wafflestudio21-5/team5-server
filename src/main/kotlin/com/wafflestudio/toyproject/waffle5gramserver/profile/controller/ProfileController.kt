@@ -30,12 +30,12 @@ class ProfileController(
     private val profileService: ProfileService,
 ) {
     // 유저 프로필 조회
-    @GetMapping("/{userId}")
+    @GetMapping("/{username}")
     fun retrieveUserProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        val fullProfileResponse = profileService.getUserProfile(authuser, userId)
+        val fullProfileResponse = profileService.getUserProfile(authuser, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.RETRIEVE_PROFILE_SUCCESS, fullProfileResponse))
     }
 

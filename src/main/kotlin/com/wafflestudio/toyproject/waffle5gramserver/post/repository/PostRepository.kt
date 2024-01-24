@@ -42,4 +42,9 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
         cursor: Long?,
         pageable: Pageable,
     ): List<PostEntity>
+
+    @Query("SELECT p FROM posts p WHERE p.user.id = :userId")
+    fun findAllByUserId(
+        userId: Long,
+    ): List<PostEntity>
 }

@@ -12,5 +12,5 @@ class UserLinkEntity(
     @JoinColumn(name = "userId", nullable = false)
     val user: UserEntity,
     val link: String,
-    val linkTitle: String,
+    val linkTitle: String?,
 ) : BaseAuditingEntity()

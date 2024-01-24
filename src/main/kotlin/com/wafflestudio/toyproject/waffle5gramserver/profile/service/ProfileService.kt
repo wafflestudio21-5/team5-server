@@ -8,7 +8,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkRespons
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 
 interface ProfileService {
-    fun getUserProfile(authuser: InstagramUser, userId: Long): FullProfileResponse
+    fun getUserProfile(authuser: InstagramUser, username: String): FullProfileResponse
 
     fun uploadProfileImage(authuser: InstagramUser, profileImageUrl: String): ProfileImageResponse
 
