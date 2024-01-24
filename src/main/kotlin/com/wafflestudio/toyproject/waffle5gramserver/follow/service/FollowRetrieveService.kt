@@ -5,15 +5,15 @@ import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.DiffFollowRespon
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 
 interface FollowRetrieveService {
-    fun getFollower(authuser: InstagramUser, followerUserId: Long)
+    fun getFollower(authuser: InstagramUser, followerUsername: String)
 
-    fun getUserFollow(authuser: InstagramUser, userId: Long)
+    fun getUserFollow(authuser: InstagramUser, username: String)
 
-    fun getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, userId: Long): CommonFollowResponse
+    fun getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, username: String): CommonFollowResponse
 
-    fun getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, userId: Long): DiffFollowResponse
+    fun getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(authuser: InstagramUser, username: String): DiffFollowResponse
 
-    fun getCommonFollowingBetweenUserAndAuthUser(authuser: InstagramUser, userId: Long): CommonFollowResponse
+    fun getCommonFollowingBetweenUserAndAuthUser(authuser: InstagramUser, username: String): CommonFollowResponse
 
-    fun getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(authuser: InstagramUser, userId: Long): DiffFollowResponse
+    fun getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(authuser: InstagramUser, username: String): DiffFollowResponse
 }

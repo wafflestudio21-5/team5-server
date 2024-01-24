@@ -21,35 +21,35 @@ class FollowController(
 ) {
 
     // 공개 유저 팔로우
-    @PostMapping("/{userId}/follow")
+    @PostMapping("/{username}/follow")
     fun followNonPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
-        val followResponse = followService.postFollowNonPrivateUser(user, userId)
+        if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
+        val followResponse = followService.postFollowNonPrivateUser(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_SUCCESS, followResponse))
     }
 
     // 유저 언팔로우
-    @DeleteMapping("/{userId}/follow")
+    @DeleteMapping("/{username}/follow")
     fun unfollowUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
-        followService.deleteFollowUser(user, userId)
+        if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
+        followService.deleteFollowUser(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.UNFOLLOW_SUCCESS))
     }
 
     // 팔로워 삭제
-    @DeleteMapping("/{followerUserId}/follower")
+    @DeleteMapping("/{followerUsername}/follower")
     fun deleteFollower(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("followerUserId") followerUserId: Long,
+        @PathVariable("followerUsername") followerUsername: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        followService.removeFollower(user, followerUserId)
+        if (user.username == followerUsername) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
+        followService.removeFollower(user, followerUsername)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_FOLLOWER_SUCCESS))
     }
 }

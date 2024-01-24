@@ -108,7 +108,7 @@ constructor(
     @Transactional
     fun `비공개 유저 팔로우 요청 조회`() {
         createFollowRequest(testUser2, testUser1)
-        val followRequestResponse = followRequestService.getFollowRequestToPrivateUser(testInstaUser2, testUser1.id)
+        val followRequestResponse = followRequestService.getFollowRequestToPrivateUser(testInstaUser2, testUser1.username)
 
         Assertions.assertEquals(followRequestResponse.followerUserId, testInstaUser2.id)
     }
@@ -116,8 +116,8 @@ constructor(
     @Test
     @Transactional
     fun `비공개 유저 팔로우 요청`() {
-        val followRequestResponse = followRequestService.postFollowToPrivateUser(testInstaUser2, testUser1.id)
-        val followRequestResponseSearch = followRequestService.getFollowRequestToPrivateUser(testInstaUser2, testUser1.id)
+        val followRequestResponse = followRequestService.postFollowToPrivateUser(testInstaUser2, testUser1.username)
+        val followRequestResponseSearch = followRequestService.getFollowRequestToPrivateUser(testInstaUser2, testUser1.username)
         Assertions.assertEquals(followRequestResponse, followRequestResponseSearch)
     }
 
@@ -125,7 +125,7 @@ constructor(
     @Transactional
     fun `비공개 유저 팔로우 요청 취소`() {
         createFollowRequest(testUser2, testUser1)
-        followRequestService.removeFollowRequestToPrivateUser(testInstaUser2, testUser1.id)
+        followRequestService.removeFollowRequestToPrivateUser(testInstaUser2, testUser1.username)
         // 정상 작동 확인 완료
     }
 
@@ -143,7 +143,7 @@ constructor(
     @Transactional
     fun `유저 팔로우 요청 조회`() {
         createFollowRequest(testUser2, testUser1)
-        val followRequestResponse = followRequestService.getUserFollowRequest(testInstaUser1, testUser2.id)
+        val followRequestResponse = followRequestService.getUserFollowRequest(testInstaUser1, testUser2.username)
         Assertions.assertEquals(followRequestResponse.followerUserId, testUser2.id)
         Assertions.assertEquals(followRequestResponse.followeeUserId, testUser1.id)
     }
@@ -152,7 +152,7 @@ constructor(
     @Transactional
     fun `팔로우 요청 수락`() {
         createFollowRequest(testUser2, testUser1)
-        val followResponse = followRequestService.postFollowRequest(testInstaUser1, testUser2.id)
+        val followResponse = followRequestService.postFollowRequest(testInstaUser1, testUser2.username)
         Assertions.assertEquals(followRepository.count(), 1)
         Assertions.assertEquals(followRequestRepository.count(), 0)
     }
@@ -161,7 +161,7 @@ constructor(
     @Transactional
     fun `팔로우 요청 거절`() {
         createFollowRequest(testUser2, testUser1)
-        followRequestService.removeFollowRequest(testInstaUser1, testUser2.id)
+        followRequestService.removeFollowRequest(testInstaUser1, testUser2.username)
         Assertions.assertEquals(followRequestRepository.count(), 0)
     }
 }

@@ -108,7 +108,7 @@ constructor(
     @Transactional
     fun `팔로워 여부 조회`() {
         createFollow(testUser1, testUser2)
-        followRetrieveService.getFollower(testInstaUser2, testUser1.id)
+        followRetrieveService.getFollower(testInstaUser2, testUser1.username)
         // 에러가 발생하지 않고 제대로 실행됨
     }
 
@@ -116,7 +116,7 @@ constructor(
     @Transactional
     fun `유저 팔로우 여부 조회`() {
         createFollow(testUser2, testUser1)
-        followRetrieveService.getFollower(testInstaUser1, testUser2.id)
+        followRetrieveService.getFollower(testInstaUser1, testUser2.username)
         // 에러가 발생하지 않고 제대로 실행됨
     }
 
@@ -135,7 +135,7 @@ constructor(
         createFollow(testUser2, testUser4) // 2->4
         createFollow(testUser2, testUser5) // 2->5
 
-        val list = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(testInstaUser2, testUser1.id)
+        val list = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(testInstaUser2, testUser1.username)
         Assertions.assertEquals(list.commonNumber, 2)
     }
 
@@ -154,7 +154,7 @@ constructor(
         createFollow(testUser2, testUser4) // 2->4
         createFollow(testUser2, testUser5) // 2->5
 
-        val list = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(testInstaUser2, testUser1.id)
+        val list = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(testInstaUser2, testUser1.username)
         Assertions.assertEquals(list.diffNumber, 1)
     }
 
@@ -173,7 +173,7 @@ constructor(
         createFollow(testUser2, testUser4) // 2->4
         createFollow(testUser2, testUser5) // 2->5
 
-        val list = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(testInstaUser2, testUser1.id)
+        val list = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(testInstaUser2, testUser1.username)
         Assertions.assertEquals(list.commonNumber, 2)
     }
 
@@ -192,7 +192,7 @@ constructor(
         createFollow(testUser2, testUser4) // 2->4
         createFollow(testUser2, testUser5) // 2->5
 
-        val list = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(testInstaUser2, testUser1.id)
+        val list = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(testInstaUser2, testUser1.username)
         Assertions.assertEquals(list.diffNumber, 1)
     }
 }

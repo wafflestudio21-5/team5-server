@@ -22,38 +22,40 @@ class FollowRetrieveServiceImpl(
     @Transactional
     override fun getFollower(
         authuser: InstagramUser,
-        followerUserId: Long
+        followerUsername: String
     ) {
-        val follower = userRepository.findById(followerUserId)
+        val follower = userRepository.findByUsername(followerUsername)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val followee = userRepository.findById(authuser.id)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val follow = followRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, followee.id)
             ?: throw EntityNotFoundException(ErrorCode.NOT_FOLLOWER)
+        follow.equals(follow) // 업로드가 안되어서 더미로 넣음
     }
 
     @Transactional
     override fun getUserFollow(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ) {
-        val followee = userRepository.findById(userId)
+        val followee = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val follower = userRepository.findById(authuser.id)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val follow = followRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, followee.id)
             ?: throw EntityNotFoundException(ErrorCode.USER_NOT_FOLLOW)
+        follow.equals(follow) // 업로드가 안되어서 더미로 넣음
     }
 
     @Transactional
     override fun getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ): CommonFollowResponse {
-        val user = userRepository.findById(userId)
+        val user = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        if (userId != authuser.id) {
-            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) == null) {
+        if (user.id != authuser.id) {
+            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null) {
                 if (user.isPrivate) {
                     throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
                 }
@@ -84,12 +86,12 @@ class FollowRetrieveServiceImpl(
     @Transactional
     override fun getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(
         authuser: InstagramUser,
-        userId: Long
+        username: String,
     ): DiffFollowResponse {
-        val user = userRepository.findById(userId)
+        val user = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        if (userId != authuser.id) {
-            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) == null) {
+        if (user.id != authuser.id) {
+            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null) {
                 if (user.isPrivate) {
                     throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
                 }
@@ -130,12 +132,12 @@ class FollowRetrieveServiceImpl(
     @Transactional
     override fun getCommonFollowingBetweenUserAndAuthUser(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ): CommonFollowResponse {
-        val user = userRepository.findById(userId)
+        val user = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        if (userId != authuser.id) {
-            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) == null) {
+        if (user.id != authuser.id) {
+            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null) {
                 if (user.isPrivate) {
                     throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
                 }
@@ -166,12 +168,12 @@ class FollowRetrieveServiceImpl(
     @Transactional
     override fun getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ): DiffFollowResponse {
-        val user = userRepository.findById(userId)
+        val user = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        if (userId != authuser.id) {
-            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) == null) {
+        if (user.id != authuser.id) {
+            if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null) {
                 if (user.isPrivate) {
                     throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
                 }

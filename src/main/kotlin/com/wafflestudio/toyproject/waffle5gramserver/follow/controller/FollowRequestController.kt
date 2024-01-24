@@ -22,35 +22,35 @@ class FollowRequestController(
     private val followRequestService: FollowRequestService,
 ) {
     // 비공개 유저 팔로우 요청 조회
-    @GetMapping("/{userId}/follow/request")
+    @GetMapping("/{username}/follow/request")
     fun retrieveFollowRequestToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
-        val followRequestResponse = followRequestService.getFollowRequestToPrivateUser(user, userId)
+        if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
+        val followRequestResponse = followRequestService.getFollowRequestToPrivateUser(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.ALREADY_REQUEST_FOLLOW, followRequestResponse))
     }
 
     // 비공개 유저 팔로우 요청
-    @PostMapping("/{userId}/follow/request")
+    @PostMapping("/{username}/follow/request")
     fun requestFollowToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
-        val followRequestResponse = followRequestService.postFollowToPrivateUser(user, userId)
+        if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
+        val followRequestResponse = followRequestService.postFollowToPrivateUser(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.REQUEST_FOLLOW_SUCCESS, followRequestResponse))
     }
 
     // 비공개 유저 팔로우 요청 취소
-    @DeleteMapping("/{userId}/follow/request")
+    @DeleteMapping("/{username}/follow/request")
     fun deleteFollowRequestToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
-        followRequestService.removeFollowRequestToPrivateUser(user, userId)
+        if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
+        followRequestService.removeFollowRequestToPrivateUser(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_FOLLOW_SUCCESS))
     }
 
@@ -65,38 +65,38 @@ class FollowRequestController(
     }
 
     // 유저 팔로우 요청 조회
-    @GetMapping("/{followerUserId}/request")
+    @GetMapping("/{followerUsername}/request")
     fun retrieveUserFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("followerUserId") followerUserId: Long,
+        @PathVariable("followerUsername") followerUsername: String,
     ): ResponseEntity<ResultResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
-        if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        val followRequestResponse = followRequestService.getUserFollowRequest(user, followerUserId)
+        if (user.username == followerUsername) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
+        val followRequestResponse = followRequestService.getUserFollowRequest(user, followerUsername)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_USER_FOLLOW_REQUEST_SUCCESS, followRequestResponse))
     }
 
     // 팔로우 요청 수락
-    @PostMapping("/{followerUserId}/request")
+    @PostMapping("/{followerUsername}/request")
     fun acceptFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("followerUserId") followerUserId: Long,
+        @PathVariable("followerUsername") followerUsername: String,
     ): ResponseEntity<ResultResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
-        if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        val followResponse = followRequestService.postFollowRequest(user, followerUserId)
+        if (user.username == followerUsername) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
+        val followResponse = followRequestService.postFollowRequest(user, followerUsername)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.ACCEPT_FOLLOW_REQUEST_SUCCESS, followResponse))
     }
 
     // 팔로우 요청 거절
-    @DeleteMapping("/{followerUserId}/request")
+    @DeleteMapping("/{followerUsername}/request")
     fun declineFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("followerUserId") followerUserId: Long,
+        @PathVariable("followerUsername") followerUsername: String,
     ): ResponseEntity<ResultResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
-        if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        followRequestService.removeFollowRequest(user, followerUserId)
+        if (user.username == followerUsername) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
+        followRequestService.removeFollowRequest(user, followerUsername)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DECLINE_FOLLOW_REQUEST_SUCCESS))
     }
 }
