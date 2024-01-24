@@ -10,8 +10,8 @@ data class InstagramUser(
     val id: Long,
     @JvmField val username: String,
     val name: String,
-    @JvmField val password: String,
-    val birthday: Date,
+    @JvmField val password: String?,
+    val birthday: Date?,
     val isPrivate: Boolean,
     val createdAt: LocalDateTime,
     val modifiedAt: LocalDateTime,
@@ -25,7 +25,7 @@ data class InstagramUser(
         return mutableSetOf(SimpleGrantedAuthority("ROLE_USER"))
     }
 
-    override fun getPassword(): String = password
+    override fun getPassword(): String? = password
 
     override fun getUsername(): String = username
 

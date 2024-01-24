@@ -4,14 +4,16 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 class FacebookOAuth2User(
-    private val attributeMap: MutableMap<String, Any>, override var isExistingUser: Boolean
+    private val attributeMap: MutableMap<String, Any>,
+    override var isExistingUser: Boolean,
+    override var username: String
 ) : CustomOAuth2User {
     override fun getProvider(): String {
         return "facebook"
     }
 
     override fun getId(): Long {
-        return attributeMap["id"] as Long
+        return (attributeMap["id"] as String).toLong()
     }
 
     override fun getEmail(): String {

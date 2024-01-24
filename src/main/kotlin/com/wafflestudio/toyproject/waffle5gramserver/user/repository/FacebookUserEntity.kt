@@ -11,8 +11,7 @@ import jakarta.persistence.ManyToOne
 class FacebookUserEntity(
     @Column(unique = true)
     val facebookId: Long,
-    @Column(unique = true)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     val user: UserEntity
 ) : BaseAuditingEntity()
