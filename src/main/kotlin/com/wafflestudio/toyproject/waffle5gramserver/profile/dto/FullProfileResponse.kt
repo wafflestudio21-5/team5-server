@@ -14,7 +14,7 @@ data class FullProfileResponse(
     val profileImageUrl: String?,
     val bio: String?,
     val userLinks: MutableList<UserLinkdto>,
-    val contacts: MutableList<ContactResponse>,
+    val contacts: MutableList<Contactdto>,
     val postNumber: Long,
     val followingNumber: Long,
     val followerNumber: Long,

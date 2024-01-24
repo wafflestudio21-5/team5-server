@@ -14,5 +14,5 @@ data class NormalProfileResponse(
     val profileImageUrl: String?,
     val bio: String?,
     val userLinks: MutableList<UserLinkdto>,
-    val contacts: MutableList<ContactResponse>,
+    val contacts: MutableList<Contactdto>,
 )
