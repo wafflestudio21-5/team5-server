@@ -25,15 +25,15 @@ class FollowRequestServiceImpl(
     @Transactional
     override fun getFollowRequestToPrivateUser(
         authuser: InstagramUser,
-        userId: Long,
+        username: String,
     ): FollowRequestResponse {
-        val user = userRepository.findById(userId)
+        val user = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         if (!user.isPrivate) throw PrivateException(ErrorCode.FOLLOWER_NOT_PRIVATE)
-        if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) != null) {
+        if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) != null) {
             throw EntityAlreadyExistException(ErrorCode.ALREADY_FOLLOW)
         }
-        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId)
+        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id)
         if (followRequest == null) throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
         else {
             return FollowRequestResponse(
@@ -47,15 +47,15 @@ class FollowRequestServiceImpl(
     @Transactional
     override fun postFollowToPrivateUser(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ): FollowRequestResponse {
-        val followee = userRepository.findById(userId)
+        val followee = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         if (!followee.isPrivate) throw PrivateException(ErrorCode.FOLLOWER_NOT_PRIVATE)
-        if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) != null) {
+        if (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, followee.id) != null) {
             throw EntityAlreadyExistException(ErrorCode.ALREADY_FOLLOW)
         }
-        if (followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId) != null) {
+        if (followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, followee.id) != null) {
             throw EntityAlreadyExistException(ErrorCode.REQUEST_ALREADY_SENT)
         }
         val follower = userRepository.findById(authuser.id)
@@ -66,18 +66,18 @@ class FollowRequestServiceImpl(
                 followee = followee,
             )
         )
-        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId)
+        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, followee.id)
         return FollowRequestResponse(followRequest!!.id, followRequest.follower.id, followRequest.followee.id)
     }
 
     @Transactional
     override fun removeFollowRequestToPrivateUser(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ) {
-        val followee = userRepository.findById(userId)
+        val followee = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, userId)
+        val followRequest = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, followee.id)
         if (followRequest == null) throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
         else followRequestRepository.delete(followRequest)
     }
@@ -101,11 +101,11 @@ class FollowRequestServiceImpl(
     @Transactional
     override fun getUserFollowRequest(
         authuser: InstagramUser,
-        followerUserId: Long
+        followerUsername: String
     ): FollowRequestResponse {
-        val follower = userRepository.findById(followerUserId)
+        val follower = userRepository.findByUsername(followerUsername)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        val followRequestResponse = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+        val followRequestResponse = followRequestRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, authuser.id)
         if (followRequestResponse == null) throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
         else {
             return FollowRequestResponse(
@@ -119,15 +119,15 @@ class FollowRequestServiceImpl(
     @Transactional
     override fun postFollowRequest(
         authuser: InstagramUser,
-        followerUserId: Long
+        followerUsername: String,
     ): FollowResponse {
         // error handling
-        val follower = userRepository.findById(followerUserId)
+        val follower = userRepository.findByUsername(followerUsername)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        val follow = followRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+        val follow = followRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, authuser.id)
         if (follow != null) throw EntityAlreadyExistException(ErrorCode.ALREADY_FOLLOW)
         val followRequest =
-            followRequestRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+            followRequestRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, authuser.id)
                 ?: throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
         // main logic
         followRequestRepository.delete(followRequest)
@@ -141,12 +141,12 @@ class FollowRequestServiceImpl(
     @Transactional
     override fun removeFollowRequest(
         authuser: InstagramUser,
-        followerUserId: Long
+        followerUsername: String
     ) {
-        val follower = userRepository.findById(followerUserId)
+        val follower = userRepository.findByUsername(followerUsername)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val followRequest =
-            followRequestRepository.findByFollowerUserIdAndFolloweeUserId(followerUserId, authuser.id)
+            followRequestRepository.findByFollowerUserIdAndFolloweeUserId(follower.id, authuser.id)
                 ?: throw EntityNotFoundException(ErrorCode.REQUEST_NOT_FOUND)
         followRequestRepository.delete(followRequest)
     }

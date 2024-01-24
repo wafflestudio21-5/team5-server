@@ -20,64 +20,64 @@ class FollowRetrieveController(
 ) {
 
     // 팔로워 여부 조회
-    @GetMapping("/{followerUserId}/follower")
+    @GetMapping("/{followerUsername}/follower")
     fun retrieveFollower(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("followerUserId") followerUserId: Long,
+        @PathVariable("followerUsername") followerUsername: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        followRetrieveService.getFollower(user, followerUserId)
+        if (user.username == followerUsername) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
+        followRetrieveService.getFollower(user, followerUsername)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.RETRIEVE_FOLLOWER_SUCCESS))
     }
 
     // 유저 팔로우 여부 조회
-    @GetMapping("/{userId}/follow")
+    @GetMapping("/{username}/follow")
     fun retrieveUserFollow(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        if (user.id == userId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
-        followRetrieveService.getUserFollow(user, userId)
+        if (user.username == username) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
+        followRetrieveService.getUserFollow(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_USER_FOLLOW_SUCCESS))
     }
 
     // 유저의 팔로워 및 현재 유저의 팔로잉 공통 목록 조회
-    @GetMapping("/{userId}/follower/common")
+    @GetMapping("/{username}/follower/common")
     fun retrieveCommonUserBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        val commonFollowResponse = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(user, userId)
+        val commonFollowResponse = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWER_FOLLOWING, commonFollowResponse))
     }
 
     // 유저의 팔로워 중 현재 유저의 팔로잉이 아닌 목록 조회
-    @GetMapping("/{userId}/follower/diff")
+    @GetMapping("/{username}/follower/diff")
     fun retrieveDifferenceBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(user, userId)
+        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWER_FOLLOWING, diffFollowResponse))
     }
 
     // 유저의 팔로잉 및 현재 유저의 팔로잉 공통 목록 조회
-    @GetMapping("/{userId}/following/common")
+    @GetMapping("/{username}/following/common")
     fun retrieveCommonFollowingBetweenUserAndAuthUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        val commonFollowResponse = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(user, userId)
+        val commonFollowResponse = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWING_FOLLOWING, commonFollowResponse))
     }
 
     // 유저의 팔로잉 중 현재 유저의 팔로잉이 아닌 목록 조회
-    @GetMapping("/{userId}/following/diff")
+    @GetMapping("/{username}/following/diff")
     fun retrieveDifferenceBetweenUsersFollowingAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
-        @PathVariable("userId") userId: Long,
+        @PathVariable("username") username: String,
     ): ResponseEntity<ResultResponse> {
-        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(user, userId)
+        val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(user, username)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWING_FOLLOWING, diffFollowResponse))
     }
 }

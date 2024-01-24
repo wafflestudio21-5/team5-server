@@ -23,9 +23,9 @@ class FollowServiceImpl(
     @Transactional
     override fun postFollowNonPrivateUser(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ): FollowResponse {
-        val followee = userRepository.findById(userId)
+        val followee = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         if (followee.isPrivate) throw PrivateException(ErrorCode.USER_NOT_NON_PRIVATE)
         val follower = userRepository.findById(authuser.id)
@@ -40,9 +40,9 @@ class FollowServiceImpl(
     @Transactional
     override fun deleteFollowUser(
         authuser: InstagramUser,
-        userId: Long
+        username: String
     ) {
-        val followee = userRepository.findById(userId)
+        val followee = userRepository.findByUsername(username)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val follower = userRepository.findById(authuser.id)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
@@ -54,9 +54,9 @@ class FollowServiceImpl(
     @Transactional
     override fun removeFollower(
         authuser: InstagramUser,
-        followerUserId: Long
+        followerUsername: String
     ) {
-        val follower = userRepository.findById(followerUserId)
+        val follower = userRepository.findByUsername(followerUsername)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val followee = userRepository.findById(authuser.id)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
