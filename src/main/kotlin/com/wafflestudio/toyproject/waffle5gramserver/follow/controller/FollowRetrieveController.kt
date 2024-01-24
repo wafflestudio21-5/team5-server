@@ -9,6 +9,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -23,7 +24,7 @@ class FollowRetrieveController(
     @GetMapping("/{followerUserId}/follower")
     fun retrieveFollower(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam followerUserId: Long,
+        @PathVariable("followerUserId") followerUserId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
         followRetrieveService.getFollower(user, followerUserId)
@@ -34,7 +35,7 @@ class FollowRetrieveController(
     @GetMapping("/{userId}/follow")
     fun retrieveUserFollow(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
         followRetrieveService.getUserFollow(user, userId)
@@ -45,7 +46,7 @@ class FollowRetrieveController(
     @GetMapping("/{userId}/follower/common")
     fun retrieveCommonUserBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         val commonFollowResponse = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(user, userId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWER_FOLLOWING, commonFollowResponse))
@@ -55,7 +56,7 @@ class FollowRetrieveController(
     @GetMapping("/{userId}/follower/diff")
     fun retrieveDifferenceBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(user, userId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWER_FOLLOWING, diffFollowResponse))
@@ -65,7 +66,7 @@ class FollowRetrieveController(
     @GetMapping("/{userId}/following/common")
     fun retrieveCommonFollowingBetweenUserAndAuthUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         val commonFollowResponse = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(user, userId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWING_FOLLOWING, commonFollowResponse))
@@ -75,7 +76,7 @@ class FollowRetrieveController(
     @GetMapping("/{userId}/following/diff")
     fun retrieveDifferenceBetweenUsersFollowingAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(user, userId)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWING_FOLLOWING, diffFollowResponse))

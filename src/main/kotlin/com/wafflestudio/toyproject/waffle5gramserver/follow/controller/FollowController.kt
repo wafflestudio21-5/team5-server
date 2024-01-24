@@ -9,6 +9,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -24,7 +25,7 @@ class FollowController(
     @PostMapping("/{userId}/follow")
     fun followNonPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         val followResponse = followService.postFollowNonPrivateUser(user, userId)
@@ -35,7 +36,7 @@ class FollowController(
     @DeleteMapping("/{userId}/follow")
     fun unfollowUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         followService.deleteFollowUser(user, userId)
@@ -46,7 +47,7 @@ class FollowController(
     @DeleteMapping("/{followerUserId}/follower")
     fun deleteFollower(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam followerUserId: Long,
+        @PathVariable("followerUserId") followerUserId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
         followService.removeFollower(user, followerUserId)

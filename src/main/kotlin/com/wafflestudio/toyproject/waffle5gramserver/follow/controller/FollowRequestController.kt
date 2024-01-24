@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -25,7 +26,7 @@ class FollowRequestController(
     @GetMapping("/{userId}/follow/request")
     fun retrieveFollowRequestToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         val followRequestResponse = followRequestService.getFollowRequestToPrivateUser(user, userId)
@@ -36,7 +37,7 @@ class FollowRequestController(
     @PostMapping("/{userId}/follow/request")
     fun requestFollowToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         val followRequestResponse = followRequestService.postFollowToPrivateUser(user, userId)
@@ -47,7 +48,7 @@ class FollowRequestController(
     @DeleteMapping("/{userId}/follow/request")
     fun deleteFollowRequestToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam userId: Long,
+        @PathVariable("userId") userId: Long,
     ): ResponseEntity<ResultResponse> {
         if (user.id == userId) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         followRequestService.removeFollowRequestToPrivateUser(user, userId)
@@ -68,7 +69,7 @@ class FollowRequestController(
     @GetMapping("/{followerUserId}/request")
     fun retrieveUserFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam followerUserId: Long,
+        @PathVariable("followerUserId") followerUserId: Long,
     ): ResponseEntity<ResultResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
         if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
@@ -80,7 +81,7 @@ class FollowRequestController(
     @PostMapping("/{followerUserId}/request")
     fun acceptFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam followerUserId: Long,
+        @PathVariable("followerUserId") followerUserId: Long,
     ): ResponseEntity<ResultResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
         if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
@@ -92,7 +93,7 @@ class FollowRequestController(
     @DeleteMapping("/{followerUserId}/request")
     fun declineFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
-        @RequestParam followerUserId: Long,
+        @PathVariable("followerUserId") followerUserId: Long,
     ): ResponseEntity<ResultResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
         if (user.id == followerUserId) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
