@@ -5,9 +5,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.MediaType
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
-import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
