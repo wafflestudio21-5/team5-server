@@ -24,11 +24,11 @@ import kotlin.jvm.optionals.getOrNull
 class CustomOAuth2UserService(
     private val userRepository: UserRepository,
     private val txManager: PlatformTransactionManager
-) : DefaultOAuth2UserService(){
+) : DefaultOAuth2UserService() {
 
     private val txTemplate = TransactionTemplate(txManager)
 
-    override fun loadUser(userRequest: OAuth2UserRequest) : OAuth2User {
+    override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val oAuth2User: CustomOAuth2User = when (userRequest.clientRegistration.registrationId) {
             "facebook" -> FacebookOAuth2User(super.loadUser(userRequest).attributes, true, "")
             else -> throw OAuth2AuthenticationException(

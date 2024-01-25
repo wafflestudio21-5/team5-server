@@ -48,7 +48,8 @@ class TokenRefreshServiceImpl(
     override fun addRefreshTokenCookie(
         response: HttpServletResponse,
         token: String,
-        cookiePath: String) {
+        cookiePath: String
+    ) {
         val refreshTokenCookie = Cookie("refresh_token", token).apply {
             path = cookiePath
             isHttpOnly = true

@@ -21,10 +21,12 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
 
     fun existsByUsername(username: String): Boolean
 
-    @Query("""
+    @Query(
+        """
         SELECT u FROM users u
         JOIN FETCH u.facebookUsers f
         WHERE f.facebookId = :facebookId
-    """)
+    """
+    )
     fun findByFacebookId(facebookId: Long): UserEntity?
 }
