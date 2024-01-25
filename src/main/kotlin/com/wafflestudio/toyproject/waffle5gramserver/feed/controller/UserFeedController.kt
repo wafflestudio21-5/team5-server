@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/account/{userId}/feed")
+@RequestMapping("/api/v1/account/{username}/feed")
 class UserFeedController(
     private val userFeedService: UserFeedService,
 ) {
     // 1. 유저의 게시물 미리보기 조회 API
     @GetMapping("/preview")
     fun getUserFeedPreview(
-        @PathVariable userId: Long,
+        @PathVariable username: String,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "12") limit: Int,
     ): ResponseEntity<List<PostPreview>> {
-        val postPreviews = userFeedService.getUserFeedPreview(userId, cursor, limit)
+        val postPreviews = userFeedService.getUserFeedPreview(username, cursor, limit)
         return ResponseEntity.ok(postPreviews)
     }
 
@@ -30,22 +30,22 @@ class UserFeedController(
     // 위로 스크롤하여 최신 게시물 로드
     @GetMapping("/newer")
     fun loadNewerPosts(
-        @PathVariable userId: Long,
+        @PathVariable username: String,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "10") limit: Int,
     ): ResponseEntity<List<PostDetail>> {
-        val newerPosts = userFeedService.loadNewerPosts(userId, cursor, limit)
+        val newerPosts = userFeedService.loadNewerPosts(username, cursor, limit)
         return ResponseEntity.ok(newerPosts)
     }
 
     // 아래로 스크롤하여 이전 게시물 로드
     @GetMapping("/older")
     fun loadOlderPosts(
-        @PathVariable userId: Long,
+        @PathVariable username: String,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "10") limit: Int,
     ): ResponseEntity<List<PostDetail>> {
-        val olderPosts = userFeedService.loadOlderPosts(userId, cursor, limit)
+        val olderPosts = userFeedService.loadOlderPosts(username, cursor, limit)
         return ResponseEntity.ok(olderPosts)
     }
 }
