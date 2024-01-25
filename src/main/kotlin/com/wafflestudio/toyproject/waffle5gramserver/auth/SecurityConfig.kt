@@ -3,7 +3,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.auth
 import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtAuthenticationFilter
 import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2FailureHandler
 import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2SuccessHandler
-import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2UserService
+import com.wafflestudio.toyproject.waffle5gramserver.auth.service.CustomOAuth2UserService
 import jakarta.servlet.DispatcherType
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean

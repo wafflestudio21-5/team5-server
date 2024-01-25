@@ -10,10 +10,10 @@ import java.util.Date
 @Entity(name = "users")
 class UserEntity(
     @Column(unique = true)
-    val username: String,
+    var username: String,
     var name: String,
     val password: String? = null,
-    val birthday: Date? = null,
+    var birthday: Date? = null,
     val isPrivate: Boolean = false,
     val gender: String? = null,
     val isCustomGender: Boolean = false,

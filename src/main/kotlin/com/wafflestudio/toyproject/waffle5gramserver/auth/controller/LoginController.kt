@@ -1,7 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.auth.controller
 
 import com.wafflestudio.toyproject.waffle5gramserver.auth.dto.LoginRequestDto
-import com.wafflestudio.toyproject.waffle5gramserver.auth.dto.LoginResponseDto
+import com.wafflestudio.toyproject.waffle5gramserver.auth.dto.AccessTokenResponseDto
 import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtUtils
 import com.wafflestudio.toyproject.waffle5gramserver.auth.service.UserAuthService
 import org.springframework.http.HttpHeaders
@@ -20,7 +20,7 @@ class LoginController(
 ) {
 
     @PostMapping("/api/v1/auth/login")
-    fun login(@RequestBody loginRequest: LoginRequestDto): ResponseEntity<LoginResponseDto> {
+    fun login(@RequestBody loginRequest: LoginRequestDto): ResponseEntity<AccessTokenResponseDto> {
         userAuthService.authenticateUsernamePassword(loginRequest.username, loginRequest.password)
         val accessToken = jwtUtils.generateAccessToken(loginRequest.username)
         val refreshToken = jwtUtils.generateRefreshToken(loginRequest.username)
@@ -35,7 +35,7 @@ class LoginController(
     private fun successfulResponse(
         accessToken: String,
         refreshToken: String
-    ): ResponseEntity<LoginResponseDto> {
+    ): ResponseEntity<AccessTokenResponseDto> {
         val headers = HttpHeaders()
         headers.add(
             "Set-Cookie",
@@ -46,7 +46,7 @@ class LoginController(
             SameSite=Strict
             """.trimIndent().replace("\n", "")
         )
-        val body = LoginResponseDto(accessToken)
-        return ResponseEntity<LoginResponseDto>(body, headers, HttpStatus.CREATED)
+        val body = AccessTokenResponseDto(accessToken)
+        return ResponseEntity<AccessTokenResponseDto>(body, headers, HttpStatus.CREATED)
     }
 }
