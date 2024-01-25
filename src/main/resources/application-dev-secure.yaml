@@ -17,8 +17,8 @@ spring:
       client:
         registration:
           facebook:
-            client-id: 348359328040767
-            client-secret: 10f9eafe734151bcee983447aebf7d07
+            client-id: ${OAUTH2_FACEBOOK_CLIENT_ID}
+            client-secret: ${OAUTH2_FACEBOOK_CLIENT_SECRET}
             scope:
               - email
               - public_profile
