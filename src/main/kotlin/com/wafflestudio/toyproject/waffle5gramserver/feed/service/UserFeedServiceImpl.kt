@@ -5,26 +5,30 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRep
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
+import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
 class UserFeedServiceImpl(
+    private val userRepository: UserRepository,
     private val postRepository: PostRepository,
     private val postLikeRepository: PostLikeRepository,
     private val postSaveRepository: PostSaveRepository,
 ) : UserFeedService {
     override fun getUserFeedPreview(
-        userId: Long,
+        username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostPreview> {
+        val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
+
         val pageable = PageRequest.of(0, limit)
         val posts =
             if (cursor == null) {
-                postRepository.findLatestPostsByUserId(userId, pageable)
+                postRepository.findLatestPostsByUserId(user.id, pageable)
             } else {
-                postRepository.findPostsByUserIdAndCursor(userId, cursor, pageable)
+                postRepository.findPostsByUserIdAndCursor(user.id, cursor, pageable)
             }
 
         return posts.map { post ->
@@ -37,29 +41,31 @@ class UserFeedServiceImpl(
     }
 
     override fun loadNewerPosts(
-        userId: Long,
+        username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostDetail> {
+        val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
         val pageable = PageRequest.of(0, limit)
-        val posts = postRepository.findNewerPostsByUserIdAndCursor(userId, cursor, pageable)
+        val posts = postRepository.findNewerPostsByUserIdAndCursor(user.id, cursor, pageable)
         return posts.map { post ->
-            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, userId) != null
-            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, userId) != null
+            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
+            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null
             PostMapper.toPostDetailDTO(post, isLiked, isSaved)
         }
     }
 
     override fun loadOlderPosts(
-        userId: Long,
+        username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostDetail> {
+        val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
         val pageable = PageRequest.of(0, limit)
-        val posts = postRepository.findOlderPostsByUserIdAndCursor(userId, cursor, pageable)
+        val posts = postRepository.findOlderPostsByUserIdAndCursor(user.id, cursor, pageable)
         return posts.map { post ->
-            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, userId) != null
-            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, userId) != null
+            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
+            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null
             PostMapper.toPostDetailDTO(post, isLiked, isSaved)
         }
     }

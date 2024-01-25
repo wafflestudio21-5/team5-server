@@ -11,37 +11,37 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/account/{userId}/saved-feed")
+@RequestMapping("/api/v1/account/{username}/saved-feed")
 class SavedFeedController(
     private val savedFeedService: SavedFeedService,
 ) {
     @GetMapping("/preview")
     fun getSavedFeedPreview(
-        @PathVariable userId: Long,
+        @PathVariable username: String,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "12") limit: Int,
     ): ResponseEntity<List<PostPreview>> {
-        val postPreviews = savedFeedService.getSavedFeedPreview(userId, cursor, limit)
+        val postPreviews = savedFeedService.getSavedFeedPreview(username, cursor, limit)
         return ResponseEntity.ok(postPreviews)
     }
 
     @GetMapping("/newer")
     fun loadNewerPosts(
-        @PathVariable userId: Long,
+        @PathVariable username: String,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "10") limit: Int,
     ): ResponseEntity<List<PostDetail>> {
-        val newerPosts = savedFeedService.loadNewerPosts(userId, cursor, limit)
+        val newerPosts = savedFeedService.loadNewerPosts(username, cursor, limit)
         return ResponseEntity.ok(newerPosts)
     }
 
     @GetMapping("/older")
     fun loadOlderPosts(
-        @PathVariable userId: Long,
+        @PathVariable username: String,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "10") limit: Int,
     ): ResponseEntity<List<PostDetail>> {
-        val olderPosts = savedFeedService.loadOlderPosts(userId, cursor, limit)
+        val olderPosts = savedFeedService.loadOlderPosts(username, cursor, limit)
         return ResponseEntity.ok(olderPosts)
     }
 }
