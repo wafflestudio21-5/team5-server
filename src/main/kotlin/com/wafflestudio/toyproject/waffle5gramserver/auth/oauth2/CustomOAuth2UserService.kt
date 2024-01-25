@@ -6,6 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserReposit
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException
+import org.springframework.security.oauth2.core.OAuth2Error
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
@@ -22,7 +23,10 @@ class CustomOAuth2UserService(
     override fun loadUser(userRequest: OAuth2UserRequest) : OAuth2User {
         val oAuth2User: CustomOAuth2User = when (userRequest.clientRegistration.registrationId) {
             "facebook" -> FacebookOAuth2User(super.loadUser(userRequest).attributes, true, "")
-            else -> throw OAuth2AuthenticationException("Invalid OAuth2 Provider")
+            else -> throw OAuth2AuthenticationException(
+                OAuth2Error("facebook"),
+                "Invalid OAuth2 Provider"
+            )
         }
         val userEntity = userRepository.findByFacebookId(oAuth2User.getId())
         if (userEntity == null) {

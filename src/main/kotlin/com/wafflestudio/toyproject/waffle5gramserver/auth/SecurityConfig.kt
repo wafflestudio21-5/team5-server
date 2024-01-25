@@ -1,6 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.auth
 
 import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtAuthenticationFilter
+import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2FailureHandler
 import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2SuccessHandler
 import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2UserService
 import jakarta.servlet.DispatcherType
@@ -63,7 +64,8 @@ class SecurityConfig {
         jwtAuthenticationFilter: JwtAuthenticationFilter,
         corsConfigurationSource: CorsConfigurationSource,
         customOAuth2UserService: CustomOAuth2UserService,
-        customOAuth2SuccessHandler: CustomOAuth2SuccessHandler
+        customOAuth2SuccessHandler: CustomOAuth2SuccessHandler,
+        customOAuth2FailureHandler: CustomOAuth2FailureHandler
     ): SecurityFilterChain {
 
         val authorizedHttpMethod = listOf(
@@ -99,6 +101,7 @@ class SecurityConfig {
                     userService = customOAuth2UserService
                 }
                 authenticationSuccessHandler = customOAuth2SuccessHandler
+                authenticationFailureHandler = customOAuth2FailureHandler
             }
         }
         return http.build()
