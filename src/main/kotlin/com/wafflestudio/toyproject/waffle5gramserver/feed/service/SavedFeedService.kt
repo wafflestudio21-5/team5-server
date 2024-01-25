@@ -4,19 +4,19 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 
 interface SavedFeedService {
     fun getSavedFeedPreview(
-        userId: Long,
+        username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostPreview>
 
     fun loadNewerPosts(
-        userId: Long,
+        username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostDetail>
 
     fun loadOlderPosts(
-        userId: Long,
+        username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostDetail>
