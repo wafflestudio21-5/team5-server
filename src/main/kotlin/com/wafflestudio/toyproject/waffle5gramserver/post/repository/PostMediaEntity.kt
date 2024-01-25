@@ -25,5 +25,5 @@ class PostMediaEntity(
     var mediaOrder: Int = 0,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
-    var post: PostEntity,
+    var post: PostEntity
 )

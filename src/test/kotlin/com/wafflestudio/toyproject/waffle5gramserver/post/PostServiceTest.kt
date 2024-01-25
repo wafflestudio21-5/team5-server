@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import java.time.LocalDateTime
 import java.util.Date
 
 @Transactional
@@ -74,8 +73,6 @@ constructor(
                 content = content,
                 likeCountDisplayed = true,
                 commentDisplayed = true,
-                createdAt = LocalDateTime.now(),
-                modifiedAt = LocalDateTime.now(),
                 user = user,
             )
         return postRepository.save(post)
@@ -117,12 +114,9 @@ constructor(
     fun `throw exception when user tries to update a post they don't own`() {
         val post =
             PostEntity(
-                id = 1L,
                 content = "Original Content",
                 likeCountDisplayed = true,
                 commentDisplayed = true,
-                createdAt = LocalDateTime.now(),
-                modifiedAt = LocalDateTime.now(),
                 user = testUser1,
             )
         postRepository.save(post)

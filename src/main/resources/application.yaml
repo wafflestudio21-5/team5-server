@@ -8,3 +8,4 @@ spring:
     - application-dev.yaml
     - application-prod.yaml
     - application-dev-secure.yaml
+    - application-credentials.yaml

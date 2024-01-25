@@ -1,0 +1,46 @@
+### 로그인
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
+
+### 이미지 업로드
+POST http://localhost:8080/api/v1/images
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+{
+  "file": "test.jpg"
+}
+
+### 이미지 업로드 with post
+POST http://localhost:8080/api/v1/posts
+Authorization: Bearer {token}
+Content-Type: multipart/form-data; boundary=--------------------------XYZ
+
+--------------------------XYZ
+Content-Disposition: form-data; name="content"
+
+This is the content of the post.
+--------------------------XYZ
+Content-Disposition: form-data; name="hideComments"
+
+false
+--------------------------XYZ
+Content-Disposition: form-data; name="hideLikes"
+
+false
+--------------------------XYZ
+Content-Disposition: form-data; name="files"; filename="file1.jpg"
+Content-Type: image/jpeg
+
+<@Base64 encoded content of file1.jpg@>
+--------------------------XYZ
+Content-Disposition: form-data; name="files"; filename="file2.png"
+Content-Type: image/png
+
+<@Base64 encoded content of file2.png@>
+--------------------------XYZ--
