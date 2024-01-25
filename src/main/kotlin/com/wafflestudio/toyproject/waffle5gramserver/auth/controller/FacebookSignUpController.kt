@@ -4,7 +4,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.auth.dto.AccessTokenRespons
 import com.wafflestudio.toyproject.waffle5gramserver.auth.dto.FacebookSignUpRequestDto
 import com.wafflestudio.toyproject.waffle5gramserver.auth.service.CustomOAuth2UserService
 import com.wafflestudio.toyproject.waffle5gramserver.auth.service.TokenRefreshService
-import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
@@ -34,12 +33,7 @@ class FacebookSignUpController(
         )
         val newAccessToken = tokenRefreshService.generateNewAccessToken(newUsername)
         val newRefreshToken = tokenRefreshService.generateNewRefreshToken(newUsername)
-        val newRefreshTokenCookie = Cookie("refresh_token", newRefreshToken).apply {
-            path = "/api/v1/auth/refresh_token"
-            isHttpOnly = true
-            setAttribute("SameSite", "Strict")
-        }
-        response.addCookie(newRefreshTokenCookie)
+        tokenRefreshService.addRefreshTokenCookie(response, newRefreshToken, "/api/v1/auth/refresh_token")
         return ResponseEntity<AccessTokenResponseDto>(
             AccessTokenResponseDto(accessToken = newAccessToken),
             HttpStatus.CREATED

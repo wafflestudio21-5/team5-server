@@ -4,7 +4,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtUtils
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.BusinessException
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
 import io.jsonwebtoken.JwtException
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Service
 
 @Service
@@ -41,5 +43,17 @@ class TokenRefreshServiceImpl(
         } catch (ex: JwtException) {
             throw BusinessException(ErrorCode.TOKEN_GENERATION_FAIL)
         }
+    }
+
+    override fun addRefreshTokenCookie(
+        response: HttpServletResponse,
+        token: String,
+        cookiePath: String) {
+        val refreshTokenCookie = Cookie("refresh_token", token).apply {
+            path = cookiePath
+            isHttpOnly = true
+            setAttribute("SameSite", "Strict")
+        }
+        response.addCookie(refreshTokenCookie)
     }
 }
