@@ -6,7 +6,6 @@ data class NormalProfileResponse(
     val userId: Long,
     val username: String,
     val name: String,
-    val password: String?,
     val birthday: Date,
     val isPrivate: Boolean,
     val gender: String?,
