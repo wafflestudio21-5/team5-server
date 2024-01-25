@@ -1,11 +1,15 @@
 package com.wafflestudio.toyproject.waffle5gramserver.feed.service
 
+import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.PrivateException
+import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRepository
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
@@ -13,16 +17,20 @@ import org.springframework.stereotype.Service
 class UserFeedServiceImpl(
     private val userRepository: UserRepository,
     private val postRepository: PostRepository,
+    private val followRepository: FollowRepository,
     private val postLikeRepository: PostLikeRepository,
     private val postSaveRepository: PostSaveRepository,
 ) : UserFeedService {
     override fun getUserFeedPreview(
+        authuser: InstagramUser,
         username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostPreview> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
-
+        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
+            throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
+        }
         val pageable = PageRequest.of(0, limit)
         val posts =
             if (cursor == null) {
@@ -41,11 +49,15 @@ class UserFeedServiceImpl(
     }
 
     override fun loadNewerPosts(
+        authuser: InstagramUser,
         username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostDetail> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
+        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
+            throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
+        }
         val pageable = PageRequest.of(0, limit)
         val posts = postRepository.findNewerPostsByUserIdAndCursor(user.id, cursor, pageable)
         return posts.map { post ->
@@ -56,11 +68,15 @@ class UserFeedServiceImpl(
     }
 
     override fun loadOlderPosts(
+        authuser: InstagramUser,
         username: String,
         cursor: Long?,
         limit: Int,
     ): List<PostDetail> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
+        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
+            throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
+        }
         val pageable = PageRequest.of(0, limit)
         val posts = postRepository.findOlderPostsByUserIdAndCursor(user.id, cursor, pageable)
         return posts.map { post ->
