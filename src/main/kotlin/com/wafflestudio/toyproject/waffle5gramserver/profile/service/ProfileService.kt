@@ -6,11 +6,12 @@ import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.ProfileImageRes
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkResponse
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import org.springframework.web.multipart.MultipartFile
 
 interface ProfileService {
     fun getUserProfile(authuser: InstagramUser, username: String): FullProfileResponse
 
-    fun uploadProfileImage(authuser: InstagramUser, profileImageUrl: String): ProfileImageResponse
+    fun uploadProfileImage(authuser: InstagramUser, profileImage: MultipartFile): ProfileImageResponse
 
     fun deleteProfileImage(authuser: InstagramUser): ProfileImageResponse
 

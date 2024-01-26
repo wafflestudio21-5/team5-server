@@ -5,7 +5,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.Resu
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.BioRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.GenderRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.NameRequest
-import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.ProfileImageRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UsernameRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.service.ProfileService
@@ -21,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @Validated
@@ -43,10 +44,9 @@ class ProfileController(
     @PostMapping("/profileEdit/image")
     fun postProfileImage(
         @AuthenticationPrincipal authuser: InstagramUser,
-        // TODO
-        @Valid @RequestBody profileImageRequest: ProfileImageRequest,
+        @RequestPart("file") profileImage: MultipartFile,
     ): ResponseEntity<ResultResponse> {
-        val profileImageResponse = profileService.uploadProfileImage(authuser, profileImageRequest.profileImageUrl)
+        val profileImageResponse = profileService.uploadProfileImage(authuser, profileImage)
         return ResponseEntity.ok(ResultResponse.of(ResultCode.POST_PROFILE_IMAGE_SUCCESS, profileImageResponse))
     }
 

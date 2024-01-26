@@ -17,6 +17,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserReposit
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class ProfileServiceImpl(
@@ -46,7 +47,7 @@ class ProfileServiceImpl(
     @Transactional
     override fun uploadProfileImage(
         authuser: InstagramUser,
-        profileImageUrl: String
+        profileImage: MultipartFile
     ): ProfileImageResponse {
         TODO("Not yet implemented")
     }
