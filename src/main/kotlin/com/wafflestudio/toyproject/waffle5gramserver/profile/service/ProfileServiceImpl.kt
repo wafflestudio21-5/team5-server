@@ -65,7 +65,19 @@ class ProfileServiceImpl(
     override fun deleteProfileImage(
         authuser: InstagramUser
     ): ProfileImageResponse {
-        TODO("Not yet implemented")
+        val user = userRepository.findById(authuser.id)
+            .orElseThrow{ EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val deprecatedUrl = user.profileImageUrl
+        try {
+            if (deprecatedUrl != null) {
+                s3ImageUpload.deleteImage(deprecatedUrl)
+            }
+            val profileImageUrl = ""
+            userRepository.updateProfileImageUrlById(authuser.id, profileImageUrl)
+            return ProfileImageResponse(profileImageUrl)
+        } catch (e: Exception) {
+            throw ProfileEditException(ErrorCode.S3_ERROR)
+        }
     }
 
     @Transactional
