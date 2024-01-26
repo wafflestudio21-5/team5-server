@@ -152,9 +152,9 @@ constructor(
     @Transactional
     fun `팔로우 요청 수락`() {
         createFollowRequest(testUser2, testUser1)
-        // val followResponse = followRequestService.postFollowRequest(testInstaUser1, testUser2.username)
-        // Assertions.assertEquals(followRepository.count(), 1)
-        // Assertions.assertEquals(followRequestRepository.count(), 0)
+        val followResponse = followRequestService.postFollowRequest(testInstaUser1, testUser2.username)
+        Assertions.assertEquals(followRepository.count(), 1)
+        Assertions.assertEquals(followRequestRepository.count(), 0)
     }
 
     @Test

@@ -56,7 +56,7 @@ class TokenRefreshServiceImpl(
             path = cookiePath
             isHttpOnly = true
             secure = jwtProperties.refreshTokenCookieSecure
-            maxAge = jwtProperties.ttlMinutesRefreshToken as Int
+            maxAge = jwtProperties.ttlMinutesRefreshToken.toInt()
             setAttribute("SameSite", "Strict")
         }
         response.addCookie(refreshTokenCookie)
