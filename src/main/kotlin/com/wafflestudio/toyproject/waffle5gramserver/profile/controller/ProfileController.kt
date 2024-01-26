@@ -43,6 +43,7 @@ class ProfileController(
     @PostMapping("/profileEdit/image")
     fun postProfileImage(
         @AuthenticationPrincipal authuser: InstagramUser,
+        // TODO
         @Valid @RequestBody profileImageRequest: ProfileImageRequest,
     ): ResponseEntity<ResultResponse> {
         val profileImageResponse = profileService.uploadProfileImage(authuser, profileImageRequest.profileImageUrl)
