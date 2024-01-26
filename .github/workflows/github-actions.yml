@@ -85,12 +85,6 @@ jobs:
           script: |
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/waffle5gram
-            sudo docker run -d \
-            -e SPRING_PROFILE=${{ vars.PROFILE }} \
-            -e JWT_ACCESS_TOKEN_SECRET_KEY=${{ secrets.JWT_ACCESS_TOKEN_SECRET_KEY }} \
-            -e JWT_ACCESS_TOKEN_SECRET_KEY=${{ secrets.JWT_REFRESH_TOKEN_SECRET_KEY }} \
-            -e OAUTH2_FACEBOOK_CLIENT_ID=${{ secrets.OAUTH2_FACEBOOK_CLIENT_ID }} \
-            -e OAUTH2_FACEBOOK_CLIENT_SECRET=${{ secrets.OAUTH2_FACEBOOK_CLIENT_SECRET }} \
-            -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
+            sudo docker run -d -e SPRING_PROFILE=${{ vars.PROFILE }} -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
             sudo docker image prune -f
 
