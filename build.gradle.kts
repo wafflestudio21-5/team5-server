@@ -55,6 +55,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    environment("JWT_ACCESS_TOKEN_SECRET_KEY", "lWClWM3WU2fK/ieYRWrkDZ3rlEuXO4SlwBBC33oyDZo=")
+    environment("JWT_REFRESH_TOKEN_SECRET_KEY", "WsLO6UkQ5XcDLp+gY1Usgamkhr5IBRI7ZBHgckYwCCA=")
+    environment("OAUTH2_FACEBOOK_CLIENT_ID", "348359328040767")
+    environment("OAUTH2_FACEBOOK_CLIENT_SECRET", "10f9eafe734151bcee983447aebf7d07")
 }
 
 tasks.getByName("jar") {

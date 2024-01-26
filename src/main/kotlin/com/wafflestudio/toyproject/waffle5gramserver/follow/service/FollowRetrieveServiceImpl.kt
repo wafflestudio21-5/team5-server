@@ -65,7 +65,7 @@ class FollowRetrieveServiceImpl(
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val usersfollowerEntity = followRepository.findAllByFolloweeUserId(user.id)
         val usernowsfollowingEntity = followRepository.findAllByFollowerUserId(usernow.id)
-        if (usersfollowerEntity == null || usernowsfollowingEntity == null) {
+        if (usersfollowerEntity.isEmpty() || usernowsfollowingEntity.isEmpty()) {
             return CommonFollowResponse(0, mutableListOf())
         } else {
             val usersfollower = usersfollowerEntity.map { it.follower }
