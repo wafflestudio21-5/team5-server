@@ -10,19 +10,21 @@ import java.util.Date
 @Entity(name = "users")
 class UserEntity(
     @Column(unique = true)
-    val username: String,
+    var username: String,
     var name: String,
-    val password: String,
-    val birthday: Date,
-    val isPrivate: Boolean,
-    val gender: String?,
-    val isCustomGender: Boolean,
+    var password: String? = null,
+    var birthday: Date? = null,
+    var isPrivate: Boolean = false,
+    var gender: String? = null,
+    var isCustomGender: Boolean = false,
     @Column(columnDefinition = "TEXT")
-    val profileImageUrl: String?,
+    var profileImageUrl: String? = null,
     @Column(columnDefinition = "TEXT")
-    val bio: String?,
+    var bio: String? = null,
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val contacts: MutableList<ContactEntity> = mutableListOf(),
+    var contacts: MutableList<ContactEntity> = mutableListOf(),
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val facebookUsers: MutableList<FacebookUserEntity> = mutableListOf(),
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val userLinks: MutableList<UserLinkEntity> = mutableListOf(),
 ) : BaseModificationAuditingEntity()

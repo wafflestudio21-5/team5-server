@@ -27,6 +27,11 @@ enum class ErrorCode(
     USERNAME_ALREADY_EXIST(409, "U005", "Username already exists."),
     LINK_NOT_FOUND(404, "U006", "Link not found."),
 
+    // Controller-level Authentication Exceptions
+    REFRESH_TOKEN_NOT_FOUND(400, "A001", "refresh token이 쿠키에 존재하지 않습니다."),
+    REFRESH_TOKEN_INVALID(401, "A002", "유효하지 않은 refresh token입니다."),
+    TOKEN_GENERATION_FAIL(500, "A003", "토큰 재발급에 실패하였습니다."),
+
     // Follow Exceptions
     USER_HIMSELF(409, "F001", "User is himself."),
     FOLLOWER_HIMSELF(409, "F002", "Follower user is himself."),

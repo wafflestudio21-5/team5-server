@@ -28,10 +28,29 @@ jobs:
       - name: set credentials
         uses: microsoft/variable-substitution@v1
         with:
+          files: ./src/main/resources/application-prod.yaml
+        env:
+          spring.datasource.url: jdbc:mysql://${{ secrets.AWS_RDS_ENDPOINT }}:3306/waffle5gram?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+          spring.datasource.username: ${{ secrets.AWS_RDS_USERNAME }}
+          spring.datasource.password: ${{ secrets.AWS_RDS_PASSWORD }}
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_S3_ACCESS_KEY }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_S3_SECRET_KEY }}
+          spring.security.oauth2.client.registration.facebook.client-id: ${{ secrets.OAUTH2_FACEBOOK_CLIENT_ID }}
+          spring.security.oauth2.client.registration.facebook.client-secret: ${{ secrets.OAUTH2_FACEBOOK_CLIENT_SECRET }}
+          jwt.accessTokenSecretKey: ${{ secrets.JWT_ACCESS_TOKEN_SECRET_KEY }}
+          jwt.refreshTokenSecretKey: ${{ secrets.JWT_REFRESH_TOKEN_SECRET_KEY }}
+
+      - name: set credentials (dev-secure)
+        uses: microsoft/variable-substitution@v1
+        with:
           files: ./src/main/resources/application-dev-secure.yaml
         env:
           cloud.aws.credentials.accessKey: ${{ secrets.AWS_S3_ACCESS_KEY }}
           cloud.aws.credentials.secretKey: ${{ secrets.AWS_S3_SECRET_KEY }}
+          spring.security.oauth2.client.registration.facebook.client-id: ${{ secrets.OAUTH2_FACEBOOK_CLIENT_ID }}
+          spring.security.oauth2.client.registration.facebook.client-secret: ${{ secrets.OAUTH2_FACEBOOK_CLIENT_SECRET }}
+          jwt.accessTokenSecretKey: ${{ secrets.JWT_ACCESS_TOKEN_SECRET_KEY }}
+          jwt.refreshTokenSecretKey: ${{ secrets.JWT_REFRESH_TOKEN_SECRET_KEY }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -66,6 +85,12 @@ jobs:
           script: |
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/waffle5gram
-            sudo docker run -d -e SPRING_PROFILE=${{ vars.PROFILE }} -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
+            sudo docker run -d \
+            -e SPRING_PROFILE=${{ vars.PROFILE }} \
+            -e JWT_ACCESS_TOKEN_SECRET_KEY=${{ secrets.JWT_ACCESS_TOKEN_SECRET_KEY }} \
+            -e JWT_ACCESS_TOKEN_SECRET_KEY=${{ secrets.JWT_REFRESH_TOKEN_SECRET_KEY }} \
+            -e OAUTH2_FACEBOOK_CLIENT_ID=${{ secrets.OAUTH2_FACEBOOK_CLIENT_ID }} \
+            -e OAUTH2_FACEBOOK_CLIENT_SECRET=${{ secrets.OAUTH2_FACEBOOK_CLIENT_SECRET }} \
+            -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/waffle5gram
             sudo docker image prune -f
 

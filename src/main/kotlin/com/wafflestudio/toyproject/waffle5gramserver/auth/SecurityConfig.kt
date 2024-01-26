@@ -1,6 +1,9 @@
 package com.wafflestudio.toyproject.waffle5gramserver.auth
 
 import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtAuthenticationFilter
+import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2FailureHandler
+import com.wafflestudio.toyproject.waffle5gramserver.auth.oauth2.CustomOAuth2SuccessHandler
+import com.wafflestudio.toyproject.waffle5gramserver.auth.service.CustomOAuth2UserService
 import jakarta.servlet.DispatcherType
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
@@ -54,12 +57,15 @@ class SecurityConfig {
         return http.build()
     }
 
-    @Profile("dev-secure")
+    @Profile("dev-secure", "prod")
     @Bean
-    fun devSecureFilterChain(
+    fun filterChain(
         http: HttpSecurity,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
-        corsConfigurationSource: CorsConfigurationSource
+        corsConfigurationSource: CorsConfigurationSource,
+        customOAuth2UserService: CustomOAuth2UserService,
+        customOAuth2SuccessHandler: CustomOAuth2SuccessHandler,
+        customOAuth2FailureHandler: CustomOAuth2FailureHandler
     ): SecurityFilterChain {
 
         val authorizedHttpMethod = listOf(
@@ -90,6 +96,13 @@ class SecurityConfig {
             formLogin { disable() }
             httpBasic { disable() }
             logout { disable() }
+            oauth2Login {
+                userInfoEndpoint {
+                    userService = customOAuth2UserService
+                }
+                authenticationSuccessHandler = customOAuth2SuccessHandler
+                authenticationFailureHandler = customOAuth2FailureHandler
+            }
         }
         return http.build()
     }
@@ -114,7 +127,9 @@ class SecurityConfig {
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf(
-            "https://www.waffle5gram.com"
+            "https://www.waffle5gram.com",
+            "https://waffle5gram.com/",
+            "http://localhost:5173/"
         )
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")

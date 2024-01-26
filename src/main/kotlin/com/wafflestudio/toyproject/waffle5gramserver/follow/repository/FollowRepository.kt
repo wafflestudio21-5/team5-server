@@ -8,8 +8,8 @@ interface FollowRepository : JpaRepository<FollowEntity, Long> {
     fun findByFollowerUserIdAndFolloweeUserId(followerUserId: Long, followeeUserId: Long): FollowEntity?
 
     @Query("SELECT f FROM follows AS f WHERE f.follower.id = :followerUserId")
-    fun findAllByFollowerUserId(followerUserId: Long,): List<FollowEntity>?
+    fun findAllByFollowerUserId(followerUserId: Long,): List<FollowEntity>
 
     @Query("SELECT f FROM follows AS f WHERE f.followee.id = :followeeUserId")
-    fun findAllByFolloweeUserId(followeeUserId: Long,): List<FollowEntity>?
+    fun findAllByFolloweeUserId(followeeUserId: Long,): List<FollowEntity>
 }

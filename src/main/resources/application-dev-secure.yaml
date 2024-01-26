@@ -5,6 +5,8 @@ spring:
     console:
       enabled: true
       path: /h2-console
+      settings:
+        web-allow-others: true
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MySQL
     driver-class-name: org.h2.Driver
@@ -12,6 +14,16 @@ spring:
     password: 1234
   jpa:
     defer-datasource-initialization: true
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: ${OAUTH2_FACEBOOK_CLIENT_ID}
+            client-secret: ${OAUTH2_FACEBOOK_CLIENT_SECRET}
+            scope:
+              - email
+              - public_profile
   servlet:
     multipart:
       enabled: true
@@ -33,3 +45,10 @@ cloud:
       bucket: waffle5grambucket
     stack:
       auto: false
+
+jwt:
+  accessTokenSecretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+  refreshTokenSecretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY}
+  ttlMinutesAccessToken: 5 # 5 minutes
+  ttlMinutesRefreshToken: 360 # 6 hours
+  refreshTokenCookieSecure: false

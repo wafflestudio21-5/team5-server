@@ -35,11 +35,13 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
 
     runtimeOnly("com.h2database:h2")
+    implementation("mysql:mysql-connector-java:8.0.28")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
@@ -53,6 +55,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    environment("JWT_ACCESS_TOKEN_SECRET_KEY", "lWClWM3WU2fK/ieYRWrkDZ3rlEuXO4SlwBBC33oyDZo=")
+    environment("JWT_REFRESH_TOKEN_SECRET_KEY", "WsLO6UkQ5XcDLp+gY1Usgamkhr5IBRI7ZBHgckYwCCA=")
+    environment("OAUTH2_FACEBOOK_CLIENT_ID", "348359328040767")
+    environment("OAUTH2_FACEBOOK_CLIENT_SECRET", "10f9eafe734151bcee983447aebf7d07")
 }
 
 tasks.getByName("jar") {

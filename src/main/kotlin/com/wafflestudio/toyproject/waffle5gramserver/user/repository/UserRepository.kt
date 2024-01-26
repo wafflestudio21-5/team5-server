@@ -32,4 +32,13 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
     fun updateIsPrivateById(isPrivate: Boolean, Id: Long)
 
     fun existsByUsername(username: String): Boolean
+
+    @Query(
+        """
+        SELECT u FROM users u
+        JOIN FETCH u.facebookUsers f
+        WHERE f.facebookId = :facebookId
+    """
+    )
+    fun findByFacebookId(facebookId: Long): UserEntity?
 }
