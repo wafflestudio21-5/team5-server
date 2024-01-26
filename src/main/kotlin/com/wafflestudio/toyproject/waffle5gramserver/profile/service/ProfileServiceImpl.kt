@@ -36,9 +36,9 @@ class ProfileServiceImpl(
         val following = followRepository.findAllByFollowerUserId(profileUser.id)
         val follower = followRepository.findAllByFolloweeUserId(profileUser.id)
 
-        val postNumber = (if (post == null) 0 else post.count().toLong())
-        val followingNumber = (if (following == null) 0 else following.count().toLong())
-        val followerNumber = (if (follower == null) 0 else follower.count().toLong())
+        val postNumber = post.count().toLong()
+        val followingNumber = following.count().toLong()
+        val followerNumber = follower.count().toLong()
 
         return ProfileResponseMapper.toFullProfileResponse(profileUser, postNumber, followingNumber, followerNumber)
     }

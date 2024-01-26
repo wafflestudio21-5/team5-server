@@ -22,17 +22,17 @@ class FeedServiceTest @Autowired constructor(
     private val userRepository: UserRepository,
 ) {
 
-    private fun createPost(content: String, user: UserEntity, interval: Long = 0): Long {
-        val post = PostEntity(
-            content = content,
-            likeCountDisplayed = true,
-            commentDisplayed = true,
-            user = user
-        )
-        postRepository.save(post)
-
-        return post.id
-    }
+    // private fun createPost(content: String, user: UserEntity, interval: Long = 0): Long {
+    //     val post = PostEntity(
+    //         content = content,
+    //         likeCountDisplayed = true,
+    //         commentDisplayed = true,
+    //         user = user
+    //     )
+    //     postRepository.save(post)
+    //
+    //     return post.id
+    // }
 
     private fun createTestUser(discriminator: Long): Long {
         val testUser = UserEntity(
