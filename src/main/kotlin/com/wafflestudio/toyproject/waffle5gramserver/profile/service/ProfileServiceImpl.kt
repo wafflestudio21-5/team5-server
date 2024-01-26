@@ -66,7 +66,7 @@ class ProfileServiceImpl(
         authuser: InstagramUser
     ): ProfileImageResponse {
         val user = userRepository.findById(authuser.id)
-            .orElseThrow{ EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val deprecatedUrl = user.profileImageUrl
         try {
             if (deprecatedUrl != null) {
