@@ -12,17 +12,17 @@ class UserEntity(
     @Column(unique = true)
     var username: String,
     var name: String,
-    val password: String? = null,
+    var password: String? = null,
     var birthday: Date? = null,
-    val isPrivate: Boolean = false,
-    val gender: String? = null,
-    val isCustomGender: Boolean = false,
+    var isPrivate: Boolean = false,
+    var gender: String? = null,
+    var isCustomGender: Boolean = false,
     @Column(columnDefinition = "TEXT")
-    val profileImageUrl: String? = null,
+    var profileImageUrl: String? = null,
     @Column(columnDefinition = "TEXT")
-    val bio: String? = null,
+    var bio: String? = null,
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val contacts: MutableList<ContactEntity> = mutableListOf(),
+    var contacts: MutableList<ContactEntity> = mutableListOf(),
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val facebookUsers: MutableList<FacebookUserEntity> = mutableListOf(),
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
