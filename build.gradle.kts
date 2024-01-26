@@ -35,6 +35,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
 
     runtimeOnly("com.h2database:h2")
+    implementation("mysql:mysql-connector-java:8.0.28")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
