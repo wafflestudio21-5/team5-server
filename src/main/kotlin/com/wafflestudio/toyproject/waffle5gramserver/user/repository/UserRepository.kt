@@ -41,4 +41,6 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
     """
     )
     fun findByFacebookId(facebookId: Long): UserEntity?
+
+    fun updateProfileImageUrlById(id: Long, profileImageUrl: String)
 }
