@@ -1,5 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.follow.controller
 
+import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.CommonFollowResponse
+import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.DiffFollowResponse
 import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.UserHimselfException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.service.FollowRetrieveService
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
@@ -46,9 +48,10 @@ class FollowRetrieveController(
     fun retrieveCommonUserBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/CommonFollowResponse> {
         val commonFollowResponse = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(user, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWER_FOLLOWING, commonFollowResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWER_FOLLOWING, commonFollowResponse))
+        return ResponseEntity.ok(commonFollowResponse)
     }
 
     // 유저의 팔로워 중 현재 유저의 팔로잉이 아닌 목록 조회
@@ -56,9 +59,10 @@ class FollowRetrieveController(
     fun retrieveDifferenceBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/DiffFollowResponse> {
         val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(user, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWER_FOLLOWING, diffFollowResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWER_FOLLOWING, diffFollowResponse))
+        return ResponseEntity.ok(diffFollowResponse)
     }
 
     // 유저의 팔로잉 및 현재 유저의 팔로잉 공통 목록 조회
@@ -66,9 +70,10 @@ class FollowRetrieveController(
     fun retrieveCommonFollowingBetweenUserAndAuthUser(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/CommonFollowResponse> {
         val commonFollowResponse = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(user, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWING_FOLLOWING, commonFollowResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWING_FOLLOWING, commonFollowResponse))
+        return ResponseEntity.ok(commonFollowResponse)
     }
 
     // 유저의 팔로잉 중 현재 유저의 팔로잉이 아닌 목록 조회
@@ -76,8 +81,9 @@ class FollowRetrieveController(
     fun retrieveDifferenceBetweenUsersFollowingAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/DiffFollowResponse> {
         val diffFollowResponse = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(user, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWING_FOLLOWING, diffFollowResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DIFF_FOLLOWING_FOLLOWING, diffFollowResponse))
+        return ResponseEntity.ok(diffFollowResponse)
     }
 }
