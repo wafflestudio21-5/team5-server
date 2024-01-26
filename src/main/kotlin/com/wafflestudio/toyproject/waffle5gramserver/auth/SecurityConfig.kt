@@ -63,7 +63,8 @@ class SecurityConfig {
         jwtAuthenticationFilter: JwtAuthenticationFilter,
         customOAuth2UserService: CustomOAuth2UserService,
         customOAuth2SuccessHandler: CustomOAuth2SuccessHandler,
-        customOAuth2FailureHandler: CustomOAuth2FailureHandler
+        customOAuth2FailureHandler: CustomOAuth2FailureHandler,
+        devSecureCorsConfigurationSource: CorsConfigurationSource
     ): SecurityFilterChain {
 
         http.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter::class.java)
@@ -81,7 +82,9 @@ class SecurityConfig {
                 authorize("/api/v1/**", hasAuthority("USER"))
                 authorize(anyRequest, denyAll)
             }
-            cors { disable() }
+            cors {
+                configurationSource = devSecureCorsConfigurationSource
+            }
             csrf { disable() }
             headers { frameOptions { disable() } }
             formLogin { disable() }
@@ -165,6 +168,22 @@ class SecurityConfig {
         configuration.allowedOrigins = listOf(
             "https://www.waffle5gram.com",
             "https://waffle5gram.com/",
+        )
+        configuration.allowedMethods = listOf("*")
+        configuration.allowedHeaders = listOf("*")
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
+
+    @Profile("dev-secure")
+    @Bean
+    fun devSecureCorsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = listOf(
+            "https://www.waffle5gram.com",
+            "https://waffle5gram.com/",
+            "http://localhost:5173/",
         )
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")
