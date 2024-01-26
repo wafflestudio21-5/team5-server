@@ -74,7 +74,6 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/waffle5gram
 
       # deploy to EC2
-      # TEST: deploy with prod profile
       - name: Deploy
         if: github.event_name == 'push'
         uses: appleboy/ssh-action@v1.0.2
