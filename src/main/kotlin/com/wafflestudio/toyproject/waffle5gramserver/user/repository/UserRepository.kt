@@ -15,6 +15,18 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
     @Query(value = "update users u set u.name = :name where u.id = :id")
     fun updateNameById(id: Long, name: String)
 
+    @Modifying
+    @Query(value = "update users u set u.username = :username where u.id = :id")
+    fun updateUsernameById(id: Long, username: String)
+
+    @Modifying
+    @Query(value = "update users u set u.bio = :bio where u.id = :id")
+    fun updateBioById(id: Long, bio: String?)
+
+    @Modifying
+    @Query(value = "update users u set u.gender = :gender, u.isCustomGender= :isCustomGender where u.id = :id")
+    fun updateGenderAndIsCustomGenderById(id: Long, gender: String?, isCustomGender: Boolean)
+
     @Modifying(clearAutomatically = true)
     @Query(value = "update users u set u.isPrivate = :isPrivate where u.id = :Id")
     fun updateIsPrivateById(isPrivate: Boolean, Id: Long)

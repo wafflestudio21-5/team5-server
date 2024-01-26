@@ -25,4 +25,5 @@ class UserEntity(
     val contacts: MutableList<ContactEntity> = mutableListOf(),
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val facebookUsers: MutableList<FacebookUserEntity> = mutableListOf()
+    val userLinks: MutableList<UserLinkEntity> = mutableListOf(),
 ) : BaseModificationAuditingEntity()
