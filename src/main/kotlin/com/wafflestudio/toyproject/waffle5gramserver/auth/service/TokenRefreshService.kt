@@ -8,6 +8,5 @@ interface TokenRefreshService {
     fun validateRefreshToken(token: String): String
     fun generateNewAccessToken(username: String): String
     fun generateNewRefreshToken(username: String): String
-
     fun addRefreshTokenCookie(response: HttpServletResponse, token: String, cookiePath: String)
 }

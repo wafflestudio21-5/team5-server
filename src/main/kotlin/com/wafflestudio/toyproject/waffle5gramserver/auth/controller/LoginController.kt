@@ -2,9 +2,9 @@ package com.wafflestudio.toyproject.waffle5gramserver.auth.controller
 
 import com.wafflestudio.toyproject.waffle5gramserver.auth.dto.AccessTokenResponseDto
 import com.wafflestudio.toyproject.waffle5gramserver.auth.dto.LoginRequestDto
-import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtUtils
+import com.wafflestudio.toyproject.waffle5gramserver.auth.service.TokenRefreshService
 import com.wafflestudio.toyproject.waffle5gramserver.auth.service.UserAuthService
-import org.springframework.http.HttpHeaders
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.AuthenticationException
@@ -16,37 +16,23 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class LoginController(
     private val userAuthService: UserAuthService,
-    private val jwtUtils: JwtUtils
+    private val tokenRefreshService: TokenRefreshService
 ) {
 
     @PostMapping("/api/v1/auth/login")
-    fun login(@RequestBody loginRequest: LoginRequestDto): ResponseEntity<AccessTokenResponseDto> {
+    fun login(
+        @RequestBody loginRequest: LoginRequestDto,
+        response: HttpServletResponse
+    ): ResponseEntity<AccessTokenResponseDto> {
         userAuthService.authenticateUsernamePassword(loginRequest.username, loginRequest.password)
-        val accessToken = jwtUtils.generateAccessToken(loginRequest.username)
-        val refreshToken = jwtUtils.generateRefreshToken(loginRequest.username)
-        return successfulResponse(accessToken, refreshToken)
+        val accessToken = tokenRefreshService.generateNewAccessToken(loginRequest.username)
+        val refreshToken = tokenRefreshService.generateNewRefreshToken(loginRequest.username)
+        tokenRefreshService.addRefreshTokenCookie(response, refreshToken, "/api/v1/auth/refresh_token")
+        return ResponseEntity<AccessTokenResponseDto>(AccessTokenResponseDto(accessToken), HttpStatus.CREATED)
     }
 
     @ExceptionHandler(AuthenticationException::class)
     fun handleLoginAuthenticationException(ex: AuthenticationException): ResponseEntity<Any> {
         return ResponseEntity(mapOf("error" to "User not found"), HttpStatus.NOT_FOUND)
-    }
-
-    private fun successfulResponse(
-        accessToken: String,
-        refreshToken: String
-    ): ResponseEntity<AccessTokenResponseDto> {
-        val headers = HttpHeaders()
-        headers.add(
-            "Set-Cookie",
-            """
-            refresh_token=$refreshToken;
-            HttpOnly;
-            Path='/api/v1/auth/refresh_token';
-            SameSite=Strict
-            """.trimIndent().replace("\n", "")
-        )
-        val body = AccessTokenResponseDto(accessToken)
-        return ResponseEntity<AccessTokenResponseDto>(body, headers, HttpStatus.CREATED)
     }
 }

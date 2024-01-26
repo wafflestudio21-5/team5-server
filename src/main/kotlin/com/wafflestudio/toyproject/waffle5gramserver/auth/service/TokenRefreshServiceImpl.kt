@@ -3,6 +3,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.auth.service
 import com.wafflestudio.toyproject.waffle5gramserver.auth.jwt.JwtUtils
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.BusinessException
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
+import com.wafflestudio.toyproject.waffle5gramserver.properties.JWTProperties
 import io.jsonwebtoken.JwtException
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class TokenRefreshServiceImpl(
-    private val jwtUtils: JwtUtils
+    private val jwtUtils: JwtUtils,
+    private val jwtProperties: JWTProperties
 ) : TokenRefreshService {
     override fun extractRefreshToken(request: HttpServletRequest): String {
         val cookies = request.cookies
@@ -53,6 +55,8 @@ class TokenRefreshServiceImpl(
         val refreshTokenCookie = Cookie("refresh_token", token).apply {
             path = cookiePath
             isHttpOnly = true
+            secure = jwtProperties.refreshTokenCookieSecure
+            maxAge = jwtProperties.ttlMinutesRefreshToken as Int
             setAttribute("SameSite", "Strict")
         }
         response.addCookie(refreshTokenCookie)

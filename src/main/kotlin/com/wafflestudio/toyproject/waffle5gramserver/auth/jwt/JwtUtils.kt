@@ -25,11 +25,11 @@ class JwtUtils(
     }
 
     fun generateAccessToken(username: String): String {
-        return generateToken(username, accessTokenSecretKey, 5) // 5 minutes
+        return generateToken(username, accessTokenSecretKey, jwtProperties.ttlMinutesAccessToken)
     }
 
     fun generateRefreshToken(username: String): String {
-        return generateToken(username, refreshTokenSecretKey, 6 * 60) // 6 hours
+        return generateToken(username, refreshTokenSecretKey, jwtProperties.ttlMinutesRefreshToken)
     }
 
     /**

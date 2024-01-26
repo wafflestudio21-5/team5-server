@@ -49,3 +49,6 @@ cloud:
 jwt:
   accessTokenSecretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY}
   refreshTokenSecretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY}
+  ttlMinutesAccessToken: 5 # 5 minutes
+  ttlMinutesRefreshToken: 360 # 6 hours
+  refreshTokenCookieSecure: false
