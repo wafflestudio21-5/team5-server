@@ -1,7 +1,10 @@
 package com.wafflestudio.toyproject.waffle5gramserver.auth.jwt
 
+import com.wafflestudio.toyproject.waffle5gramserver.properties.JWTProperties
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.io.Decoders
+import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
@@ -9,10 +12,12 @@ import java.util.Date
 import javax.crypto.SecretKey
 
 @Component
-class JwtUtils {
+class JwtUtils(
+    private val jwtProperties: JWTProperties
+) {
 
-    private val accessTokenSecretKey = Jwts.SIG.HS256.key().build()
-    private val refreshTokenSecretKey = Jwts.SIG.HS256.key().build()
+    private val accessTokenSecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.accessTokenSecretKey))
+    private val refreshTokenSecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.refreshTokenSecretKey))
 
     private fun generateToken(username: String, secretKey: SecretKey, ttlInMinutes: Long): String {
         val expiredTime = Date(System.currentTimeMillis() + ttlInMinutes * 60 * 1000)

@@ -45,3 +45,7 @@ cloud:
       bucket: waffle5grambucket
     stack:
       auto: false
+
+jwt:
+  accessTokenSecretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+  refreshTokenSecretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY}
