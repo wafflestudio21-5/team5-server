@@ -57,9 +57,9 @@ class SecurityConfig {
         return http.build()
     }
 
-    @Profile("dev-secure")
+    @Profile("dev-secure", "prod")
     @Bean
-    fun devSecureFilterChain(
+    fun filterChain(
         http: HttpSecurity,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
         corsConfigurationSource: CorsConfigurationSource,
@@ -128,7 +128,8 @@ class SecurityConfig {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf(
             "https://www.waffle5gram.com",
-            "https://waffle5gram.com/"
+            "https://waffle5gram.com/",
+            "http://localhost:5173/"
         )
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")

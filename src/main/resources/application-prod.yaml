@@ -17,6 +17,16 @@ spring:
     web:
       pageable:
         one-indexed-parameters: true
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: ${OAUTH2_FACEBOOK_CLIENT_ID}
+            client-secret: ${OAUTH2_FACEBOOK_CLIENT_SECRET}
+            scope:
+              - email
+              - public_profile
 
 cloud:
   aws:
@@ -29,3 +39,10 @@ cloud:
       bucket: waffle5grambucket
     stack:
       auto: false
+
+jwt:
+  accessTokenSecretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+  refreshTokenSecretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY}
+  ttlMinutesAccessToken: 5 # 5 minutes
+  ttlMinutesRefreshToken: 360 # 6 hours
+  refreshTokenCookieSecure: true
