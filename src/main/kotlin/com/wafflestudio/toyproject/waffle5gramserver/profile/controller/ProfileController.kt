@@ -3,6 +3,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.profile.controller
 import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultCode
 import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.BioRequest
+import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.FullProfileResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.GenderRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.NameRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.ProfileImageRequest
@@ -34,9 +35,9 @@ class ProfileController(
     fun retrieveUserProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity<FullProfileResponse> {
         val fullProfileResponse = profileService.getUserProfile(authuser, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.RETRIEVE_PROFILE_SUCCESS, fullProfileResponse))
+        return ResponseEntity.ok(fullProfileResponse)
     }
 
     // 프로필 사진 업로드
