@@ -25,7 +25,7 @@ class PostImageServiceImpl(
         val imageUrls = mutableListOf<Map<Long, String>>()
 
         images.forEachIndexed { index, multipartFile ->
-            val contentType = multipartFile.contentType?: throw PostImageException(ErrorCode.FILE_CONVERT_FAIL)
+            val contentType = multipartFile.contentType ?: throw PostImageException(ErrorCode.FILE_CONVERT_FAIL)
             if (!allowedImageTypes.contains(contentType)) {
                 throw PostImageException(ErrorCode.INVALID_IMAGE_TYPE)
             }

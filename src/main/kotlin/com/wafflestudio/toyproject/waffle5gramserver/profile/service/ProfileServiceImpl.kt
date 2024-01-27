@@ -53,7 +53,7 @@ class ProfileServiceImpl(
         profileImage: MultipartFile
     ): ProfileImageResponse {
         val user = userRepository.findById(authuser.id).orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        val contentType = profileImage.contentType?: throw ProfileEditException(ErrorCode.FILE_CONVERT_FAIL)
+        val contentType = profileImage.contentType ?: throw ProfileEditException(ErrorCode.FILE_CONVERT_FAIL)
         if (!allowedImageTypes.contains(contentType)) {
             throw ProfileEditException(ErrorCode.INVALID_IMAGE_TYPE)
         }
