@@ -180,11 +180,7 @@ class SecurityConfig {
     @Bean
     fun devSecureCorsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf(
-            "https://www.waffle5gram.com",
-            "https://waffle5gram.com/",
-            "http://localhost:5173/",
-        )
+        configuration.allowedOrigins = listOf("*")
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")
         val source = UrlBasedCorsConfigurationSource()

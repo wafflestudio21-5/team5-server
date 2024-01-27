@@ -11,7 +11,7 @@ import org.springframework.transaction.support.TransactionTemplate
 import java.util.Date
 
 @Component
-@Profile("!prod")
+@Profile("dev")
 class DevCommandLineRunner(
     private val userRepository: UserRepository,
     private val txManager: PlatformTransactionManager,
@@ -36,7 +36,6 @@ class DevCommandLineRunner(
                     isCustomGender = false,
                 )
             )
-            Thread.sleep(100)
         }
 
         txTemplate.execute {
