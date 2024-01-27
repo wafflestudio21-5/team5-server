@@ -1,11 +1,13 @@
 package com.wafflestudio.toyproject.waffle5gramserver.profile.controller
 
-import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultCode
-import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.BioRequest
+import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.FullProfileResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.GenderRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.NameRequest
+import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.NormalProfileResponse
+import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.ProfileImageResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkRequest
+import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UsernameRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.service.ProfileService
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
@@ -36,9 +38,10 @@ class ProfileController(
     fun retrieveUserProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/FullProfileResponse> {
         val fullProfileResponse = profileService.getUserProfile(authuser, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.RETRIEVE_PROFILE_SUCCESS, fullProfileResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.RETRIEVE_PROFILE_SUCCESS,fullProfileResponse))
+        return ResponseEntity.ok(fullProfileResponse)
     }
 
     // 프로필 사진 업로드
@@ -46,19 +49,21 @@ class ProfileController(
     fun postProfileImage(
         @AuthenticationPrincipal authuser: InstagramUser,
         @RequestPart("file") profileImage: MultipartFile,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/ProfileImageResponse> {
         val profileImageResponse = profileService.uploadProfileImage(authuser, profileImage)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.POST_PROFILE_IMAGE_SUCCESS, profileImageResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.POST_PROFILE_IMAGE_SUCCESS, profileImageResponse))
+        return ResponseEntity.ok(profileImageResponse)
     }
 
     // 프로필 사진 삭제
     @DeleteMapping("/profileEdit/image")
     fun deleteProfileImage(
         @AuthenticationPrincipal authuser: InstagramUser,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/ProfileImageResponse> {
         val profileImageResponse = profileService.deleteProfileImage(authuser)
         // url에 아무것도 넣지 않은 string으로 해서 반환
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_PROFILE_IMAGE_SUCCESS, profileImageResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_PROFILE_IMAGE_SUCCESS, profileImageResponse))
+        return ResponseEntity.ok(profileImageResponse)
     }
 
     // 유저 이름 편집
@@ -66,9 +71,10 @@ class ProfileController(
     fun updateNameInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @Valid @RequestBody nameRequest: NameRequest,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/NormalProfileResponse> {
         val normalProfileResponse = profileService.changeNameInProfile(authuser, nameRequest.name)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_NAME_SUCCESS, normalProfileResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_NAME_SUCCESS, normalProfileResponse))
+        return ResponseEntity.ok(normalProfileResponse)
     }
 
     // 유저 사용자이름 편집
@@ -76,9 +82,10 @@ class ProfileController(
     fun updateUsernameInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @Valid @RequestBody usernameRequest: UsernameRequest,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/NormalProfileResponse> {
         val normalProfileResponse = profileService.changeUsernameInProfile(authuser, usernameRequest.username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_USERNAME_SUCCESS, normalProfileResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_USERNAME_SUCCESS, normalProfileResponse))
+        return ResponseEntity.ok(normalProfileResponse)
     }
 
     // 유저 소개 편집
@@ -86,9 +93,10 @@ class ProfileController(
     fun updateBioInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @RequestBody bioRequest: BioRequest,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/NormalProfileResponse> {
         val normalProfileResponse = profileService.changeBioInProfile(authuser, bioRequest.bio)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_BIO_SUCCESS, normalProfileResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_BIO_SUCCESS, normalProfileResponse))
+        return ResponseEntity.ok(normalProfileResponse)
     }
 
     // 유저 성별 편집
@@ -96,9 +104,10 @@ class ProfileController(
     fun updatePronounInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @RequestBody genderRequest: GenderRequest,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/NormalProfileResponse> {
         val normalProfileResponse = profileService.changeGenderInProfile(authuser, genderRequest.gender, genderRequest.isCustomGender)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_GENDER_SUCCESS, normalProfileResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_GENDER_SUCCESS, normalProfileResponse))
+        return ResponseEntity.ok(normalProfileResponse)
     }
 
     // 유저 링크 추가
@@ -106,9 +115,10 @@ class ProfileController(
     fun addUserLinkInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @Valid @RequestBody userLinkRequest: UserLinkRequest,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/UserLinkResponse> {
         val userLinkResponse = profileService.uploadUserLinkInProfile(authuser, userLinkRequest)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.POST_USER_LINK_SUCCESS, userLinkResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.POST_USER_LINK_SUCCESS, userLinkResponse))
+        return ResponseEntity.ok(userLinkResponse)
     }
 
     // 유저 링크 삭제
@@ -116,8 +126,9 @@ class ProfileController(
     fun deleteUserLinkInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @PathVariable("linkId") linkId: Long,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/UserLinkResponse> {
         val userLinkResponse = profileService.removeUserLinkInProfile(authuser, linkId)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_USER_LINK_SUCCESS, userLinkResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_USER_LINK_SUCCESS, userLinkResponse))
+        return ResponseEntity.ok(userLinkResponse)
     }
 }

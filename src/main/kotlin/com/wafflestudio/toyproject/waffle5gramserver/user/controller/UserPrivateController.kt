@@ -1,7 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.user.controller
 
-import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultCode
-import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultResponse
 import com.wafflestudio.toyproject.waffle5gramserver.user.dto.UserPrivateResponse
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.UserPrivateService
@@ -19,16 +17,18 @@ class UserPrivateController(
     @PutMapping("/toPrivate")
     fun toPrivate(
         @AuthenticationPrincipal user: InstagramUser,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/UserPrivateResponse> {
         val userPrivateResponse: UserPrivateResponse = userPrivateService.toPrivate(user.id, user.isPrivate)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.TO_PRIVATE_CHANGE_SUCCESS, userPrivateResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.TO_PRIVATE_CHANGE_SUCCESS, userPrivateResponse))
+        return ResponseEntity.ok(userPrivateResponse)
     }
 
     @PutMapping("/toOpen")
     fun toOpen(
         @AuthenticationPrincipal user: InstagramUser,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/UserPrivateResponse> {
         val userPrivateResponse: UserPrivateResponse = userPrivateService.toOpen(user.id, user.isPrivate)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.TO_OPEN_CHANGE_SUCCESS, userPrivateResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.TO_OPEN_CHANGE_SUCCESS, userPrivateResponse))
+        return ResponseEntity.ok(userPrivateResponse)
     }
 }

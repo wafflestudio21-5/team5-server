@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.follow.controller
 
+import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.FollowResponse
 import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.UserHimselfException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.service.FollowService
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
@@ -25,10 +26,11 @@ class FollowController(
     fun followNonPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/FollowResponse> {
         if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         val followResponse = followService.postFollowNonPrivateUser(user, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_SUCCESS, followResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_SUCCESS, followResponse))
+        return ResponseEntity.ok(followResponse)
     }
 
     // 유저 언팔로우

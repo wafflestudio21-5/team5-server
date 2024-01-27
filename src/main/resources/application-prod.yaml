@@ -7,7 +7,9 @@ spring:
     username: ${AWS_RDS_USERNAME}
     password: ${AWS_RDS_PASSWORD}
   jpa:
-    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   servlet:
     multipart:
       enabled: true

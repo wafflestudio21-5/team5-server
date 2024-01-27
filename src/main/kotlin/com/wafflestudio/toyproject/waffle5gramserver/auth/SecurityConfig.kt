@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
@@ -57,20 +56,17 @@ class SecurityConfig {
         return http.build()
     }
 
-    @Profile("dev-secure", "prod")
+    @Profile("dev-secure")
     @Bean
-    fun filterChain(
+    fun devSecureFilterChain(
         http: HttpSecurity,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
-        corsConfigurationSource: CorsConfigurationSource,
         customOAuth2UserService: CustomOAuth2UserService,
         customOAuth2SuccessHandler: CustomOAuth2SuccessHandler,
-        customOAuth2FailureHandler: CustomOAuth2FailureHandler
+        customOAuth2FailureHandler: CustomOAuth2FailureHandler,
+        devSecureCorsConfigurationSource: CorsConfigurationSource
     ): SecurityFilterChain {
 
-        val authorizedHttpMethod = listOf(
-            HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE
-        )
         http.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter::class.java)
         http {
             sessionManagement {
@@ -83,19 +79,61 @@ class SecurityConfig {
                 authorize("/api/v1/auth/**", permitAll)
                 authorize(DispatcherTypeRequestMatcher(DispatcherType.FORWARD), permitAll)
                 authorize(DispatcherTypeRequestMatcher(DispatcherType.ERROR), permitAll)
-                authorizedHttpMethod.forEach {
-                    authorize(it, "/api/v1/**", hasAuthority("USER"))
-                }
+                authorize("/api/v1/**", hasAuthority("USER"))
                 authorize(anyRequest, denyAll)
             }
             cors {
-                configurationSource = corsConfigurationSource
+                configurationSource = devSecureCorsConfigurationSource
             }
             csrf { disable() }
             headers { frameOptions { disable() } }
             formLogin { disable() }
             httpBasic { disable() }
             logout { disable() }
+            oauth2Login {
+                userInfoEndpoint {
+                    userService = customOAuth2UserService
+                }
+                authenticationSuccessHandler = customOAuth2SuccessHandler
+                authenticationFailureHandler = customOAuth2FailureHandler
+            }
+        }
+        return http.build()
+    }
+
+    @Profile("prod")
+    @Bean
+    fun filterChain(
+        http: HttpSecurity,
+        jwtAuthenticationFilter: JwtAuthenticationFilter,
+        corsConfigurationSource: CorsConfigurationSource,
+        customOAuth2UserService: CustomOAuth2UserService,
+        customOAuth2SuccessHandler: CustomOAuth2SuccessHandler,
+        customOAuth2FailureHandler: CustomOAuth2FailureHandler
+    ): SecurityFilterChain {
+
+        http.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter::class.java)
+        http {
+            sessionManagement {
+                // Don't store in-memory session (JSESSIONID cookie)
+                // Enable NullSecurityContextRepository and NullRequestCache
+                sessionCreationPolicy = SessionCreationPolicy.STATELESS
+            }
+            authorizeHttpRequests {
+                authorize("/api/v1/auth/**", permitAll)
+                authorize(DispatcherTypeRequestMatcher(DispatcherType.FORWARD), permitAll)
+                authorize(DispatcherTypeRequestMatcher(DispatcherType.ERROR), permitAll)
+                authorize("/api/v1/**", hasAuthority("USER"))
+                authorize(anyRequest, denyAll)
+            }
+            cors {
+                configurationSource = corsConfigurationSource
+            }
+            logout { disable() }
+            headers { frameOptions { disable() } }
+            csrf { disable() }
+            formLogin { disable() }
+            httpBasic { disable() }
             oauth2Login {
                 userInfoEndpoint {
                     userService = customOAuth2UserService
@@ -123,14 +161,26 @@ class SecurityConfig {
         return ProviderManager(authenticationProvider)
     }
 
+    @Profile("prod")
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf(
             "https://www.waffle5gram.com",
             "https://waffle5gram.com/",
-            "http://localhost:5173/"
         )
+        configuration.allowedMethods = listOf("*")
+        configuration.allowedHeaders = listOf("*")
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
+
+    @Profile("dev-secure")
+    @Bean
+    fun devSecureCorsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = listOf("*")
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")
         val source = UrlBasedCorsConfigurationSource()

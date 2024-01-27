@@ -1,11 +1,14 @@
 package com.wafflestudio.toyproject.waffle5gramserver.follow.controller
 
+import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.FollowRequestResponse
+import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.FollowResponse
 import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.PrivateException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.UserHimselfException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.service.FollowRequestService
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
 import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultCode
 import com.wafflestudio.toyproject.waffle5gramserver.global.result_handling.ResultResponse
+import com.wafflestudio.toyproject.waffle5gramserver.user.dto.MiniProfile
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -26,10 +29,11 @@ class FollowRequestController(
     fun retrieveFollowRequestToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/FollowRequestResponse> {
         if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         val followRequestResponse = followRequestService.getFollowRequestToPrivateUser(user, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.ALREADY_REQUEST_FOLLOW, followRequestResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.ALREADY_REQUEST_FOLLOW, followRequestResponse))
+        return ResponseEntity.ok(followRequestResponse)
     }
 
     // 비공개 유저 팔로우 요청
@@ -37,10 +41,11 @@ class FollowRequestController(
     fun requestFollowToPrivateUser(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/FollowRequestResponse> {
         if (user.username == username) throw UserHimselfException(ErrorCode.USER_HIMSELF)
         val followRequestResponse = followRequestService.postFollowToPrivateUser(user, username)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.REQUEST_FOLLOW_SUCCESS, followRequestResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.REQUEST_FOLLOW_SUCCESS, followRequestResponse))
+        return ResponseEntity.ok(followRequestResponse)
     }
 
     // 비공개 유저 팔로우 요청 취소
@@ -58,10 +63,11 @@ class FollowRequestController(
     @GetMapping("/requestlist")
     fun retrieveFollowRequestUserList(
         @AuthenticationPrincipal user: InstagramUser,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/MutableList<MiniProfile>> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
         val miniProfiles = followRequestService.getFollowRequestUserList(user)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_REQUEST_LIST_SUCCESS, miniProfiles))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.FOLLOW_REQUEST_LIST_SUCCESS, miniProfiles))
+        return ResponseEntity.ok(miniProfiles)
     }
 
     // 유저 팔로우 요청 조회
@@ -69,11 +75,12 @@ class FollowRequestController(
     fun retrieveUserFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("followerUsername") followerUsername: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/FollowRequestResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
         if (user.username == followerUsername) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
         val followRequestResponse = followRequestService.getUserFollowRequest(user, followerUsername)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_USER_FOLLOW_REQUEST_SUCCESS, followRequestResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_USER_FOLLOW_REQUEST_SUCCESS, followRequestResponse))
+        return ResponseEntity.ok(followRequestResponse)
     }
 
     // 팔로우 요청 수락
@@ -81,11 +88,12 @@ class FollowRequestController(
     fun acceptFollowRequest(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("followerUsername") followerUsername: String,
-    ): ResponseEntity<ResultResponse> {
+    ): ResponseEntity</*ResultResponse*/FollowResponse> {
         if (!user.isPrivate) throw PrivateException(ErrorCode.USER_NOT_PRIVATE)
         if (user.username == followerUsername) throw UserHimselfException(ErrorCode.FOLLOWER_HIMSELF)
         val followResponse = followRequestService.postFollowRequest(user, followerUsername)
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.ACCEPT_FOLLOW_REQUEST_SUCCESS, followResponse))
+        // return ResponseEntity.ok(ResultResponse.of(ResultCode.ACCEPT_FOLLOW_REQUEST_SUCCESS, followResponse))
+        return ResponseEntity.ok(followResponse)
     }
 
     // 팔로우 요청 거절
