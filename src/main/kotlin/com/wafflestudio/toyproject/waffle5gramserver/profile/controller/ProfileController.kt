@@ -10,6 +10,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UsernameRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.service.ProfileService
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import jakarta.validation.Valid
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.annotation.Validated
@@ -41,7 +42,7 @@ class ProfileController(
     }
 
     // 프로필 사진 업로드
-    @PostMapping("/profileEdit/image")
+    @PostMapping(value = ["/profileEdit/image"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun postProfileImage(
         @AuthenticationPrincipal authuser: InstagramUser,
         @RequestPart("file") profileImage: MultipartFile,
