@@ -55,8 +55,6 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    environment("AWS_S3_ACCESS_KEY", "AKIASOFQZXLGJUV5SZVJ")
-    environment("AWS_S3_SECRET_KEY", "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")
     environment("JWT_ACCESS_TOKEN_SECRET_KEY", "lWClWM3WU2fK/ieYRWrkDZ3rlEuXO4SlwBBC33oyDZo=")
     environment("JWT_REFRESH_TOKEN_SECRET_KEY", "WsLO6UkQ5XcDLp+gY1Usgamkhr5IBRI7ZBHgckYwCCA=")
     environment("OAUTH2_FACEBOOK_CLIENT_ID", "348359328040767")
