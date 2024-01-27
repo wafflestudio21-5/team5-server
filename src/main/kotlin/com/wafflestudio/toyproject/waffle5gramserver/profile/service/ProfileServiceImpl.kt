@@ -62,7 +62,7 @@ class ProfileServiceImpl(
             userRepository.updateProfileImageUrlById(user.id, profileImageUrl)
             return ProfileImageResponse(profileImageUrl)
         } catch (e: Exception) {
-            throw ProfileEditException(ErrorCode.S3_ERROR)
+            throw ProfileEditException(ErrorCode.S3_UPLOAD_ERROR)
         }
     }
 
@@ -81,7 +81,7 @@ class ProfileServiceImpl(
             userRepository.updateProfileImageUrlById(authuser.id, profileImageUrl)
             return ProfileImageResponse(profileImageUrl)
         } catch (e: Exception) {
-            throw ProfileEditException(ErrorCode.S3_ERROR)
+            throw ProfileEditException(ErrorCode.S3_DELETE_ERROR)
         }
     }
 
