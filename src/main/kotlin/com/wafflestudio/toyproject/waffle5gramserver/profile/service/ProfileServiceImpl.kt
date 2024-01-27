@@ -26,7 +26,8 @@ class ProfileServiceImpl(
     private val userLinkRepository: UserLinkRepository,
     private val followRepository: FollowRepository,
     private val postRepository: PostRepository,
-    private val s3ImageUpload: S3ImageUpload
+    private val s3ImageUpload: S3ImageUpload,
+    private val allowedImageTypes: List<String>
 ) : ProfileService {
     @Transactional
     override fun getUserProfile(
@@ -51,10 +52,14 @@ class ProfileServiceImpl(
         authuser: InstagramUser,
         profileImage: MultipartFile
     ): ProfileImageResponse {
-        userRepository.findById(authuser.id).orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val user = userRepository.findById(authuser.id).orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val contentType = profileImage.contentType?: throw ProfileEditException(ErrorCode.FILE_CONVERT_FAIL)
+        if (!allowedImageTypes.contains(contentType)) {
+            throw ProfileEditException(ErrorCode.INVALID_IMAGE_TYPE)
+        }
         try {
             val profileImageUrl = s3ImageUpload.uploadImage(profileImage)
-            userRepository.updateProfileImageUrlById(authuser.id, profileImageUrl)
+            userRepository.updateProfileImageUrlById(user.id, profileImageUrl)
             return ProfileImageResponse(profileImageUrl)
         } catch (e: Exception) {
             throw ProfileEditException(ErrorCode.S3_ERROR)

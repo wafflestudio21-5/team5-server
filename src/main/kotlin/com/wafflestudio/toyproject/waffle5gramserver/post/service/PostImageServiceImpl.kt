@@ -1,5 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
+import com.wafflestudio.toyproject.waffle5gramserver.post.exception.PostImageException
 import com.wafflestudio.toyproject.waffle5gramserver.utils.S3Exception
 import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
 import org.springframework.stereotype.Service
@@ -12,6 +14,7 @@ import java.util.concurrent.Executors
 @Service
 class PostImageServiceImpl(
     private val s3ImageUpload: S3ImageUpload,
+    private val allowedImageTypes: List<String>,
     txManager: PlatformTransactionManager
 ) : PostImageService {
     private val threads = Executors.newFixedThreadPool(10)
@@ -22,6 +25,11 @@ class PostImageServiceImpl(
         val imageUrls = mutableListOf<Map<Long, String>>()
 
         images.forEachIndexed { index, multipartFile ->
+            val contentType = multipartFile.contentType?: throw PostImageException(ErrorCode.FILE_CONVERT_FAIL)
+            if (!allowedImageTypes.contains(contentType)) {
+                throw PostImageException(ErrorCode.INVALID_IMAGE_TYPE)
+            }
+
             threads.submit {
                 try {
                     txTemplate.execute {
