@@ -23,6 +23,7 @@ class CustomOAuth2FailureHandler : SimpleUrlAuthenticationFailureHandler() {
             redirectStrategy.sendRedirect(request, response, "$FAILURE_REDIRECT_URI?result=failure")
             return
         }
+        println("super.onAuthenticationFailure")
         super.onAuthenticationFailure(request, response, exception)
     }
 }
