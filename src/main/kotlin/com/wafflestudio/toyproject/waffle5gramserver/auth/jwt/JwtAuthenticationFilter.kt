@@ -35,6 +35,8 @@ class JwtAuthenticationFilter(
                 SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
                     instagramUser, null, setOf(SimpleGrantedAuthority("USER"))
                 )
+            } else {
+                println("JwtAuthenticationFilter cannot find access token")
             }
             filterChain.doFilter(request, response)
         } catch (ex: Exception) {

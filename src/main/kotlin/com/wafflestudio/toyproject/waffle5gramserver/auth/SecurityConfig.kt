@@ -64,7 +64,9 @@ class SecurityConfig {
         customOAuth2UserService: CustomOAuth2UserService,
         customOAuth2SuccessHandler: CustomOAuth2SuccessHandler,
         customOAuth2FailureHandler: CustomOAuth2FailureHandler,
-        devSecureCorsConfigurationSource: CorsConfigurationSource
+        devSecureCorsConfigurationSource: CorsConfigurationSource,
+        customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
+        customAccessDeniedHandler: CustomAccessDeniedHandler
     ): SecurityFilterChain {
 
         http.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter::class.java)
@@ -97,6 +99,10 @@ class SecurityConfig {
                 authenticationSuccessHandler = customOAuth2SuccessHandler
                 authenticationFailureHandler = customOAuth2FailureHandler
             }
+            exceptionHandling {
+                authenticationEntryPoint = customAuthenticationEntryPoint
+                accessDeniedHandler = customAccessDeniedHandler
+            }
         }
         return http.build()
     }
@@ -109,7 +115,9 @@ class SecurityConfig {
         corsConfigurationSource: CorsConfigurationSource,
         customOAuth2UserService: CustomOAuth2UserService,
         customOAuth2SuccessHandler: CustomOAuth2SuccessHandler,
-        customOAuth2FailureHandler: CustomOAuth2FailureHandler
+        customOAuth2FailureHandler: CustomOAuth2FailureHandler,
+        customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
+        customAccessDeniedHandler: CustomAccessDeniedHandler
     ): SecurityFilterChain {
 
         http.addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter::class.java)
@@ -140,6 +148,10 @@ class SecurityConfig {
                 }
                 authenticationSuccessHandler = customOAuth2SuccessHandler
                 authenticationFailureHandler = customOAuth2FailureHandler
+            }
+            exceptionHandling {
+                authenticationEntryPoint = customAuthenticationEntryPoint
+                accessDeniedHandler = customAccessDeniedHandler
             }
         }
         return http.build()
