@@ -52,3 +52,9 @@ jwt:
   ttlMinutesAccessToken: 360 # 6 hours
   ttlMinutesRefreshToken: 360 # 6 hours
   refreshTokenCookieSecure: false
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
