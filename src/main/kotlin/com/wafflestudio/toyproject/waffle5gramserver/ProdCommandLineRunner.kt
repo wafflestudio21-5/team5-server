@@ -1,6 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver
 
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
@@ -85,7 +86,8 @@ class ProdCommandLineRunner(
                 posts.forEach {
                     val post = PostEntity(
                         content = it.key,
-                        user = userEntity
+                        user = userEntity,
+                        category = PostCategory.DAILY
                     )
                     post.medias.add(
                         PostMediaEntity(
@@ -107,7 +109,8 @@ class ProdCommandLineRunner(
             postRepository.save(
                 PostEntity(
                     content = "Our new partners: nginx, react",
-                    user = users[2]
+                    user = users[2],
+                    category = PostCategory.DAILY
                 ).apply {
                     medias.add(
                         PostMediaEntity(

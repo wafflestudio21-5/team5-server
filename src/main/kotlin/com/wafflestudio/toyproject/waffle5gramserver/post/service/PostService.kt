@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import kotlin.Long as Long
 
 interface PostService {
@@ -14,6 +15,7 @@ interface PostService {
         disableComment: Boolean,
         hideLike: Boolean,
         userId: Long,
+        category: PostCategory
     ): PostBrief
 
     fun patch(

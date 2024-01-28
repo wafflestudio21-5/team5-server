@@ -38,6 +38,7 @@ class PostMapper {
                 commentCount = entity.comments.size,
                 hideLike = entity.likeCountDisplayed,
                 createdAt = entity.createdAt,
+                category = entity.category
             )
         }
 

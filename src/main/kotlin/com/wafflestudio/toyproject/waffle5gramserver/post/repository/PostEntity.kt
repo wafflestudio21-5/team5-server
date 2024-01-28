@@ -6,6 +6,8 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -21,6 +23,9 @@ class PostEntity(
     var likeCountDisplayed: Boolean = true,
     @Column(name = "comment_displayed", nullable = false)
     var commentDisplayed: Boolean = true,
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    var category: PostCategory,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     var user: UserEntity,

@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post
 
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostNotAuthorizedException
@@ -74,6 +75,7 @@ constructor(
                 likeCountDisplayed = true,
                 commentDisplayed = true,
                 user = user,
+                category = PostCategory.DAILY
             )
         return postRepository.save(post)
     }
@@ -86,9 +88,10 @@ constructor(
         val fileUrls = listOf("https://wafflestudio.com/images/icon_intro.svg")
         val disableComment = false
         val hideLike = false
+        val category = PostCategory.DAILY
 
         // 테스트 실행
-        val postBrief = postService.create(content, fileUrls, disableComment, hideLike, testUser1.id)
+        val postBrief = postService.create(content, fileUrls, disableComment, hideLike, testUser1.id, category)
 
         // 검증
         assertNotNull(postBrief)
@@ -118,6 +121,7 @@ constructor(
                 likeCountDisplayed = true,
                 commentDisplayed = true,
                 user = testUser1,
+                category = PostCategory.DAILY
             )
         postRepository.save(post)
 

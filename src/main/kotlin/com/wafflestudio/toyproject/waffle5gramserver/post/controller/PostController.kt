@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.controller
 
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAlreadyLikedException
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAlreadySavedException
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
@@ -45,6 +46,7 @@ class PostController(
         @RequestPart("content") content: String,
         @RequestPart("hideComments") hideComments: String = "false",
         @RequestPart("hideLikes") hideLikes: String = "false",
+        @RequestPart("category") category: PostCategory,
         @RequestPart("files") files: List<MultipartFile>,
     ): ResponseEntity<PostBrief> {
         val imageUrls = postImageService.uploadImages(files)
@@ -57,6 +59,7 @@ class PostController(
                 disableComment = hideComments.toBoolean(),
                 hideLike = hideLikes.toBoolean(),
                 userId = user.id,
+                category = category
             )
 
         return ResponseEntity.status(HttpStatus.CREATED).body(post)
