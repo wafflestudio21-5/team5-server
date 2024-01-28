@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.profile.controller
 
+import com.wafflestudio.toyproject.waffle5gramserver.auth.service.TokenRefreshService
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.BioRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.FullProfileResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.GenderRequest
@@ -12,6 +13,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkRespons
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UsernameRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.service.ProfileService
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/account")
 class ProfileController(
     private val profileService: ProfileService,
+    private val tokenRefreshService: TokenRefreshService
 ) {
     // 유저 프로필 조회
     @GetMapping("/{username}")
@@ -80,10 +83,19 @@ class ProfileController(
     fun updateUsernameInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @Valid @RequestBody usernameRequest: UsernameRequest,
-    ): ResponseEntity</*ResultResponse*/NormalProfileResponse> {
+        response: HttpServletResponse
+    ): ResponseEntity<Any> {
         val normalProfileResponse = profileService.changeUsernameInProfile(authuser, usernameRequest.username)
+        val accessToken = tokenRefreshService.generateNewAccessToken(normalProfileResponse.username)
+        val refreshToken = tokenRefreshService.generateNewRefreshToken(normalProfileResponse.username)
+        tokenRefreshService.addRefreshTokenCookie(response, refreshToken, "/api/v1/auth/refresh_token")
         // return ResponseEntity.ok(ResultResponse.of(ResultCode.UPDATE_USERNAME_SUCCESS, normalProfileResponse))
-        return ResponseEntity.ok(normalProfileResponse)
+        return ResponseEntity.ok(
+            mapOf(
+                "accessToken" to accessToken,
+                "data" to normalProfileResponse
+            )
+        )
     }
 
     // 유저 소개 편집
