@@ -27,6 +27,7 @@ class JwtAuthenticationFilter(
         filterChain: FilterChain
     ) {
         try {
+            println("JwtAuthenticationFilter entered")
             val token = jwtUtils.getTokenFromRequest(request)
             if (token != null) {
                 val username = jwtUtils.validateAccessToken(token)
@@ -37,6 +38,9 @@ class JwtAuthenticationFilter(
             }
             filterChain.doFilter(request, response)
         } catch (ex: Exception) {
+            println("JwtAuthenticationFilter caught error")
+            println(ex.message)
+            println(ex.stackTrace)
             when (ex) {
                 is JwtException, is IllegalArgumentException -> {
                     respondForJwtException(response)
