@@ -7,7 +7,7 @@ import org.springframework.http.MediaType
 @Configuration
 class ImageTypeConfig {
 
-    @Bean
+    @Bean("allowedImageTypes")
     fun allowedImageType(): List<String> {
         return listOf(
             MediaType.IMAGE_JPEG_VALUE,

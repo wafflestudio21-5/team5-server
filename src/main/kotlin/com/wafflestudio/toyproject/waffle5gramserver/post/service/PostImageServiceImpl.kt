@@ -3,6 +3,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.post.service
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
 import com.wafflestudio.toyproject.waffle5gramserver.post.exception.PostImageException
 import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
@@ -13,6 +14,7 @@ import java.util.concurrent.Executors
 @Service
 class PostImageServiceImpl(
     private val s3ImageUpload: S3ImageUpload,
+    @Qualifier("allowedImageTypes")
     private val allowedImageTypes: List<String>,
     txManager: PlatformTransactionManager
 ) : PostImageService {

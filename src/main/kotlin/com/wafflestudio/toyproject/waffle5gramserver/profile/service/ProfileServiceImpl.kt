@@ -17,6 +17,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserReposit
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
 import jakarta.transaction.Transactional
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -27,6 +28,7 @@ class ProfileServiceImpl(
     private val followRepository: FollowRepository,
     private val postRepository: PostRepository,
     private val s3ImageUpload: S3ImageUpload,
+    @Qualifier("allowedImageTypes")
     private val allowedImageTypes: List<String>
 ) : ProfileService {
     @Transactional
