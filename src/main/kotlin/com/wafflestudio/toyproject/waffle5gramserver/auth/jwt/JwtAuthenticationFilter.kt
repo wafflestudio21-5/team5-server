@@ -57,7 +57,7 @@ class JwtAuthenticationFilter(
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.writer.write(
             objectMapper.writeValueAsString(
-                mapOf("error" to "Authentication token is missing or invalid.")
+                mapOf("message" to "Authentication token is missing or invalid.")
             )
         )
     }
