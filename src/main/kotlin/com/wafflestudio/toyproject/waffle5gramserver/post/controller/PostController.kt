@@ -43,9 +43,9 @@ class PostController(
     fun createPost(
         @AuthenticationPrincipal user: InstagramUser,
         @RequestPart("content") content: String,
-        @RequestPart("hideComments") hideComments: String,
-        @RequestPart("hideLikes") hideLikes: String,
-        @RequestPart("files", required = false) files: List<MultipartFile>,
+        @RequestPart("hideComments") hideComments: String = "false",
+        @RequestPart("hideLikes") hideLikes: String = "false",
+        @RequestPart("files") files: List<MultipartFile>,
     ): ResponseEntity<PostBrief> {
         val imageUrls = postImageService.uploadImages(files)
 

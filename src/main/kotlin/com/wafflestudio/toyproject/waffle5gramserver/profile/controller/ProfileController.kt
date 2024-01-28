@@ -6,7 +6,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.FullProfileResp
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.GenderRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.NameRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.NormalProfileResponse
-import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.ProfileImageRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.ProfileImageResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkRequest
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkResponse
@@ -15,6 +14,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.profile.service.ProfileServ
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.annotation.Validated
@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @Validated
@@ -46,12 +48,12 @@ class ProfileController(
     }
 
     // 프로필 사진 업로드
-    @PostMapping("/profileEdit/image")
+    @PostMapping(value = ["/profileEdit/image"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun postProfileImage(
         @AuthenticationPrincipal authuser: InstagramUser,
-        @Valid @RequestBody profileImageRequest: ProfileImageRequest,
+        @RequestPart("file") profileImage: MultipartFile,
     ): ResponseEntity</*ResultResponse*/ProfileImageResponse> {
-        val profileImageResponse = profileService.uploadProfileImage(authuser, profileImageRequest.profileImageUrl)
+        val profileImageResponse = profileService.uploadProfileImage(authuser, profileImage)
         // return ResponseEntity.ok(ResultResponse.of(ResultCode.POST_PROFILE_IMAGE_SUCCESS, profileImageResponse))
         return ResponseEntity.ok(profileImageResponse)
     }

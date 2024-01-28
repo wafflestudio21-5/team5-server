@@ -15,8 +15,11 @@ import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserLinkEnt
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserLinkRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
 import jakarta.transaction.Transactional
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class ProfileServiceImpl(
@@ -24,6 +27,9 @@ class ProfileServiceImpl(
     private val userLinkRepository: UserLinkRepository,
     private val followRepository: FollowRepository,
     private val postRepository: PostRepository,
+    private val s3ImageUpload: S3ImageUpload,
+    @Qualifier("allowedImageTypes")
+    private val allowedImageTypes: List<String>
 ) : ProfileService {
     @Transactional
     override fun getUserProfile(
@@ -46,16 +52,39 @@ class ProfileServiceImpl(
     @Transactional
     override fun uploadProfileImage(
         authuser: InstagramUser,
-        profileImageUrl: String
+        profileImage: MultipartFile
     ): ProfileImageResponse {
-        TODO("Not yet implemented")
+        val user = userRepository.findById(authuser.id).orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val contentType = profileImage.contentType ?: throw ProfileEditException(ErrorCode.FILE_CONVERT_FAIL)
+        if (!allowedImageTypes.contains(contentType)) {
+            throw ProfileEditException(ErrorCode.INVALID_IMAGE_TYPE)
+        }
+        try {
+            val profileImageUrl = s3ImageUpload.uploadImage(profileImage)
+            userRepository.updateProfileImageUrlById(user.id, profileImageUrl)
+            return ProfileImageResponse(profileImageUrl)
+        } catch (e: Exception) {
+            throw ProfileEditException(ErrorCode.S3_UPLOAD_ERROR)
+        }
     }
 
     @Transactional
     override fun deleteProfileImage(
         authuser: InstagramUser
     ): ProfileImageResponse {
-        TODO("Not yet implemented")
+        val user = userRepository.findById(authuser.id)
+            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
+        val deprecatedUrl = user.profileImageUrl
+        try {
+            if (deprecatedUrl != null) {
+                s3ImageUpload.deleteImage(deprecatedUrl)
+            }
+            val profileImageUrl = ""
+            userRepository.updateProfileImageUrlById(authuser.id, profileImageUrl)
+            return ProfileImageResponse(profileImageUrl)
+        } catch (e: Exception) {
+            throw ProfileEditException(ErrorCode.S3_DELETE_ERROR)
+        }
     }
 
     @Transactional

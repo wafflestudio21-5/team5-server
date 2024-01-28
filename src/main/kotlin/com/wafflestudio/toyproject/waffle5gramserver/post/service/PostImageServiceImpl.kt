@@ -1,7 +1,9 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
-import com.wafflestudio.toyproject.waffle5gramserver.utils.S3Exception
+import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
+import com.wafflestudio.toyproject.waffle5gramserver.post.exception.PostImageException
 import com.wafflestudio.toyproject.waffle5gramserver.utils.S3ImageUpload
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
@@ -12,6 +14,8 @@ import java.util.concurrent.Executors
 @Service
 class PostImageServiceImpl(
     private val s3ImageUpload: S3ImageUpload,
+    @Qualifier("allowedImageTypes")
+    private val allowedImageTypes: List<String>,
     txManager: PlatformTransactionManager
 ) : PostImageService {
     private val threads = Executors.newFixedThreadPool(10)
@@ -22,6 +26,11 @@ class PostImageServiceImpl(
         val imageUrls = mutableListOf<Map<Long, String>>()
 
         images.forEachIndexed { index, multipartFile ->
+            val contentType = multipartFile.contentType ?: throw PostImageException(ErrorCode.FILE_CONVERT_FAIL)
+            if (!allowedImageTypes.contains(contentType)) {
+                throw PostImageException(ErrorCode.INVALID_IMAGE_TYPE)
+            }
+
             threads.submit {
                 try {
                     txTemplate.execute {
@@ -29,7 +38,7 @@ class PostImageServiceImpl(
                         imageUrls.add(mapOf(index.toLong() to imageUrl))
                     }
                 } catch (e: Exception) {
-                    throw S3Exception("S3 이미지 업로드에 실패했습니다.")
+                    throw PostImageException(ErrorCode.S3_UPLOAD_ERROR)
                 } finally {
                     latch.countDown()
                 }
@@ -42,9 +51,20 @@ class PostImageServiceImpl(
     }
 
     override fun deleteImages(imageUrls: List<String>) {
-        // 비동기 처리
-        imageUrls.forEach {
-            s3ImageUpload.deleteImage(it)
+        val latch = CountDownLatch(imageUrls.size)
+
+        imageUrls.forEach { imageUrl ->
+            threads.submit {
+                try {
+                    s3ImageUpload.deleteImage(imageUrl)
+                } catch (e: Exception) {
+                    throw PostImageException(ErrorCode.S3_DELETE_ERROR)
+                } finally {
+                    latch.countDown()
+                }
+            }
         }
+        latch.await()
+        threads.shutdown()
     }
 }
