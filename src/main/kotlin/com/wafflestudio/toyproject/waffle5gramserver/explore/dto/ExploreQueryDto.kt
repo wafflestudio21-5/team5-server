@@ -6,5 +6,5 @@ data class ExploreQueryDto(
     val page: Int = 0,
     val size: Int = 6,
     val sort: ExplorePostSortType,
-    val category: PostCategory
+    val category: PostCategory? = null,
 )
