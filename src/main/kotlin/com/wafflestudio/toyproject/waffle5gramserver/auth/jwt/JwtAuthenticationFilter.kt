@@ -40,7 +40,7 @@ class JwtAuthenticationFilter(
         } catch (ex: Exception) {
             println("JwtAuthenticationFilter caught error")
             println(ex.message)
-            println(ex.stackTrace)
+            ex.printStackTrace()
             when (ex) {
                 is JwtException, is IllegalArgumentException -> {
                     respondForJwtException(response)
