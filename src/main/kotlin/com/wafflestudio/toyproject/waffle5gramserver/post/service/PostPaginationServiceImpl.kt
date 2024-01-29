@@ -6,8 +6,10 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostReposit
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
+import org.springframework.data.domain.SliceImpl
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import kotlin.random.Random
 
 @Service
 class PostPaginationServiceImpl(
@@ -18,7 +20,24 @@ class PostPaginationServiceImpl(
         size: Int,
         category: PostCategory?
     ): Slice<PostEntity> {
-        TODO("Not yet implemented")
+        val totalPages = postRepository.count().toInt() / size + 1
+        val pageable = if (totalPages <= 2) {
+            PageRequest.of(0, size)
+        } else {
+            val randomPage = Random.nextInt(0, totalPages - 1)
+            PageRequest.of(randomPage, size)
+        }
+        val postEntities = if (category == null) {
+            postRepository.findSlice(pageable)
+        } else {
+            postRepository.findSliceByCategory(pageable, category)
+        }
+        return shuffleSlice(postEntities)
+    }
+
+    private fun shuffleSlice(originalSlice: Slice<PostEntity>): Slice<PostEntity> {
+        val contents = originalSlice.content.toMutableList().shuffled()
+        return SliceImpl(contents, originalSlice.pageable, originalSlice.hasNext())
     }
 
     override fun getLatestPosts(
