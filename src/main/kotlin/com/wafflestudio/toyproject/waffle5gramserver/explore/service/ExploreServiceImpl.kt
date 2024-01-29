@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.explore.service
 
+import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentRepository
 import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExplorePostSortType
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ExploreServiceImpl(
-    private val postPaginationService: PostPaginationService
+    private val postPaginationService: PostPaginationService,
+    private val commentRepository: CommentRepository,
 ) : ExploreService {
 
     override fun getSlicedPosts(
@@ -28,7 +30,11 @@ class ExploreServiceImpl(
             ExplorePostSortType.MOST_COMMENTED -> postPaginationService.getMostCommentedPosts(user, page, size, category)
         }
         return postEntities.map {
-            PostMapper.toPostMediasBrief(it)
+            if (sortType == ExplorePostSortType.MOST_COMMENTED) {
+                PostMapper.toPostMediasBrief(it, commentRepository.countByPostId(it.id))
+            } else {
+                PostMapper.toPostMediasBrief(it)
+            }
         }
     }
 }

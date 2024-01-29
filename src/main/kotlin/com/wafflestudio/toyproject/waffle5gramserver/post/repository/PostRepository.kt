@@ -77,9 +77,11 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
     @Query(
         """
             SELECT p FROM posts p
+            INNER JOIN comments c
             WHERE p.user.isPrivate = false
             AND p.commentDisplayed = true
-            ORDER BY COUNT(p.comments) DESC
+            GROUP BY p
+            ORDER BY COUNT(c.id) DESC
         """
     )
     fun findSliceCommentDisplayedOrderByCommentCountDesc(pageable: Pageable): Slice<PostEntity>
@@ -87,10 +89,12 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
     @Query(
         """
             SELECT p FROM posts p
+            INNER JOIN comments c
             WHERE p.user.isPrivate = false
             AND p.commentDisplayed = true
             AND p.category = :category
-            ORDER BY COUNT(p.comments) DESC
+            GROUP BY p
+            ORDER BY COUNT(c.id) DESC
         """
     )
     fun findSliceCommentDisplayedOrderByCommentCountDescByCategory(pageable: Pageable, category: PostCategory): Slice<PostEntity>

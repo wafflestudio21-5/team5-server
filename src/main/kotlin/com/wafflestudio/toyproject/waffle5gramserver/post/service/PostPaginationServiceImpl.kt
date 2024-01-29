@@ -55,6 +55,11 @@ class PostPaginationServiceImpl(
         size: Int,
         category: PostCategory?
     ): Slice<PostEntity> {
-        TODO("Not yet implemented")
+        val pageable = PageRequest.of(page, size)
+        return if (category == null) {
+            postRepository.findSliceCommentDisplayedOrderByCommentCountDesc(pageable)
+        } else {
+            postRepository.findSliceCommentDisplayedOrderByCommentCountDescByCategory(pageable, category)
+        }
     }
 }

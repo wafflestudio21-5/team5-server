@@ -1,6 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver
 
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentEntity
+import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentService
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
@@ -26,6 +27,7 @@ class ProdCommandLineRunner(
     private val passwordEncoder: PasswordEncoder,
     private val txManager: PlatformTransactionManager,
     private val postLikeService: PostLikeService,
+    private val commentService: CommentService,
 ) : CommandLineRunner {
 
     private val txTemplate = TransactionTemplate(txManager)
@@ -197,6 +199,7 @@ class ProdCommandLineRunner(
             for (i in 0 until minOf(userIdList.size, postIdList.size)) {
                 for (j in 0..i) {
                     postLikeService.create(postIdList[i], userIdList[j])
+                    commentService.create(postIdList[i], "Good place", userIdList[j])
                 }
             }
         }
