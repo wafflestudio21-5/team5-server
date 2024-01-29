@@ -25,5 +25,7 @@ interface ProfileService {
 
     fun uploadUserLinkInProfile(authuser: InstagramUser, userLinkRequest: UserLinkRequest): UserLinkResponse
 
+    fun changeUserLinkInProfile(authuser: InstagramUser, userLinkRequest: UserLinkRequest, linkId: Long) : UserLinkResponse
+
     fun removeUserLinkInProfile(authuser: InstagramUser, linkId: Long): UserLinkResponse
 }
