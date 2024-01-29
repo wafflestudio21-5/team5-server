@@ -3,6 +3,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.reply.controller
 import com.wafflestudio.toyproject.waffle5gramserver.reply.service.Reply
 import com.wafflestudio.toyproject.waffle5gramserver.reply.service.ReplyAlreadyLikedException
 import com.wafflestudio.toyproject.waffle5gramserver.reply.service.ReplyException
+import com.wafflestudio.toyproject.waffle5gramserver.reply.service.ReplyLikeService
 import com.wafflestudio.toyproject.waffle5gramserver.reply.service.ReplyNotAuthorizedException
 import com.wafflestudio.toyproject.waffle5gramserver.reply.service.ReplyNotFoundException
 import com.wafflestudio.toyproject.waffle5gramserver.reply.service.ReplyNotLikedException
@@ -28,13 +29,15 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1")
 class ReplyController(
     private val replyService: ReplyService,
+    private val replyLikeService: ReplyLikeService,
 ) {
     @GetMapping("/comments/{commentId}/replies")
     fun getReplies(
         @PathVariable("commentId") commentId: Long,
         pageable: Pageable,
+        @AuthenticationPrincipal user: InstagramUser,
     ): ResponseEntity<Page<Reply>> {
-        val replies = replyService.getReplies(commentId, pageable)
+        val replies = replyService.getReplies(commentId, pageable, userId = user.id)
         return ResponseEntity.ok(replies)
     }
 
@@ -64,6 +67,24 @@ class ReplyController(
         @PathVariable("replyId") replyId: Long,
     ): ResponseEntity<Unit> {
         replyService.delete(replyId, user.id)
+        return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/replies/{replyId}/likes")
+    fun createReplyLike(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable("replyId") replyId: Long,
+    ): ResponseEntity<Unit> {
+        replyLikeService.create(replyId, user.id)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @DeleteMapping("/replies/{replyId}/likes")
+    fun unlikeReply(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable("replyId") replyId: Long,
+    ): ResponseEntity<Unit> {
+        replyLikeService.delete(replyId, user.id)
         return ResponseEntity.noContent().build()
     }
 

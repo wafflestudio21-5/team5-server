@@ -21,9 +21,10 @@ class ReplyServiceImpl(
     override fun getReplies(
         commentId: Long,
         pageable: Pageable,
+        userId: Long,
     ): Page<Reply> {
         val replies = replyRepository.findByCommentId(commentId, pageable)
-        return replies.map { convertToDTO(it) }
+        return replies.map { convertToDTO(it, userId) }
     }
 
     @Transactional
@@ -44,7 +45,7 @@ class ReplyServiceImpl(
             )
 
         val entity = replyRepository.save(reply)
-        return convertToDTO(entity)
+        return convertToDTO(entity, userId)
     }
 
     @Transactional
@@ -61,7 +62,7 @@ class ReplyServiceImpl(
 
         reply.content = content
         val entity = replyRepository.save(reply)
-        return convertToDTO(entity)
+        return convertToDTO(entity, userId)
     }
 
     @Transactional
@@ -76,8 +77,12 @@ class ReplyServiceImpl(
         replyRepository.delete(reply)
     }
 
-    fun convertToDTO(reply: ReplyEntity): Reply {
+    fun convertToDTO(
+        reply: ReplyEntity,
+        userId: Long,
+    ): Reply {
         val likeCount = replyLikeRepository.countByReplyId(reply.id)
+        val isLiked = replyLikeRepository.findByReplyIdAndUserId(reply.id, userId) != null
         return Reply(
             id = reply.id,
             commentId = reply.comment.id,
@@ -87,6 +92,7 @@ class ReplyServiceImpl(
             content = reply.content,
             createdAt = reply.createdAt,
             likeCount = likeCount,
+            liked = isLiked,
         )
     }
 }

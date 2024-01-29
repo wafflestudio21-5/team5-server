@@ -11,4 +11,5 @@ data class Reply(
     val content: String,
     val likeCount: Long,
     val createdAt: LocalDateTime,
+    val liked: Boolean,
 )

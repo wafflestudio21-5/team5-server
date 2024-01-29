@@ -9,6 +9,7 @@ data class Comment(
     val username: String,
     val userProfileImageUrl: String?,
     val text: String,
+    val liked: Boolean,
     val createdAt: LocalDateTime,
     val likeCount: Long,
     val replyCount: Long,

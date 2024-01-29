@@ -3,6 +3,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.comment.controller
 import com.wafflestudio.toyproject.waffle5gramserver.comment.service.Comment
 import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentAlreadyLikedException
 import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentException
+import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentLikeService
 import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentNotFoundException
 import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentNotLikedException
 import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentService
@@ -27,13 +28,15 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1")
 class CommentController(
     private val commentService: CommentService,
+    private val commentLikeService: CommentLikeService,
 ) {
     @GetMapping("/posts/{postId}/comments")
     fun getCommentsByPost(
         @PathVariable("postId") postId: Long,
         pageable: Pageable,
+        @AuthenticationPrincipal user: InstagramUser,
     ): ResponseEntity<Page<Comment>> {
-        val comments = commentService.getComments(postId, pageable)
+        val comments = commentService.getComments(postId, pageable, user.id)
         return ResponseEntity.ok(comments)
     }
 
@@ -63,6 +66,24 @@ class CommentController(
         @PathVariable("commentId") commentId: Long,
     ): ResponseEntity<Unit> {
         commentService.delete(commentId, user.id)
+        return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/comments/{commentId}/likes")
+    fun createCommentLike(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable commentId: Long,
+    ): ResponseEntity<Unit> {
+        commentLikeService.create(commentId, user.id)
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    @DeleteMapping("/comments/{commentId}/likes")
+    fun deleteCommentLike(
+        @AuthenticationPrincipal user: InstagramUser,
+        @PathVariable commentId: Long,
+    ): ResponseEntity<Unit> {
+        commentLikeService.delete(commentId, user.id)
         return ResponseEntity.noContent().build()
     }
 

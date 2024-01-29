@@ -7,6 +7,7 @@ interface CommentService {
     fun getComments(
         postId: Long,
         pageable: Pageable,
+        userId: Long,
     ): Page<Comment>
 
     fun create(
