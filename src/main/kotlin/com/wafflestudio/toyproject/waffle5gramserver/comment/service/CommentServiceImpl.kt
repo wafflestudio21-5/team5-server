@@ -25,9 +25,13 @@ class CommentServiceImpl(
     override fun getComments(
         postId: Long,
         pageable: Pageable,
+        userId: Long,
     ): Page<Comment> {
         val comments = commentRepository.findByPostId(postId, pageable)
-        return comments.map { convertToDTO(it) }
+
+        return comments.map {
+            convertToDTO(it, userId)
+        }
     }
 
     @Transactional
@@ -49,7 +53,7 @@ class CommentServiceImpl(
             )
 
         val entity = commentRepository.save(comment)
-        return convertToDTO(entity)
+        return convertToDTO(entity, userId)
     }
 
     @Transactional
@@ -66,7 +70,7 @@ class CommentServiceImpl(
 
         comment.text = content
         val entity = commentRepository.save(comment)
-        return convertToDTO(entity)
+        return convertToDTO(entity, userId)
     }
 
     @Transactional
@@ -81,9 +85,13 @@ class CommentServiceImpl(
         commentRepository.delete(comment)
     }
 
-    fun convertToDTO(comment: CommentEntity): Comment {
+    fun convertToDTO(
+        comment: CommentEntity,
+        userId: Long,
+    ): Comment {
         val likeCount = commentLikeRepository.countByCommentId(comment.id)
         val replyCount = replyRepository.countByCommentId(comment.id)
+        val isLiked = commentLikeRepository.findByCommentIdAndUserId(comment.id, userId) != null
         return Comment(
             id = comment.id,
             postId = comment.post.id,
@@ -94,6 +102,7 @@ class CommentServiceImpl(
             createdAt = comment.createdAt,
             likeCount = likeCount,
             replyCount = replyCount,
+            liked = isLiked,
         )
     }
 }
