@@ -4,6 +4,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentL
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,13 +20,19 @@ class CommentLikeServiceImpl(
         return commentLikeRepository.findByCommentIdAndUserId(commentId, userId) != null
     }
 
+    @Transactional
     override fun create(
         commentId: Long,
         userId: Long,
     ) {
-        if (commentRepository.findById(commentId).isEmpty) throw CommentNotFoundException()
+        val comment = commentRepository.findById(commentId).orElseThrow { CommentNotFoundException() }
         if (userRepository.findById(userId).isEmpty) throw UserNotFoundException()
+
         if (exists(commentId, userId)) throw CommentAlreadyLikedException()
+
+        comment.incrementLikeCount()
+        commentRepository.save(comment)
+
         commentLikeRepository.save(
             CommentLikeEntity(
                 commentId = commentId,
@@ -34,11 +41,17 @@ class CommentLikeServiceImpl(
         )
     }
 
+    @Transactional
     override fun delete(
         commentId: Long,
         userId: Long,
     ) {
+        val comment = commentRepository.findById(commentId).orElseThrow { CommentNotFoundException() }
         val like = commentLikeRepository.findByCommentIdAndUserId(commentId, userId) ?: throw CommentNotLikedException()
+
+        comment.decrementLikeCount()
+        commentRepository.save(comment)
+
         commentLikeRepository.delete(like)
     }
 }
