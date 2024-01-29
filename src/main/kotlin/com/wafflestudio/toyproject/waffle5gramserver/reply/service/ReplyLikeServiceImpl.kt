@@ -4,7 +4,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyLikeE
 import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import org.springframework.stereotype.Service
 
+@Service
 class ReplyLikeServiceImpl(
     private val replyLikeRepository: ReplyLikeRepository,
     private val replyRepository: ReplyRepository,
