@@ -4,6 +4,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyLikeE
 import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.reply.repository.ReplyRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,13 +20,19 @@ class ReplyLikeServiceImpl(
         return replyLikeRepository.findByReplyIdAndUserId(replyId, userId) != null
     }
 
+    @Transactional
     override fun create(
         replyId: Long,
         userId: Long,
     ) {
-        if (replyRepository.findById(replyId).isEmpty) throw ReplyNotFoundException()
+        val reply = replyRepository.findById(replyId).orElseThrow { ReplyNotFoundException() }
         if (userRepository.findById(userId).isEmpty) throw UserNotFoundException()
+
         if (exists(replyId, userId)) throw ReplyAlreadyLikedException()
+
+        reply.incrementLikeCount()
+        replyRepository.save(reply)
+
         replyLikeRepository.save(
             ReplyLikeEntity(
                 replyId = replyId,
@@ -34,11 +41,17 @@ class ReplyLikeServiceImpl(
         )
     }
 
+    @Transactional
     override fun delete(
         replyId: Long,
         userId: Long,
     ) {
+        val reply = replyRepository.findById(replyId).orElseThrow { ReplyNotFoundException() }
         val like = replyLikeRepository.findByReplyIdAndUserId(replyId, userId) ?: throw ReplyNotLikedException()
+
+        reply.decrementLikeCount()
+        replyRepository.save(reply)
+
         replyLikeRepository.delete(like)
     }
 }

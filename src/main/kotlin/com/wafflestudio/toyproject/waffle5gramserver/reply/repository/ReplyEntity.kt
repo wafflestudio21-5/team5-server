@@ -20,6 +20,8 @@ class ReplyEntity(
     @Column(columnDefinition = "LONGTEXT")
     var content: String,
     @Column(nullable = false)
+    var likeCount: Int = 0,
+    @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -27,4 +29,12 @@ class ReplyEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id", nullable = false)
     val comment: CommentEntity,
-)
+) {
+    fun incrementLikeCount() {
+        likeCount += 1
+    }
+
+    fun decrementLikeCount() {
+        likeCount -= 1
+    }
+}
