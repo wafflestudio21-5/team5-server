@@ -32,8 +32,9 @@ class CommentController(
     fun getCommentsByPost(
         @PathVariable("postId") postId: Long,
         pageable: Pageable,
+        @AuthenticationPrincipal user: InstagramUser,
     ): ResponseEntity<Page<Comment>> {
-        val comments = commentService.getComments(postId, pageable)
+        val comments = commentService.getComments(postId, pageable, user.id)
         return ResponseEntity.ok(comments)
     }
 

@@ -4,7 +4,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentL
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
+import org.springframework.stereotype.Service
 
+@Service
 class CommentLikeServiceImpl(
     private val commentLikeRepository: CommentLikeRepository,
     private val commentRepository: CommentRepository,
