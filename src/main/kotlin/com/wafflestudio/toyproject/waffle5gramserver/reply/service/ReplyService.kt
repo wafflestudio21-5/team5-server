@@ -7,6 +7,7 @@ interface ReplyService {
     fun getReplies(
         commentId: Long,
         pageable: Pageable,
+        userId: Long,
     ): Page<Reply>
 
     fun create(
