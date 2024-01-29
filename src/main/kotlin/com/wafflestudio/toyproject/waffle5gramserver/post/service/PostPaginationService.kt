@@ -1,11 +1,13 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
+import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.Slice
 
 interface PostPaginationService {
-    fun getRandomPosts(size: Int, category: PostCategory?): Slice<PostDetail>
-    fun getLatestPosts(page: Int, size: Int, category: PostCategory?): Slice<PostDetail>
-    fun getMostLikedPosts(page: Int, size: Int, category: PostCategory?): Slice<PostDetail>
-    fun getMostCommentedPosts(page: Int, size: Int, category: PostCategory?): Slice<PostDetail>
+    fun getRandomPosts(user: InstagramUser, size: Int, category: PostCategory?): Slice<PostEntity>
+    fun getLatestPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
+    fun getMostLikedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
+    fun getMostCommentedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
 }

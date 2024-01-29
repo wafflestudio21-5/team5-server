@@ -2,6 +2,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.post.repository
 
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
@@ -47,4 +48,50 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
     fun findAllByUserId(
         userId: Long,
     ): List<PostEntity>
+
+    @Query("SELECT p FROM posts p WHERE p.user.isPrivate = false")
+    fun findSlice(pageable: Pageable): Slice<PostEntity>
+
+    @Query("SELECT p FROM posts p WHERE p.user.isPrivate = false AND p.category = :category")
+    fun findSliceByCategory(pageable: Pageable, category: PostCategory): Slice<PostEntity>
+
+    @Query(
+        """
+            SELECT p FROM posts p
+            WHERE p.user.isPrivate = false
+            AND p.likeCountDisplayed = true
+        """
+    )
+    fun findSliceLikeCountDisplayed(pageable: Pageable): Slice<PostEntity>
+
+    @Query(
+        """
+            SELECT p FROM posts p
+            WHERE p.user.isPrivate = false
+            AND p.likeCountDisplayed = true
+            AND p.category = :category
+        """
+    )
+    fun findSliceLikeCountDisplayedByCategory(pageable: Pageable, category: PostCategory): Slice<PostEntity>
+
+    @Query(
+        """
+            SELECT p FROM posts p
+            WHERE p.user.isPrivate = false
+            AND p.commentDisplayed = true
+            ORDER BY COUNT(p.comments) DESC
+        """
+    )
+    fun findSliceCommentDisplayedOrderByCommentCountDesc(pageable: Pageable): Slice<PostEntity>
+
+    @Query(
+        """
+            SELECT p FROM posts p
+            WHERE p.user.isPrivate = false
+            AND p.commentDisplayed = true
+            AND p.category = :category
+            ORDER BY COUNT(p.comments) DESC
+        """
+    )
+    fun findSliceCommentDisplayedOrderByCommentCountDescByCategory(pageable: Pageable, category: PostCategory): Slice<PostEntity>
 }
