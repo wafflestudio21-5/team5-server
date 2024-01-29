@@ -113,7 +113,7 @@ class PostController(
         return ResponseEntity.noContent().build()
     }
 
-    @PostMapping("/posts/{postId}/saves")
+    @PostMapping("/posts/{postId}/save")
     fun createPostSave(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable postId: Long,
@@ -122,7 +122,7 @@ class PostController(
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
-    @DeleteMapping("/posts/{postId}/saves")
+    @DeleteMapping("/posts/{postId}/save")
     fun deletePostSave(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable postId: Long,
