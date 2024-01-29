@@ -133,13 +133,13 @@ class ProfileController(
         return ResponseEntity.ok(userLinkResponse)
     }
 
-    //유저 링크 편집
+    // 유저 링크 편집
     @PutMapping("/profileEdit/link/{linkId}")
     fun updateUserLinkInProfile(
         @AuthenticationPrincipal authuser: InstagramUser,
         @Valid @RequestBody userLinkRequest: UserLinkRequest,
         @PathVariable("linkId") linkId: Long,
-    ) : ResponseEntity</*ResultResponse*/UserLinkResponse>{
+    ): ResponseEntity</*ResultResponse*/UserLinkResponse> {
         val userLinkResponse = profileService.changeUserLinkInProfile(authuser, userLinkRequest, linkId)
         // return ResponseEntity.ok(ResultResponse.of(ResultCode.(not made), userLinkResponse))
         return ResponseEntity.ok(userLinkResponse)

@@ -9,10 +9,12 @@ interface UserLinkRepository : JpaRepository<UserLinkEntity, Long> {
     fun findAllByUserId(userId: Long): MutableList<UserLinkEntity>
 
     @Modifying
-    @Query("""
+    @Query(
+        """
         update user_links l 
         set l.link = :link, l.linkTitle = :linkTitle 
         where l.user.id = :userId and l.id = :linkId
-        """)
+        """
+    )
     fun updateUserLinkById(userId: Long, linkId: Long, linkTitle: String?, link: String)
 }
