@@ -20,6 +20,8 @@ class CommentEntity(
     @Column(nullable = false)
     var text: String = "",
     @Column(nullable = false)
+    var likeCount: Int = 0,
+    @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
@@ -27,4 +29,12 @@ class CommentEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: UserEntity,
-)
+) {
+    fun incrementLikeCount() {
+        likeCount += 1
+    }
+
+    fun decrementLikeCount() {
+        likeCount -= 1
+    }
+}
