@@ -53,11 +53,14 @@ class PostMapper {
             )
         }
 
-        fun toPostMediasBrief(entity: PostEntity): PostMediasBrief {
+        fun toPostMediasBrief(entity: PostEntity, commentCount: Long? = null): PostMediasBrief {
             return PostMediasBrief(
                 id = entity.id,
                 createdAt = entity.createdAt,
                 medias = entity.medias.map { toPostMediaDTO(it) },
+                category = entity.category,
+                likeCount = entity.likeCount,
+                commentCount = commentCount
             )
         }
     }

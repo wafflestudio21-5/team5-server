@@ -75,7 +75,7 @@ constructor(
                 likeCountDisplayed = true,
                 commentDisplayed = true,
                 user = user,
-                category = PostCategory.DAILY
+                category = PostCategory.LIFE
             )
         return postRepository.save(post)
     }
@@ -88,7 +88,7 @@ constructor(
         val fileUrls = listOf("https://wafflestudio.com/images/icon_intro.svg")
         val disableComment = false
         val hideLike = false
-        val category = PostCategory.DAILY
+        val category = PostCategory.LIFE
 
         // 테스트 실행
         val postBrief = postService.create(content, fileUrls, disableComment, hideLike, testUser1.id, category)
@@ -121,7 +121,7 @@ constructor(
                 likeCountDisplayed = true,
                 commentDisplayed = true,
                 user = testUser1,
-                category = PostCategory.DAILY
+                category = PostCategory.LIFE
             )
         postRepository.save(post)
 

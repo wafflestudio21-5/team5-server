@@ -67,7 +67,7 @@ class FeedServiceTest @Autowired constructor(
                 likeCountDisplayed = true,
                 commentDisplayed = true,
                 user = testUser1,
-                category = PostCategory.DAILY
+                category = PostCategory.LIFE
             )
             postRepository.save(post)
         }
@@ -78,7 +78,7 @@ class FeedServiceTest @Autowired constructor(
                 likeCountDisplayed = true,
                 commentDisplayed = true,
                 user = testUser2,
-                category = PostCategory.DAILY
+                category = PostCategory.LIFE
             )
             postRepository.save(post)
         }
