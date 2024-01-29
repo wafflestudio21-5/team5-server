@@ -44,9 +44,9 @@ class CommentController(
     fun createComment(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("postId") postId: Long,
-        @RequestBody content: String,
+        @RequestBody request: CreateCommentRequest,
     ): ResponseEntity<Comment> {
-        val comment = commentService.create(postId, content, user.id)
+        val comment = commentService.create(postId, request.content, user.id)
         return ResponseEntity.status(HttpStatus.CREATED).body(comment)
     }
 
@@ -54,9 +54,9 @@ class CommentController(
     fun updateComment(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("commentId") commentId: Long,
-        @RequestBody content: String,
+        @RequestBody request: CreateCommentRequest,
     ): ResponseEntity<Comment> {
-        val comment = commentService.patch(commentId, content, user.id)
+        val comment = commentService.patch(commentId, request.content, user.id)
         return ResponseEntity.ok(comment)
     }
 
@@ -98,3 +98,7 @@ class CommentController(
         }
     }
 }
+
+data class CreateCommentRequest(
+    val content: String,
+)

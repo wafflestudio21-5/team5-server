@@ -45,9 +45,9 @@ class ReplyController(
     fun createReply(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("commentId") commentId: Long,
-        @RequestBody content: String,
+        @RequestBody request: CreateReplyRequest,
     ): ResponseEntity<Reply> {
-        val reply = replyService.create(commentId, content, user.id)
+        val reply = replyService.create(commentId, request.content, user.id)
         return ResponseEntity.status(HttpStatus.CREATED).body(reply)
     }
 
@@ -55,9 +55,9 @@ class ReplyController(
     fun updateReply(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("replyId") replyId: Long,
-        @RequestBody content: String,
+        @RequestBody request: CreateReplyRequest,
     ): ResponseEntity<Reply> {
-        val reply = replyService.patch(replyId, content, user.id)
+        val reply = replyService.patch(replyId, request.content, user.id)
         return ResponseEntity.ok(reply)
     }
 
@@ -99,3 +99,7 @@ class ReplyController(
         }
     }
 }
+
+data class CreateReplyRequest(
+    val content: String,
+)
