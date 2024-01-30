@@ -17,7 +17,8 @@ class CustomAuthenticationEntryPoint(
         response: HttpServletResponse?,
         authException: AuthenticationException?
     ) {
-        authException?.printStackTrace()
+        println("CustomAuthenticationEntryPoint : ${authException?.message} (for the request ${request?.servletPath})")
+        // authException?.printStackTrace()
         response?.let {
             it.contentType = MediaType.APPLICATION_JSON_VALUE
             it.status = HttpServletResponse.SC_UNAUTHORIZED

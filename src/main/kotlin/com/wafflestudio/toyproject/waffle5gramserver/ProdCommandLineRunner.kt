@@ -2,6 +2,8 @@ package com.wafflestudio.toyproject.waffle5gramserver
 
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentEntity
 import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentService
+import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowEntity
+import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
 import java.util.Date
+import kotlin.random.Random
 
 @Component
 @Profile("prod", "dev-secure")
@@ -28,6 +31,7 @@ class ProdCommandLineRunner(
     private val txManager: PlatformTransactionManager,
     private val postLikeService: PostLikeService,
     private val commentService: CommentService,
+    private val followRepository: FollowRepository,
 ) : CommandLineRunner {
 
     private val txTemplate = TransactionTemplate(txManager)
@@ -35,7 +39,7 @@ class ProdCommandLineRunner(
     override fun run(vararg args: String?) {
         txTemplate.execute {
             val userIdList = mutableListOf<Long>()
-            for (i in 0..2) {
+            for (i in 0..20) {
                 val user = userRepository.save(
                     UserEntity(
                         username = "user-$i",
@@ -47,6 +51,16 @@ class ProdCommandLineRunner(
                     )
                 )
                 userIdList.add(user.id)
+                val randomStart = Random.nextInt(0, i + 1)
+                val randomStep = Random.nextInt(1, minOf(i + 2, 5))
+                for (j in randomStart until i step randomStep) {
+                    followRepository.save(
+                        FollowEntity(
+                            follower = userRepository.findByUsername("user-$j").get(),
+                            followee = user
+                        )
+                    )
+                }
             }
             val users = listOf(
                 UserEntity(

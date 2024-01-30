@@ -155,6 +155,25 @@ class ProfileServiceImpl(
     }
 
     @Transactional
+    override fun changeUserLinkInProfile(
+        authuser: InstagramUser,
+        userLinkRequest: UserLinkRequest,
+        linkId: Long,
+    ): UserLinkResponse {
+        userLinkRepository.updateUserLinkById(
+            authuser.id,
+            linkId,
+            userLinkRequest.userLinks.linkTitle,
+            userLinkRequest.userLinks.link
+        )
+        return UserLinkResponse(
+            userLinks = userLinkRepository.findAllByUserId(authuser.id)
+                .map { ProfileResponseMapper.userLinkEntityToDTO(it) }
+                .toMutableList()
+        )
+    }
+
+    @Transactional
     override fun removeUserLinkInProfile(
         authuser: InstagramUser,
         linkId: Long

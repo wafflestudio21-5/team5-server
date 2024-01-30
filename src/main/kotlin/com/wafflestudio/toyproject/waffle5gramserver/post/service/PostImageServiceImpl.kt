@@ -18,7 +18,7 @@ class PostImageServiceImpl(
     private val allowedImageTypes: List<String>,
     txManager: PlatformTransactionManager
 ) : PostImageService {
-    private val threads = Executors.newFixedThreadPool(10)
+    private val threads = Executors.newFixedThreadPool(4)
     private val txTemplate = TransactionTemplate(txManager)
 
     override fun uploadImages(images: List<MultipartFile>): List<String> {
@@ -45,7 +45,8 @@ class PostImageServiceImpl(
             }
         }
         latch.await()
-        threads.shutdown()
+//        threads.shutdown()
+        threads.awaitTermination(10, java.util.concurrent.TimeUnit.MILLISECONDS)
 
         return imageUrls.sortedBy { it.keys.first() }.map { it.values.first() }
     }

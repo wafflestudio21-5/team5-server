@@ -136,7 +136,7 @@ constructor(
         createFollow(testUser2, testUser5) // 2->5
 
         val list = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(testInstaUser2, testUser1.username)
-        Assertions.assertEquals(list.commonNumber, 2)
+        Assertions.assertEquals(list.count, 2)
     }
 
     @Test
@@ -155,7 +155,7 @@ constructor(
         createFollow(testUser2, testUser5) // 2->5
 
         val list = followRetrieveService.getDifferenceBetweenUsersFollowerAndAuthUsersFollowing(testInstaUser2, testUser1.username)
-        Assertions.assertEquals(list.diffNumber, 1)
+        Assertions.assertEquals(list.count, 1)
     }
 
     @Test
@@ -174,7 +174,7 @@ constructor(
         createFollow(testUser2, testUser5) // 2->5
 
         val list = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(testInstaUser2, testUser1.username)
-        Assertions.assertEquals(list.commonNumber, 2)
+        Assertions.assertEquals(list.count, 2)
     }
 
     @Test
@@ -193,6 +193,6 @@ constructor(
         createFollow(testUser2, testUser5) // 2->5
 
         val list = followRetrieveService.getDifferenceBetweenUsersFollowingAndAuthUsersFollowing(testInstaUser2, testUser1.username)
-        Assertions.assertEquals(list.diffNumber, 1)
+        Assertions.assertEquals(list.count, 1)
     }
 }
