@@ -16,8 +16,15 @@ class TokenRefreshServiceImpl(
     private val jwtProperties: JWTProperties
 ) : TokenRefreshService {
     override fun extractRefreshToken(request: HttpServletRequest): String {
+        println("request.cookies == null : ${request.cookies == null}")
+        for (h in request.headerNames) {
+            println("header : $h")
+        }
         val cookies = request.cookies
             ?: throw BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND)
+        for (c in request.cookies) {
+            println("cookie.name: ${c.name} / cookie.value: ${c.value}")
+        }
         val refreshTokenCookie = cookies.firstOrNull { it.name == "refresh_token" }
             ?: throw BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND)
         return refreshTokenCookie.value
@@ -58,6 +65,7 @@ class TokenRefreshServiceImpl(
             secure = jwtProperties.refreshTokenCookieSecure
             maxAge = jwtProperties.ttlMinutesRefreshToken.toInt() * 60 // minutes to seconds
             setAttribute("SameSite", "None")
+            domain = "https://waffle5gram.shop"
         }
         response.addCookie(refreshTokenCookie)
     }
