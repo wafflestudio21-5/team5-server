@@ -1,6 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.feed
 
 import com.wafflestudio.toyproject.waffle5gramserver.feed.service.FeedService
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
@@ -65,7 +66,8 @@ class FeedServiceTest @Autowired constructor(
                 content = "FirstTestContent$i",
                 likeCountDisplayed = true,
                 commentDisplayed = true,
-                user = testUser1
+                user = testUser1,
+                category = PostCategory.LIFE
             )
             postRepository.save(post)
         }
@@ -75,7 +77,8 @@ class FeedServiceTest @Autowired constructor(
                 content = "SecondTestContent$i",
                 likeCountDisplayed = true,
                 commentDisplayed = true,
-                user = testUser2
+                user = testUser2,
+                category = PostCategory.LIFE
             )
             postRepository.save(post)
         }

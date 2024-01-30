@@ -1,11 +1,14 @@
 package com.wafflestudio.toyproject.waffle5gramserver
 
 import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentEntity
+import com.wafflestudio.toyproject.waffle5gramserver.comment.service.CommentService
 import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowEntity
 import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostLikeService
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.ContactEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.ContactType
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
@@ -26,6 +29,8 @@ class ProdCommandLineRunner(
     private val postRepository: PostRepository,
     private val passwordEncoder: PasswordEncoder,
     private val txManager: PlatformTransactionManager,
+    private val postLikeService: PostLikeService,
+    private val commentService: CommentService,
     private val followRepository: FollowRepository,
 ) : CommandLineRunner {
 
@@ -33,6 +38,7 @@ class ProdCommandLineRunner(
 
     override fun run(vararg args: String?) {
         txTemplate.execute {
+            val userIdList = mutableListOf<Long>()
             for (i in 0..20) {
                 val user = userRepository.save(
                     UserEntity(
@@ -44,6 +50,7 @@ class ProdCommandLineRunner(
                         gender = "female",
                     )
                 )
+                userIdList.add(user.id)
                 val randomStart = Random.nextInt(0, i + 1)
                 val randomStep = Random.nextInt(1, minOf(i + 2, 5))
                 for (j in randomStart until i step randomStep) {
@@ -81,12 +88,20 @@ class ProdCommandLineRunner(
                     profileImageUrl = "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/503c6347-fe62-453d-9d34-8a444e63047d-django.png",
                     bio = "Django is an open source server framework based on Python language."
                 ),
+                UserEntity(
+                    username = "traveler555",
+                    name = "John",
+                    password = passwordEncoder.encode("traveler555"),
+                    birthday = Date(360000L * 80000L),
+                    bio = "여행 전문 계정"
+                )
             )
             users.forEach {
                 it.contacts.add(
                     ContactEntity(it, ContactType.EMAIL, "${it.username}@waffle.com", true)
                 )
                 userRepository.save(it)
+                userIdList.add(it.id)
             }
             val posts = mapOf(
                 "초승달" to "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/f7e0eea1-4ace-4690-a4e2-26c03d201895-moon.jpg",
@@ -98,7 +113,8 @@ class ProdCommandLineRunner(
                 posts.forEach {
                     val post = PostEntity(
                         content = it.key,
-                        user = userEntity
+                        user = userEntity,
+                        category = PostCategory.LIFE
                     )
                     post.medias.add(
                         PostMediaEntity(
@@ -120,7 +136,8 @@ class ProdCommandLineRunner(
             postRepository.save(
                 PostEntity(
                     content = "Our new partners: nginx, react",
-                    user = users[2]
+                    user = users[2],
+                    category = PostCategory.LIFE
                 ).apply {
                     medias.add(
                         PostMediaEntity(
@@ -145,6 +162,60 @@ class ProdCommandLineRunner(
                     )
                 }
             )
+            val travelPosts = mapOf(
+                "Paris" to "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/1f056fd0-4f45-46bf-8826-4ea28ae16b10-paris1-travel.jpg",
+                "Barcelona Familia" to "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/81b3edad-5768-4602-a01f-c8447df75140-barcelona1-travel.jpeg",
+                "Barcelona Guel" to "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/81b3edad-5768-4602-a01f-c8447df75140-barca2-travel.jpeg",
+                "Vietnam" to "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/8b159e29-1f51-42e0-b411-1c62e49250f5-vietnam-travel.jpg",
+                "Louvre Museum" to "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/b332ed5c-9a49-4388-b22a-0e54a819cb10-paris3-travel.jpeg"
+            )
+            val postIdList = mutableListOf<Long>()
+            travelPosts.forEach {
+                val post = postRepository.save(
+                    PostEntity(
+                        content = it.key,
+                        user = users[3],
+                        category = PostCategory.TRAVEL
+                    ).apply {
+                        medias.add(
+                            PostMediaEntity(
+                                mediaUrl = it.value,
+                                mediaOrder = 1,
+                                post = this
+                            )
+                        )
+                    }
+                )
+                postIdList.add(post.id)
+            }
+            val japanTravelPostUrls = listOf(
+                "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/a1ed3d06-d528-4494-b6e9-24f47bba8ab9-japan1-travel.jpg",
+                "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/571797a7-8413-4007-94a4-e4e4b34c01a1-japan-travel2.jpg",
+                "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/d407af09-fb24-4e79-9960-88ca365b7de6-japan3-travel.jpg",
+            )
+            postRepository.save(
+                PostEntity(
+                    content = "japan travel list",
+                    user = users[3],
+                    category = PostCategory.TRAVEL
+                ).apply {
+                    japanTravelPostUrls.forEachIndexed { index, s ->
+                        medias.add(
+                            PostMediaEntity(
+                                mediaUrl = s,
+                                mediaOrder = index + 1,
+                                post = this
+                            )
+                        )
+                    }
+                }
+            )
+            for (i in 0 until minOf(userIdList.size, postIdList.size)) {
+                for (j in 0..i) {
+                    postLikeService.create(postIdList[i], userIdList[j])
+                    commentService.create(postIdList[i], "Good place", userIdList[j])
+                }
+            }
         }
     }
 }

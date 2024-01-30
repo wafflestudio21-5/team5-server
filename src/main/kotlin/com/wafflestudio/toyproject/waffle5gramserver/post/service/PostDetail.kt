@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import java.time.LocalDateTime
 
 data class PostDetail(
@@ -13,4 +14,5 @@ data class PostDetail(
     val commentCount: Int,
     val hideLike: Boolean,
     val createdAt: LocalDateTime,
+    val category: PostCategory
 )

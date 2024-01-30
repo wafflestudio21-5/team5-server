@@ -1,0 +1,28 @@
+### 로그인
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
+
+### 최신순
+GET http://localhost:8080/api/v1/explore?page=0&size=5&sort=LATEST&category=TRAVEL
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY1MzI3NDN9.fi7Qcc4SGxXMkc7v9GcgD9DQxaeGlksrINXCjzQPMAk
+
+### 좋아요 많은 순
+GET http://localhost:8080/api/v1/explore?page=0&size=7&sort=MOST_LIKED&category=TRAVEL
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY1MzQwNzB9.jhpdLIsgMeugP0U9MeBh5ljMiljL38DlUDG_R9nfI9k
+
+### 댓글 많은 순
+GET http://localhost:8080/api/v1/explore?page=0&size=8&sort=MOST_COMMENTED&category=TRAVEL
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY2MTU5MDZ9.M28ZgY4Y9oajVWxOfd_nQO6WcYWjfGc9ss7g9FXGaqo
+
+### 랜덤 (카테고리 미지정)
+GET http://localhost:8080/api/v1/explore?page=0&size=8&sort=RANDOM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY1NDMwNTh9.HB1QPnKEhAtDrtXChtEIYeYhiQVEFmjMWNS-GYwOqqo
+
+### 랜덤 (카테고리 지정)
+GET http://localhost:8080/api/v1/explore?page=0&size=8&sort=RANDOM&category=TRAVEL
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY1Mzc4NzV9.MQ0ErwrImc-tZh5hiAiSND-v_dUxxv6u3Fe5pYx2VzA

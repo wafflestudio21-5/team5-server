@@ -2,6 +2,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.MediaType
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostLikeRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
@@ -38,6 +39,7 @@ class PostServiceImpl(
         disableComment: Boolean,
         hideLike: Boolean,
         userId: Long,
+        category: PostCategory
     ): PostBrief {
         val user = userRepository.findById(userId).orElseThrow { UserNotFoundException() }
 
@@ -47,6 +49,7 @@ class PostServiceImpl(
                 commentDisplayed = disableComment,
                 likeCountDisplayed = hideLike,
                 user = user,
+                category = category
             )
 
         fileUrls.forEachIndexed { index, url ->

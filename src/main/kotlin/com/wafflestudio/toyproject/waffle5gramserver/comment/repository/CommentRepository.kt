@@ -9,4 +9,6 @@ interface CommentRepository : JpaRepository<CommentEntity, Long> {
         postId: Long,
         pageable: Pageable,
     ): Page<CommentEntity>
+
+    fun countByPostId(postId: Long): Long
 }

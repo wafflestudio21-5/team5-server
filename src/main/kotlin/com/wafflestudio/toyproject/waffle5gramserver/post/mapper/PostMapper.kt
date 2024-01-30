@@ -6,6 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAuthor
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMedia
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMediasBrief
 
 class PostMapper {
     companion object {
@@ -38,6 +39,7 @@ class PostMapper {
                 commentCount = entity.comments.size,
                 hideLike = entity.likeCountDisplayed,
                 createdAt = entity.createdAt,
+                category = entity.category
             )
         }
 
@@ -48,6 +50,17 @@ class PostMapper {
                 order = media.mediaOrder,
                 url = media.mediaUrl,
                 mediaType = media.mediaType,
+            )
+        }
+
+        fun toPostMediasBrief(entity: PostEntity, commentCount: Long? = null): PostMediasBrief {
+            return PostMediasBrief(
+                id = entity.id,
+                createdAt = entity.createdAt,
+                medias = entity.medias.map { toPostMediaDTO(it) },
+                category = entity.category,
+                likeCount = entity.likeCount,
+                commentCount = commentCount
             )
         }
     }
