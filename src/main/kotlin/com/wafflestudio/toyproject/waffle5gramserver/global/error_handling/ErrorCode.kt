@@ -60,5 +60,5 @@ enum class ErrorCode(
     // INTERNAL_SERVER_ERROR(500, "G006", "내부 서버 오류입니다."),
     S3_UPLOAD_ERROR(500, "G009", "S3 업로드에 실패하였습니다."),
     S3_DELETE_ERROR(500, "G010", "S3 삭제에 실패하였습니다."),
-    INVALID_IMAGE_TYPE(401, "G010", "유효하지 않은 이미지 타입입니다."),
+    INVALID_IMAGE_TYPE(403, "G010", "유효하지 않은 이미지 타입입니다."),
 }
