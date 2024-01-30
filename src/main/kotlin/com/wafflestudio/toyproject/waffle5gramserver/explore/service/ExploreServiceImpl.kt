@@ -23,18 +23,23 @@ class ExploreServiceImpl(
         sortType: ExplorePostSortType,
         category: PostCategory?
     ): Slice<PostMediasBrief> {
-        val postEntities = when (sortType) {
-            ExplorePostSortType.RANDOM -> postPaginationService.getRandomPosts(user, size, category)
-            ExplorePostSortType.LATEST -> postPaginationService.getLatestPosts(user, page, size, category)
-            ExplorePostSortType.MOST_LIKED -> postPaginationService.getMostLikedPosts(user, page, size, category)
-            ExplorePostSortType.MOST_COMMENTED -> postPaginationService.getMostCommentedPosts(user, page, size, category)
-        }
-        return postEntities.map {
-            if (sortType == ExplorePostSortType.MOST_COMMENTED) {
-                PostMapper.toPostMediasBrief(it, commentRepository.countByPostId(it.id))
-            } else {
-                PostMapper.toPostMediasBrief(it)
-            }
+        return when (sortType) {
+            ExplorePostSortType.RANDOM ->
+                postPaginationService.getRandomPosts(user, size, category).map {
+                    PostMapper.toPostMediasBrief(it)
+                }
+            ExplorePostSortType.LATEST ->
+                postPaginationService.getLatestPosts(user, page, size, category).map {
+                    PostMapper.toPostMediasBrief(it)
+                }
+            ExplorePostSortType.MOST_LIKED ->
+                postPaginationService.getMostLikedPosts(user, page, size, category).map {
+                    PostMapper.toPostMediasBrief(it)
+                }
+            ExplorePostSortType.MOST_COMMENTED ->
+                postPaginationService.getMostCommentedPosts(user, page, size, category).map {
+                    PostMapper.toPostMediasBrief(it.getPostEntity(), it.getCommentCount())
+                }
         }
     }
 }

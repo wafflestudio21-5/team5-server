@@ -9,5 +9,5 @@ interface PostPaginationService {
     fun getRandomPosts(user: InstagramUser, size: Int, category: PostCategory?): Slice<PostEntity>
     fun getLatestPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
     fun getMostLikedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
-    fun getMostCommentedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
+    fun getMostCommentedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntityWithCommentCount>
 }

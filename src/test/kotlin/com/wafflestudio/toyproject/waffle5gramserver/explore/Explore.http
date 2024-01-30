@@ -17,7 +17,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY1M
 
 ### 댓글 많은 순
 GET http://localhost:8080/api/v1/explore?page=0&size=8&sort=MOST_COMMENTED&category=TRAVEL
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY1Mzc4NzV9.MQ0ErwrImc-tZh5hiAiSND-v_dUxxv6u3Fe5pYx2VzA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY2MTU5MDZ9.M28ZgY4Y9oajVWxOfd_nQO6WcYWjfGc9ss7g9FXGaqo
 
 ### 랜덤 (카테고리 미지정)
 GET http://localhost:8080/api/v1/explore?page=0&size=8&sort=RANDOM

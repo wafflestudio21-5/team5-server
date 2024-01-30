@@ -15,17 +15,20 @@ import kotlin.random.Random
 class PostPaginationServiceImpl(
     private val postRepository: PostRepository,
 ) : PostPaginationService {
+
+    private val minPagesRandomApplied = 3
+
     override fun getRandomPosts(
         user: InstagramUser,
         size: Int,
         category: PostCategory?
     ): Slice<PostEntity> {
         val totalPages = postRepository.count().toInt() / size + 1
-        val pageable = if (totalPages <= 2) {
-            PageRequest.of(0, size)
-        } else {
+        val pageable = if (totalPages >= minPagesRandomApplied) {
             val randomPage = Random.nextInt(0, totalPages - 1)
             PageRequest.of(randomPage, size)
+        } else {
+            PageRequest.of(0, size)
         }
         val postEntities = if (category == null) {
             postRepository.findSlice(pageable)
@@ -73,7 +76,7 @@ class PostPaginationServiceImpl(
         page: Int,
         size: Int,
         category: PostCategory?
-    ): Slice<PostEntity> {
+    ): Slice<PostEntityWithCommentCount> {
         val pageable = PageRequest.of(page, size)
         return if (category == null) {
             postRepository.findSliceCommentDisplayedOrderByCommentCountDesc(pageable)
