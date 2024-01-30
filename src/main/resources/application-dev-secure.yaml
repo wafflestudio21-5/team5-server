@@ -56,7 +56,7 @@ jwt:
   refreshTokenSecretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY}
   ttlMinutesAccessToken: 360 # 6 hours
   ttlMinutesRefreshToken: 360 # 6 hours
-  refreshTokenCookieSecure: false
+  refreshTokenCookieSecure: true
 
 logging:
   level:
