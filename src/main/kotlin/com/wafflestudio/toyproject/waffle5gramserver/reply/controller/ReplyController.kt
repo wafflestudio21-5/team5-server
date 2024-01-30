@@ -61,7 +61,7 @@ class ReplyController(
         return ResponseEntity.ok(reply)
     }
 
-    @DeleteMapping("api/v1/replies/{replyId}")
+    @DeleteMapping("/replies/{replyId}")
     fun deleteReply(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("replyId") replyId: Long,
