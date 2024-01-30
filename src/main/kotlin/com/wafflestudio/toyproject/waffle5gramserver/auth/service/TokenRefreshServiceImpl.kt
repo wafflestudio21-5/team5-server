@@ -61,11 +61,11 @@ class TokenRefreshServiceImpl(
     ) {
         val refreshTokenCookie = Cookie("refresh_token", token).apply {
             path = cookiePath
-            isHttpOnly = false
+            isHttpOnly = true
             secure = jwtProperties.refreshTokenCookieSecure
             maxAge = jwtProperties.ttlMinutesRefreshToken.toInt() * 60 // minutes to seconds
             setAttribute("SameSite", "None")
-            domain = "https://waffle5gram.shop"
+            domain = "waffle5gram.shop"
         }
         response.addCookie(refreshTokenCookie)
     }
