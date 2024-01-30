@@ -36,13 +36,11 @@ class JwtAuthenticationFilter(
                     instagramUser, null, setOf(SimpleGrantedAuthority("USER"))
                 )
             } else {
-                println("JwtAuthenticationFilter cannot find access token")
+                println("There is no Authorization Bearer header")
             }
             filterChain.doFilter(request, response)
         } catch (ex: Exception) {
-            println("JwtAuthenticationFilter caught error")
-            println(ex.message)
-            ex.printStackTrace()
+            println("JwtAuthenticationFilter caught error with message: ${ex.message} (for the request ${request.servletPath})")
             when (ex) {
                 is JwtException, is IllegalArgumentException -> {
                     respondForJwtException(response)
