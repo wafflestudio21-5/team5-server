@@ -199,12 +199,11 @@ class SecurityConfig {
             "https://www.waffle5gram.com",
             "https://waffle5gram.com",
             "http://localhost:5173",
-            "http://localhost.xn--5173-ek0qifp29l/",
         )
         configuration.allowedMethods = listOf(
             "GET", "HEAD", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "TRACE",
         )
-        configuration.allowedHeaders = listOf("*", "Cookie")
+        configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
