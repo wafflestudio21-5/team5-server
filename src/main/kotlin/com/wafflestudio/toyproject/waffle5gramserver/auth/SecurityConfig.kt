@@ -179,10 +179,12 @@ class SecurityConfig {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf(
             "https://www.waffle5gram.com",
-            "https://waffle5gram.com/",
+            "https://waffle5gram.com",
         )
-        configuration.allowedMethods = listOf("*")
-        configuration.allowedHeaders = listOf("*")
+        configuration.allowedMethods = listOf(
+            "GET", "HEAD", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "TRACE",
+        )
+        configuration.allowCredentials = true
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
@@ -192,9 +194,16 @@ class SecurityConfig {
     @Bean
     fun devSecureCorsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("*")
-        configuration.allowedMethods = listOf("*")
-        configuration.allowedHeaders = listOf("*")
+        configuration.allowedOrigins = listOf(
+            "https://www.waffle5gram.com",
+            "https://waffle5gram.com",
+            "http://localhost:5173",
+            "http://localhost.xn--5173-ek0qifp29l/",
+        )
+        configuration.allowedMethods = listOf(
+            "GET", "HEAD", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "TRACE",
+        )
+        configuration.allowCredentials = true
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
