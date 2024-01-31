@@ -7,5 +7,7 @@ class FacebookSignUpRequestDto(
     @NotBlank
     val username: String,
     @NotBlank
-    val birthday: Date
+    val birthday: Date,
+    @NotBlank
+    val refreshToken: String,
 )

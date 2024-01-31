@@ -15,16 +15,9 @@ class TokenRefreshServiceImpl(
     private val jwtUtils: JwtUtils,
     private val jwtProperties: JWTProperties
 ) : TokenRefreshService {
-    override fun extractRefreshToken(request: HttpServletRequest): String {
-        println("request.cookies == null : ${request.cookies == null}")
-        for (h in request.headerNames) {
-            println("header : $h")
-        }
+    override fun extractRefreshTokenFromCookie(request: HttpServletRequest): String {
         val cookies = request.cookies
             ?: throw BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND)
-        for (c in request.cookies) {
-            println("cookie.name: ${c.name} / cookie.value: ${c.value}")
-        }
         val refreshTokenCookie = cookies.firstOrNull { it.name == "refresh_token" }
             ?: throw BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND)
         return refreshTokenCookie.value
