@@ -26,6 +26,8 @@ enum class ErrorCode(
     ALREADY_OPEN(403, "U004", "이미 공개 계정입니다."),
     USERNAME_ALREADY_EXIST(409, "U005", "Username already exists."),
     LINK_NOT_FOUND(404, "U006", "Link not found."),
+    NEW_PASSWORD_EQUAL(400, "U007", "기존 패스워드와 새로운 패스워드가 동일합니다."),
+    INVALID_OLD_PASSWORD(403, "U008", "기존 패스워드가 올바르지 않습니다."),
 
     // Controller-level Authentication Exceptions
     REFRESH_TOKEN_NOT_FOUND(400, "A001", "refresh token이 쿠키에 존재하지 않습니다."),
