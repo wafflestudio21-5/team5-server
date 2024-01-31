@@ -1,6 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.search.repository
 
-import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -17,5 +16,7 @@ interface RecentSearchRepository : JpaRepository<RecentSearchEntity, Long> {
     )
     fun searchAllByUserIdOrderByCreatedAt(userId: Long,): MutableList<RecentSearchEntity>?
 
-    fun deleteAllByUser(user: UserEntity)
+    @Modifying
+    @Query("delete recent_searchs s where s.user.id = :userId")
+    fun deleteAllByUserId(userId: Long,)
 }

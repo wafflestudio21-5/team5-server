@@ -150,8 +150,6 @@ class SearchServiceImpl(
     override fun removeAllRecentSearch(
         authUser: InstagramUser
     ) {
-        val authUserEntity = userRepository.findById(authUser.id)
-            .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        recentSearchRepository.deleteAllByUser(authUserEntity)
+        recentSearchRepository.deleteAllByUserId(authUser.id)
     }
 }
