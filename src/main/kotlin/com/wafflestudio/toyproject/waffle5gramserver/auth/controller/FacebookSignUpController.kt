@@ -24,7 +24,7 @@ class FacebookSignUpController(
         request: HttpServletRequest,
         response: HttpServletResponse
     ): ResponseEntity<AccessTokenResponseDto> {
-        val refreshToken = tokenRefreshService.extractRefreshToken(request)
+        val refreshToken = facebookSignUpRequestDto.refreshToken
         val temporaryUsername = tokenRefreshService.validateRefreshToken(refreshToken)
         val newUsername = customOAuth2UserService.updateFacebookOAuth2User(
             temporaryUsername = temporaryUsername,
