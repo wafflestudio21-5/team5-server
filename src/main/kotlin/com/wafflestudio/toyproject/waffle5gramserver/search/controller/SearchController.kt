@@ -29,8 +29,8 @@ class SearchController(
         @AuthenticationPrincipal authuser: InstagramUser,
         @RequestParam("text") @NotBlank text: String,
     ) : ResponseEntity<MutableList<MiniProfile>> {
-
-        return ResponseEntity.ok(mutableListOf())
+        val miniProfile = searchService.getUserSearchPreviewList(authuser, text)
+        return ResponseEntity.ok(miniProfile)
     }
 
     //유저 검색 모두보기 목록 조회
@@ -41,8 +41,8 @@ class SearchController(
         @RequestParam("page") page: Int = 1,
         @RequestParam("size") size: Int = 20,
     ) : ResponseEntity<MiniProfilePageResponse> {
-
-        return ResponseEntity.ok(MiniProfilePageResponse())
+        val allList = searchService.getUserSearchAllList(authuser,text,page,size)
+        return ResponseEntity.ok(allList)
     }
 
     //최근 검색 기록에 텍스트 추가
@@ -50,18 +50,19 @@ class SearchController(
     fun addTextToRecentSearch(
         @AuthenticationPrincipal authuser: InstagramUser,
         @RequestParam("text") @NotBlank text: String,
-    ){
-        //return nothing
+    ) : ResponseEntity<Any>{
+        searchService.applyTextToRecentSearch(authuser,text)
+        return ResponseEntity.ok(null)
     }
 
     //최근 검색 기록에 유저 추가
     @PostMapping("/recent/user")
     fun addUserToRecentSearch(
         @AuthenticationPrincipal authuser: InstagramUser,
-        @RequestParam("userId") @NotNull userId: Long,
         @RequestParam("username") @NotBlank username: String,
-    ){
-        //return nothing
+    ) : ResponseEntity<Any> {
+        searchService.applyUserToRecentSearch(authuser,username)
+        return ResponseEntity.ok(null)
     }
 
     //최근 검색 기록 목록 조회
@@ -69,8 +70,8 @@ class SearchController(
     fun retrieveRecentSearchList(
         @AuthenticationPrincipal authuser: InstagramUser,
     ) : ResponseEntity<MutableList<RecentSearch>> {
-
-        return ResponseEntity.ok(mutableListOf())
+        val recentSearchList = searchService.getRecentSearchList(authuser)
+        return ResponseEntity.ok(recentSearchList)
     }
 
     //최근 검색 기록 삭제
@@ -79,15 +80,16 @@ class SearchController(
         @AuthenticationPrincipal authuser: InstagramUser,
         @PathVariable("searchId") searchId: Long,
     ) : ResponseEntity<MutableList<RecentSearch>> {
-
-        return ResponseEntity.ok(mutableListOf())
+        val recentSearchList = searchService.removeRecentSearch(authuser, searchId)
+        return ResponseEntity.ok(recentSearchList)
     }
 
     //최근 검색 기록 모두 삭제
     @DeleteMapping("/recent/all")
     fun deleteAllRecentSearch(
         @AuthenticationPrincipal authuser: InstagramUser,
-    ){
-        //return nothing
+    ) : ResponseEntity<Any> {
+        searchService.removeAllRecentSearch(authuser)
+        return ResponseEntity.ok(null)
     }
 }
