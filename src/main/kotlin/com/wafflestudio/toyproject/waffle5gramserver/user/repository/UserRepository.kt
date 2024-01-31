@@ -1,5 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.user.repository
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -45,4 +47,22 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
     @Modifying
     @Query(value = "update users u set u.profileImageUrl = :profileImageUrl where u.id = :id")
     fun updateProfileImageUrlById(id: Long, profileImageUrl: String)
+
+    @Modifying
+    @Query(
+        """
+        SELECT u FROM users u
+        WHERE u.username LIKE %:text%
+        OR u.name LIKE %:text%"""
+    )
+    fun findAllByText(text: String): MutableList<UserEntity>
+
+    @Modifying
+    @Query(
+        """
+        SELECT u FROM users u
+        WHERE u.username LIKE %:text%
+        OR u.name LIKE %:text%"""
+    )
+    fun findAllPagingByText(text: String, pageable: Pageable): Page<UserEntity>
 }
