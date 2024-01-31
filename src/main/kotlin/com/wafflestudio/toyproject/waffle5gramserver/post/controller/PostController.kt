@@ -46,10 +46,11 @@ class PostController(
         @RequestPart("content") content: String,
         @RequestPart("hideComments") hideComments: String = "false",
         @RequestPart("hideLikes") hideLikes: String = "false",
-        @RequestPart("category") category: PostCategory,
+        @RequestPart("category") category: String,
         @RequestPart("files") files: List<MultipartFile>,
     ): ResponseEntity<PostBrief> {
         val imageUrls = postImageService.uploadImages(files)
+        val category = PostCategory.valueOf(category)
 
         // 게시물 생성 로직 처리
         val post =
