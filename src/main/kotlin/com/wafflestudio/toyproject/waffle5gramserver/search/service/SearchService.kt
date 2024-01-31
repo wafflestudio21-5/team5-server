@@ -15,9 +15,9 @@ interface SearchService {
 
     fun applyUserToRecentSearch(authUser: InstagramUser, username: String)
 
-    fun getRecentSearchList(authUser: InstagramUser) : MutableList<RecentSearch>?
+    fun getRecentSearchList(authUser: InstagramUser): MutableList<RecentSearch>?
 
-    fun removeRecentSearch(authUser: InstagramUser, searchId: Long,) : MutableList<RecentSearch>?
+    fun removeRecentSearch(authUser: InstagramUser, searchId: Long,): MutableList<RecentSearch>?
 
     fun removeAllRecentSearch(authUser: InstagramUser,)
 }
