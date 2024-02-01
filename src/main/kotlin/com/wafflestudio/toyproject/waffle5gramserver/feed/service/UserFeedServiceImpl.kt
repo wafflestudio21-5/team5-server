@@ -11,8 +11,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import jakarta.transaction.Transactional
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 
 @Service
@@ -26,13 +24,12 @@ class UserFeedServiceImpl(
     override fun getUserFeedPreview(
         authuser: InstagramUser,
         username: String,
-        pageable: Pageable,
-    ): Slice<PostPreview> {
+    ): List<PostPreview> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
         if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
             throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
         }
-        val posts = postRepository.findPostsByUserId(user.id, pageable)
+        val posts = postRepository.findPostsByUserId(user.id)
 
         return posts.map { post ->
             PostPreview(
