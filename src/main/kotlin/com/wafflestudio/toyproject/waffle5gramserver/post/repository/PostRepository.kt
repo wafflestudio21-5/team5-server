@@ -87,10 +87,7 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
     fun findSliceCommentDisplayedOrderByCommentCountDescByCategory(
         pageable: Pageable,
         category: PostCategory,
-    ): Slice<
-        @Suppress("ktlint:standard:max-line-length")
-        PostEntityWithCommentCount,
-    >
+    ): Slice<PostEntityWithCommentCount>
 
     fun findByIdIn(
         postIds: List<Long>,
