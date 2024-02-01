@@ -19,13 +19,12 @@ class SavedFeedServiceImpl(
 ) : SavedFeedService {
     override fun getSavedFeedPreview(
         userId: Long,
-        pageable: Pageable,
-    ): Slice<PostPreview> {
+    ): List<PostPreview> {
         val user = userRepository.findById(userId).orElseThrow { throw IllegalArgumentException("User not found") }
         // 저장된 게시물을 조회
-        val postSaveEntities = postSaveRepository.findByUserId(user.id, pageable).content
+        val postSaveEntities = postSaveRepository.findByUserId(user.id)
         val postIds = postSaveEntities.map { it.postId }
-        val posts = postRepository.findByIdIn(postIds, pageable)
+        val posts = postRepository.findByIdIn(postIds)
 
         return posts.map { post ->
             PostPreview(
