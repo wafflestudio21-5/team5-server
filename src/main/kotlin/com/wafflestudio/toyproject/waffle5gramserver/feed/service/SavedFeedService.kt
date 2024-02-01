@@ -12,6 +12,5 @@ interface SavedFeedService {
 
     fun getSavedFeed(
         userId: Long,
-        pageable: Pageable,
-    ): Slice<PostDetail>
+    ): List<PostDetail>
 }

@@ -4,7 +4,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.feed.service.SavedFeedServi
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -43,21 +42,8 @@ class SavedFeedController(
     fun getSavedFeed(
         @AuthenticationPrincipal authuser: InstagramUser,
         @PageableDefault(size = 10) pageable: Pageable,
-    ): ResponseEntity<Any> {
-        val postsPage: Slice<PostDetail> = savedFeedService.getSavedFeed(authuser.id, pageable)
-
-        val feedResponse =
-            FeedResponse(
-                posts = postsPage.content,
-                pageInfo =
-                PageInfo(
-                    page = postsPage.number + 1,
-                    size = postsPage.size,
-                    offset = postsPage.pageable.offset,
-                    hasNext = postsPage.hasNext(),
-                    elements = postsPage.numberOfElements,
-                ),
-            )
-        return ResponseEntity.ok(feedResponse)
+    ): ResponseEntity<List<PostDetail>> {
+        val posts = savedFeedService.getSavedFeed(authuser.id)
+        return ResponseEntity.ok(posts)
     }
 }

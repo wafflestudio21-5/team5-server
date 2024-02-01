@@ -20,6 +20,8 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
         pageable: Pageable,
     ): Slice<PostEntity>
 
+    fun findPostsByUserId(userId: Long): List<PostEntity>
+
     // 사용자 ID로 최신 게시물 목록 조회 (초기 로드용)
     @Query("SELECT p FROM posts p WHERE p.user.id = :userId ORDER BY p.id DESC")
     fun findLatestPostsByUserId(
@@ -93,4 +95,6 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
         postIds: List<Long>,
         pageable: Pageable,
     ): Slice<PostEntity>
+
+    fun findByIdIn(postIds: List<Long>): List<PostEntity>
 }

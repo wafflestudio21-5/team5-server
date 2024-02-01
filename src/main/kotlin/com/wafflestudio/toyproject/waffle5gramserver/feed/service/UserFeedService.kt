@@ -15,6 +15,5 @@ interface UserFeedService {
     fun getUserFeed(
         authuser: InstagramUser,
         username: String,
-        pageable: Pageable,
-    ): Slice<PostDetail>
+    ): List<PostDetail>
 }
