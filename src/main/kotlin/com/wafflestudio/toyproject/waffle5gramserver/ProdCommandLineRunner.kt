@@ -24,7 +24,7 @@ import java.util.Date
 import kotlin.random.Random
 
 @Component
-@Profile("prod", "dev-secure")
+@Profile("dev-secure")
 class ProdCommandLineRunner(
     private val userRepository: UserRepository,
     private val postRepository: PostRepository,

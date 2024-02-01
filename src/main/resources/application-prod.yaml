@@ -8,7 +8,7 @@ spring:
     password: ${AWS_RDS_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     show-sql: false
     properties:
       hibernate:
