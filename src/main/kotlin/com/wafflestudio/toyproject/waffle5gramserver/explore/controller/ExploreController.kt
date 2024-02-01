@@ -59,8 +59,7 @@ class ExploreController(
                         )
                     )
                 )
-            }
-            else {
+            } else {
                 val randomPostDetails = exploreService.getRandomDetailedSlicedPosts(
                     user = user,
                     page = page,
@@ -100,7 +99,7 @@ class ExploreController(
         )
     }
 
-    private fun<T> getDefaultPageInfo(slice: Slice<T>): PageInfo {
+    private fun <T> getDefaultPageInfo(slice: Slice<T>): PageInfo {
         return PageInfo(
             page = slice.number + 1,
             size = slice.size,
