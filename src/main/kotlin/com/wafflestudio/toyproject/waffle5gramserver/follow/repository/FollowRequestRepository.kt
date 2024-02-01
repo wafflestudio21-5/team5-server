@@ -9,4 +9,7 @@ interface FollowRequestRepository : JpaRepository<FollowRequestEntity, Long> {
 
     @Query("SELECT f FROM follows_requests f WHERE f.followee.id = :followeeUserId")
     fun findAllByFolloweeUserId(followeeUserId: Long): List<FollowRequestEntity>
+
+    @Query("SELECT f FROM follows_requests f WHERE f.follower.id = :followerUserId")
+    fun findAllByFollowerUserId(followerUserId: Long): List<FollowRequestEntity>
 }

@@ -2,6 +2,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.follow.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.CommonFollowResponse
 import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.DiffFollowResponse
+import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.IsRequestMiniProfile
 import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.PrivateException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRepository
 import com.wafflestudio.toyproject.waffle5gramserver.follow.repository.FollowRequestRepository
@@ -99,33 +100,62 @@ class FollowRetrieveServiceImpl(
         }
         val usernow = userRepository.findById(authuser.id)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        val usersfollowerEntity = followRepository.findAllByFolloweeUserId(user.id)
-        val usernowsfollowingEntity = followRepository.findAllByFollowerUserId(usernow.id)
-        if (usersfollowerEntity == null) {
+        val usersfollower = followRepository.findAllByFolloweeUserId(user.id).map { it.follower }
+        val usernowsfollowing = followRepository.findAllByFollowerUserId(usernow.id).map { it.followee }
+
+        val followRequestUsers = followRequestRepository.findAllByFollowerUserId(authuser.id).map { it.followee }
+
+        if (usersfollower.isEmpty()) {
             return DiffFollowResponse(0, mutableListOf())
-        } else if (usernowsfollowingEntity == null) {
-            val diffMiniProfiles = usersfollowerEntity.map { it.follower }.map {
-                MiniProfile(
-                    it.id,
-                    it.username,
-                    it.name,
-                    it.profileImageUrl
-                )
-            }.toMutableList()
-            return DiffFollowResponse(diffMiniProfiles.count().toLong(), diffMiniProfiles)
+        } else if (usernowsfollowing.isEmpty()) {
+            val diffNotRequest = usersfollower.subtract(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        false,
+                    )
+                }.toMutableList()
+            val diffRequest = usersfollower.intersect(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        true,
+                    )
+                }.toMutableList()
+            val result = diffNotRequest.union(diffRequest).toMutableList()
+            return DiffFollowResponse(result.count().toLong(), result)
         } else {
-            val usersfollower = usersfollowerEntity.map { it.follower }
-            val usernowsfollowing = usernowsfollowingEntity.map { it.followee }
             val diffEntity = usersfollower.subtract(usernowsfollowing)
-            val diffMiniProfiles: MutableList<MiniProfile> = diffEntity.map {
-                MiniProfile(
-                    it.id,
-                    it.username,
-                    it.name,
-                    it.profileImageUrl
-                )
-            }.toMutableList()
-            return DiffFollowResponse(diffMiniProfiles.count().toLong(), diffMiniProfiles)
+
+            val diffNotRequest = diffEntity.subtract(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        false,
+                    )
+                }.toMutableList()
+            val diffRequest = diffEntity.intersect(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        true,
+                    )
+                }.toMutableList()
+            val result = diffNotRequest.union(diffRequest).toMutableList()
+
+            return DiffFollowResponse(result.count().toLong(), result)
         }
     }
 
@@ -147,7 +177,7 @@ class FollowRetrieveServiceImpl(
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
         val usersfollowingEntity = followRepository.findAllByFollowerUserId(user.id)
         val usernowsfollowingEntity = followRepository.findAllByFollowerUserId(usernow.id)
-        if (usersfollowingEntity == null || usernowsfollowingEntity == null) {
+        if (usersfollowingEntity.isEmpty() || usernowsfollowingEntity.isEmpty()) {
             return CommonFollowResponse(0, mutableListOf())
         } else {
             val usersfollowing = usersfollowingEntity.map { it.followee }
@@ -181,33 +211,64 @@ class FollowRetrieveServiceImpl(
         }
         val usernow = userRepository.findById(authuser.id)
             .orElseThrow { EntityNotFoundException(ErrorCode.USER_NOT_FOUND) }
-        val usersfollowingEntity = followRepository.findAllByFollowerUserId(user.id)
-        val usernowsfollowingEntity = followRepository.findAllByFollowerUserId(usernow.id)
-        if (usersfollowingEntity == null) {
+        val usersfollowing = followRepository.findAllByFollowerUserId(user.id).map { it.followee }
+        val usernowsfollowing = followRepository.findAllByFollowerUserId(usernow.id).map { it.followee }
+
+        val followRequestUsers = followRequestRepository.findAllByFollowerUserId(authuser.id).map { it.followee }
+
+        if (usersfollowing.isEmpty()) {
             return DiffFollowResponse(0, mutableListOf())
-        } else if (usernowsfollowingEntity == null) {
-            val diffMiniProfiles = usersfollowingEntity.map { it.followee }.map {
-                MiniProfile(
-                    it.id,
-                    it.username,
-                    it.name,
-                    it.profileImageUrl
-                )
-            }.toMutableList()
-            return DiffFollowResponse(diffMiniProfiles.count().toLong(), diffMiniProfiles)
+        } else if (usernowsfollowing.isEmpty()) {
+
+            val diffNotRequest = usersfollowing.subtract(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        false,
+                    )
+                }.toMutableList()
+            val diffRequest = usersfollowing.intersect(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        true,
+                    )
+                }.toMutableList()
+            val result = diffNotRequest.union(diffRequest).toMutableList()
+
+            return DiffFollowResponse(result.count().toLong(), result)
         } else {
-            val usersfollowing = usersfollowingEntity.map { it.followee }
-            val usernowsfollowing = usernowsfollowingEntity.map { it.followee }
             val diffEntity = usersfollowing.subtract(usernowsfollowing)
-            val diffMiniProfiles: MutableList<MiniProfile> = diffEntity.map {
-                MiniProfile(
-                    it.id,
-                    it.username,
-                    it.name,
-                    it.profileImageUrl
-                )
-            }.toMutableList()
-            return DiffFollowResponse(diffMiniProfiles.count().toLong(), diffMiniProfiles)
+
+            val diffNotRequest = diffEntity.subtract(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        false,
+                    )
+                }.toMutableList()
+            val diffRequest = diffEntity.intersect(followRequestUsers)
+                .map {
+                    IsRequestMiniProfile(
+                        it.id,
+                        it.username,
+                        it.name,
+                        it.profileImageUrl,
+                        true,
+                    )
+                }.toMutableList()
+            val result = diffNotRequest.union(diffRequest).toMutableList()
+
+            return DiffFollowResponse(result.count().toLong(), result)
         }
     }
 }

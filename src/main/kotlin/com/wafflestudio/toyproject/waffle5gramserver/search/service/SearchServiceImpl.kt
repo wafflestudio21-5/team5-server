@@ -59,9 +59,9 @@ class SearchServiceImpl(
         page: Int,
         size: Int
     ): MiniProfilePageResponse {
-        // text랑 유저네임 혹은 네임이 비슷한 유저들의 목록을 반환
-        // 위에처럼 팔로워 팔로우 기준은 없고, 그냥 무작위로 비슷한거 뽑기
-        // 20개씩 미니프로필 응답하고, 페이지네이션 조회
+        // text랑 유저네임 혹은 네임이 비슷한 유저들무작위로 비슷한거 뽑기
+        // 20개씩 미니프로필 응답하고, 페이지네이션 의 목록을 반환
+        //         // 위에처럼 팔로워 팔로우 기준은 없고, 그냥 조회
         val pageable: Pageable = PageRequest.of(page, size)
         val pageUserList = userRepository.findAllByUsernameOrNameContaining(text, text, pageable)
         return MiniProfilePageResponse(
