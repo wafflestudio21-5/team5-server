@@ -6,27 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface PostRepository : JpaRepository<PostEntity, Long> {
-    // 사용자 ID와 커서 기반으로 게시물 목록 조회
-    @Query("SELECT p FROM posts p WHERE p.user.id = :userId AND p.id < :cursor ORDER BY p.id DESC")
-    fun findPostsByUserIdAndCursor(
-        userId: Long,
-        cursor: Long,
-        pageable: Pageable,
-    ): List<PostEntity>
-
-    fun findPostsByUserId(
-        userId: Long,
-        pageable: Pageable,
-    ): Slice<PostEntity>
-
     fun findPostsByUserId(userId: Long): List<PostEntity>
-
-    // 사용자 ID로 최신 게시물 목록 조회 (초기 로드용)
-    @Query("SELECT p FROM posts p WHERE p.user.id = :userId ORDER BY p.id DESC")
-    fun findLatestPostsByUserId(
-        userId: Long,
-        pageable: Pageable,
-    ): List<PostEntity>
 
     @Query("SELECT p FROM posts p WHERE p.user.id = :userId")
     fun findAllByUserId(userId: Long): List<PostEntity>
@@ -103,11 +83,6 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
         """
     )
     fun findSlicedPostDetails(pageable: Pageable, currentUserId: Long): Slice<PostDetailQueryResult>
-
-    fun findByIdIn(
-        postIds: List<Long>,
-        pageable: Pageable,
-    ): Slice<PostEntity>
 
     fun findByIdIn(postIds: List<Long>): List<PostEntity>
 }

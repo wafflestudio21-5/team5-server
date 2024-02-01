@@ -6,8 +6,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostReposit
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,15 +15,12 @@ class SavedFeedServiceImpl(
     private val postLikeRepository: PostLikeRepository,
     private val postSaveRepository: PostSaveRepository,
 ) : SavedFeedService {
-    override fun getSavedFeedPreview(
-        userId: Long,
-        pageable: Pageable,
-    ): Slice<PostPreview> {
+    override fun getSavedFeedPreview(userId: Long): List<PostPreview> {
         val user = userRepository.findById(userId).orElseThrow { throw IllegalArgumentException("User not found") }
         // 저장된 게시물을 조회
-        val postSaveEntities = postSaveRepository.findByUserId(user.id, pageable).content
+        val postSaveEntities = postSaveRepository.findByUserId(user.id)
         val postIds = postSaveEntities.map { it.postId }
-        val posts = postRepository.findByIdIn(postIds, pageable)
+        val posts = postRepository.findByIdIn(postIds)
 
         return posts.map { post ->
             PostPreview(

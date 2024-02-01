@@ -1,7 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.repository
 
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PostSaveRepository : JpaRepository<PostSaveEntity, Long> {
@@ -16,11 +14,6 @@ interface PostSaveRepository : JpaRepository<PostSaveEntity, Long> {
         postId: Long,
         userId: Long,
     ): PostSaveEntity?
-
-    fun findByUserId(
-        userId: Long,
-        pageable: Pageable,
-    ): Slice<PostSaveEntity>
 
     fun findByUserId(userId: Long): List<PostSaveEntity>
 }
