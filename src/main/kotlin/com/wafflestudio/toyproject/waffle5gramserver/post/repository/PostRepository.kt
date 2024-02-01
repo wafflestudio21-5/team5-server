@@ -1,6 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.repository
 
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostEntityWithCommentCount
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.jpa.repository.JpaRepository
@@ -66,10 +65,24 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
             ORDER BY COUNT(c.id) DESC
         """,
     )
-    fun findSliceCommentDisplayedOrderByCommentCountDescByCategory(
-        pageable: Pageable,
-        category: PostCategory,
-    ): Slice<PostEntityWithCommentCount>
+    fun findSliceCommentDisplayedOrderByCommentCountDescByCategory(pageable: Pageable, category: PostCategory): Slice<PostEntityWithCommentCount>
+
+    @Query(
+        """
+            SELECT p AS postEntity, 
+            p.user.id AS userId, 
+            p.user.username AS username, 
+            p.user.profileImageUrl AS profileImageUrl,
+            (SELECT COUNT(pl) FROM post_likes pl WHERE pl.userId = :currentUserId AND pl.postId = p.id) AS postLikeCount,
+            (SELECT COUNT(ps) FROM post_saves ps WHERE ps.userId = :currentUserId AND ps.postId = p.id) AS postSaveCount,
+            COUNT(c.id) AS commentCount
+            FROM posts p
+            INNER JOIN comments c
+            WHERE p.user.isPrivate = false
+            GROUP BY p
+        """
+    )
+    fun findSlicedPostDetails(pageable: Pageable, currentUserId: Long): Slice<PostDetailQueryResult>
 
     fun findByIdIn(postIds: List<Long>): List<PostEntity>
 }
