@@ -63,14 +63,20 @@ class ExploreServiceImpl(
         size: Int,
     ): Slice<PostDetail> {
         return postRepository.findSlicedPostDetails(
-            pageable = PageRequest.of(page, size),
+            pageable = postPaginationService.getRandomPageable(size),
             currentUserId = user.id
         ).map {
             PostMapper.toPostMediaDetail(it)
         }
     }
 
-    override fun getPostById(user: InstagramUser, postId: Long): PostDetail {
-        TODO("Not yet implemented")
+    override fun getOnePostById(user: InstagramUser, postId: Long): Slice<PostDetail> {
+        return postRepository.findSlicedPostDetailsByPostId(
+            pageable = PageRequest.of(0, 1),
+            currentUserId = user.id,
+            postId = postId
+        ).map {
+            PostMapper.toPostMediaDetail(it)
+        }
     }
 }

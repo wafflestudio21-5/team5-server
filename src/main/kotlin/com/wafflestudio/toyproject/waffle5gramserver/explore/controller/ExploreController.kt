@@ -6,6 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExploreResponse
 import com.wafflestudio.toyproject.waffle5gramserver.explore.service.ExploreService
 import com.wafflestudio.toyproject.waffle5gramserver.feed.controller.PageInfo
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -31,24 +32,61 @@ class ExploreController(
         return ResponseEntity.ok(
             ExploreResponseDto(
                 previews = slicedExplorePreview.content,
-                pageInfo = PageInfo(
-                    page = slicedExplorePreview.number + 1,
-                    size = slicedExplorePreview.size,
-                    offset = slicedExplorePreview.pageable.offset,
-                    hasNext = slicedExplorePreview.hasNext(),
-                    elements = slicedExplorePreview.numberOfElements
-                )
+                pageInfo = getDefaultPageInfo(slicedExplorePreview)
             )
         )
     }
 
     @GetMapping("/api/v1/explore/{postId}")
     fun getFeeds(
-        @PathVariable postId: String,
+        @PathVariable postId: Long,
         @RequestParam(name = "page", required = false) page: Int = 1,
         @RequestParam(name = "size", required = false) size: Int = 6,
         @AuthenticationPrincipal user: InstagramUser
     ): ResponseEntity<ExploreFeedResponseDto> {
+        if (page == 1) {
+            val firstPostDetail = exploreService.getOnePostById(user, postId)
+            if (size == 1) {
+                return ResponseEntity.ok(
+                    ExploreFeedResponseDto(
+                        posts = firstPostDetail.content,
+                        pageInfo = PageInfo(
+                            page = 1,
+                            size = 1,
+                            offset = firstPostDetail.pageable.offset,
+                            hasNext = firstPostDetail.hasNext(),
+                            elements = firstPostDetail.numberOfElements
+                        )
+                    )
+                )
+            }
+            else {
+                val randomPostDetails = exploreService.getRandomDetailedSlicedPosts(
+                    user = user,
+                    page = page,
+                    size = size - 1
+                )
+                val postDetails = mutableListOf(
+                    firstPostDetail.content[0]
+                )
+                randomPostDetails.content.shuffled().map {
+                    postDetails.add(it)
+                }
+                return ResponseEntity.ok(
+                    ExploreFeedResponseDto(
+                        posts = postDetails,
+                        pageInfo = PageInfo(
+                            page = 1,
+                            size = size,
+                            offset = 0,
+                            hasNext = randomPostDetails.hasNext(),
+                            elements = firstPostDetail.numberOfElements + randomPostDetails.numberOfElements
+                        )
+                    )
+                )
+            }
+        }
+        // page is not one.
         val slicedPostDetails = exploreService.getRandomDetailedSlicedPosts(
             user = user,
             page = page,
@@ -57,14 +95,18 @@ class ExploreController(
         return ResponseEntity.ok(
             ExploreFeedResponseDto(
                 posts = slicedPostDetails.content.shuffled(),
-                pageInfo = PageInfo(
-                    page = slicedPostDetails.number + 1,
-                    size = slicedPostDetails.size,
-                    offset = slicedPostDetails.pageable.offset,
-                    hasNext = slicedPostDetails.hasNext(),
-                    elements = slicedPostDetails.numberOfElements
-                )
+                pageInfo = getDefaultPageInfo(slicedPostDetails)
             )
+        )
+    }
+
+    private fun<T> getDefaultPageInfo(slice: Slice<T>): PageInfo {
+        return PageInfo(
+            page = slice.number + 1,
+            size = slice.size,
+            offset = slice.pageable.offset,
+            hasNext = slice.hasNext(),
+            elements = slice.numberOfElements
         )
     }
 }
