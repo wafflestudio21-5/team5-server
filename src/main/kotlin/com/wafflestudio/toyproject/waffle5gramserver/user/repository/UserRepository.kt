@@ -57,14 +57,5 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
     )
     fun findAllByText(text: String): MutableList<UserEntity>
 
-//    @Modifying
-//    @Query(
-//        """
-//        SELECT u FROM users u
-//        WHERE u.username LIKE %:text%
-//        OR u.name LIKE %:text%"""
-//    )
-//    fun findAllPagingByText(text: String, pageable: Pageable): Page<UserEntity>
-
-    fun findAllByUsernameContaining(text: String, pageable: Pageable): Page<UserEntity>
+    fun findAllByUsernameContainingOrNameContaining(text: String, pageable: Pageable): Page<UserEntity>
 }
