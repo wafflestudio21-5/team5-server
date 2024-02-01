@@ -15,9 +15,7 @@ class SavedFeedServiceImpl(
     private val postLikeRepository: PostLikeRepository,
     private val postSaveRepository: PostSaveRepository,
 ) : SavedFeedService {
-    override fun getSavedFeedPreview(
-        userId: Long,
-    ): List<PostPreview> {
+    override fun getSavedFeedPreview(userId: Long): List<PostPreview> {
         val user = userRepository.findById(userId).orElseThrow { throw IllegalArgumentException("User not found") }
         // 저장된 게시물을 조회
         val postSaveEntities = postSaveRepository.findByUserId(user.id)

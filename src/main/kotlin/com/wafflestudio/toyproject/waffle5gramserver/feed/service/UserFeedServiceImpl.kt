@@ -11,7 +11,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import jakarta.transaction.Transactional
-
 import org.springframework.stereotype.Service
 
 @Service

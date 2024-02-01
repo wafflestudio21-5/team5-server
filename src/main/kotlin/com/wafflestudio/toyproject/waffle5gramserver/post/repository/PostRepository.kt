@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface PostRepository : JpaRepository<PostEntity, Long> {
+    fun findPostsByUserId(userId: Long): List<PostEntity>
+
     @Query("SELECT p FROM posts p WHERE p.user.id = :userId")
     fun findAllByUserId(userId: Long): List<PostEntity>
 
