@@ -53,10 +53,7 @@ class ExploreServiceImpl(
         category: PostCategory?
     ): Slice<ExplorePreview> {
         return postPaginationService.getRandomPosts(user, size, category).map {
-            ExplorePreview(
-                postId = it.id,
-                thumbnailUrl = it.medias.getOrNull(0)?.mediaUrl
-            )
+            PostMapper.toExplorePreview(it)
         }
     }
 

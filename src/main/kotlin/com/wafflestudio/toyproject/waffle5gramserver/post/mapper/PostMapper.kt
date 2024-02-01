@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.mapper
 
+import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExplorePreview
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostDetailQueryResult
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
@@ -85,6 +86,13 @@ class PostMapper {
                 hideLike = !post.likeCountDisplayed,
                 createdAt = post.createdAt,
                 category = post.category
+            )
+        }
+
+        fun toExplorePreview(entity: PostEntity): ExplorePreview {
+            return ExplorePreview(
+                postId = entity.id,
+                thumbnailUrl = entity.medias.getOrNull(0)?.mediaUrl
             )
         }
     }
