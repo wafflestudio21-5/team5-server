@@ -6,10 +6,9 @@ import org.springframework.data.domain.Slice
 
 interface SavedFeedService {
     fun getSavedFeedPreview(
-        username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostPreview>
+        userId: Long,
+        pageable: Pageable,
+    ): Slice<PostPreview>
 
     fun getSavedFeed(
         userId: Long,
