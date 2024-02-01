@@ -20,6 +20,7 @@ class UserAuthServiceImpl(
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository
 ) : UserAuthService {
+    private final val defaultImageUrl = "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/7506b932-5c8f-4f7c-9a15-6f78f1cc7b49-Default_Profile.png"
 
     override fun authenticateUsernamePassword(username: String, password: String) {
         val authentication = authenticationManager.authenticate(
@@ -49,7 +50,7 @@ class UserAuthServiceImpl(
             isPrivate = false,
             gender = null,
             isCustomGender = false,
-            profileImageUrl = null,
+            profileImageUrl = defaultImageUrl,
             bio = null
         )
         userEntity = userRepository.save(userEntity)
