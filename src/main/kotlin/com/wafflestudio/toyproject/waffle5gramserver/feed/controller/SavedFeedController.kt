@@ -27,13 +27,13 @@ class SavedFeedController(
             FeedPreviewResponse(
                 posts = postPreviews.content,
                 pageInfo =
-                    PageInfo(
-                        page = pageable.pageNumber + 1,
-                        size = pageable.pageSize,
-                        offset = pageable.offset,
-                        hasNext = postPreviews.size == pageable.pageSize,
-                        elements = postPreviews.size,
-                    ),
+                PageInfo(
+                    page = pageable.pageNumber + 1,
+                    size = pageable.pageSize,
+                    offset = pageable.offset,
+                    hasNext = postPreviews.size == pageable.pageSize,
+                    elements = postPreviews.size,
+                ),
             )
         return ResponseEntity.ok(feedPreviewResponse)
     }
@@ -50,13 +50,13 @@ class SavedFeedController(
             FeedResponse(
                 posts = postsPage.content,
                 pageInfo =
-                    PageInfo(
-                        page = postsPage.number + 1,
-                        size = postsPage.size,
-                        offset = postsPage.pageable.offset,
-                        hasNext = postsPage.hasNext(),
-                        elements = postsPage.numberOfElements,
-                    ),
+                PageInfo(
+                    page = postsPage.number + 1,
+                    size = postsPage.size,
+                    offset = postsPage.pageable.offset,
+                    hasNext = postsPage.hasNext(),
+                    elements = postsPage.numberOfElements,
+                ),
             )
         return ResponseEntity.ok(feedResponse)
     }

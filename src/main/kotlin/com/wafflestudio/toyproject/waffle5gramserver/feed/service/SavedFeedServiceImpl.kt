@@ -6,7 +6,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostReposit
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
@@ -35,7 +34,6 @@ class SavedFeedServiceImpl(
                 // 첫 번째 미디어의 URL을 사용
             )
         }
-
     }
 
     override fun getSavedFeed(
