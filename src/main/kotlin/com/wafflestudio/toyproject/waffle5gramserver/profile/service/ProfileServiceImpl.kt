@@ -31,6 +31,8 @@ class ProfileServiceImpl(
     @Qualifier("allowedImageTypes")
     private val allowedImageTypes: List<String>
 ) : ProfileService {
+    private final val defaultImageUrl = "https://waffle5grambucket.s3.ap-northeast-2.amazonaws.com/7506b932-5c8f-4f7c-9a15-6f78f1cc7b49-Default_Profile.png"
+
     @Transactional
     override fun getUserProfile(
         authuser: InstagramUser,
@@ -79,7 +81,7 @@ class ProfileServiceImpl(
             if (deprecatedUrl != null) {
                 s3ImageUpload.deleteImage(deprecatedUrl)
             }
-            val profileImageUrl = ""
+            val profileImageUrl = defaultImageUrl
             userRepository.updateProfileImageUrlById(authuser.id, profileImageUrl)
             return ProfileImageResponse(profileImageUrl)
         } catch (e: Exception) {
