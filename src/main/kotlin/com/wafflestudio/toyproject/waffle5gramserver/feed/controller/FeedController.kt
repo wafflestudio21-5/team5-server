@@ -18,25 +18,27 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/feed")
 class FeedController(
-    private val feedService: FeedService
+    private val feedService: FeedService,
 ) {
     @GetMapping("/timeline")
     fun getFeedWithRecommendation(
         @AuthenticationPrincipal user: InstagramUser,
-        @PageableDefault(size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
+        @PageableDefault(size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<Any> {
         val postsPage: Slice<PostDetail> = feedService.getHomeFeed(userId = user.id, pageable = pageable)
 
-        val feedResponse = FeedResponse(
-            posts = postsPage.content,
-            pageInfo = PageInfo(
-                page = postsPage.number + 1,
-                size = postsPage.size,
-                offset = postsPage.pageable.offset,
-                hasNext = postsPage.hasNext(),
-                elements = postsPage.numberOfElements
+        val feedResponse =
+            FeedResponse(
+                posts = postsPage.content,
+                pageInfo =
+                PageInfo(
+                    page = postsPage.number + 1,
+                    size = postsPage.size,
+                    offset = postsPage.pageable.offset,
+                    hasNext = postsPage.hasNext(),
+                    elements = postsPage.numberOfElements,
+                ),
             )
-        )
         return ResponseEntity.ok(feedResponse)
     }
 
@@ -50,8 +52,3 @@ class FeedController(
         TODO()
     }
 }
-
-data class FeedResponse(
-    val posts: List<PostDetail>,
-    val pageInfo: PageInfo
-)

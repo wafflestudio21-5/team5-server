@@ -10,7 +10,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRep
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
-import org.springframework.data.domain.PageRequest
+import jakarta.transaction.Transactional
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 
 @Service
@@ -24,20 +26,13 @@ class UserFeedServiceImpl(
     override fun getUserFeedPreview(
         authuser: InstagramUser,
         username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostPreview> {
+        pageable: Pageable,
+    ): Slice<PostPreview> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
         if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
             throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
         }
-        val pageable = PageRequest.of(0, limit)
-        val posts =
-            if (cursor == null) {
-                postRepository.findLatestPostsByUserId(user.id, pageable)
-            } else {
-                postRepository.findPostsByUserIdAndCursor(user.id, cursor, pageable)
-            }
+        val posts = postRepository.findPostsByUserId(user.id, pageable)
 
         return posts.map { post ->
             PostPreview(
@@ -48,37 +43,16 @@ class UserFeedServiceImpl(
         }
     }
 
-    override fun loadNewerPosts(
+    @Transactional
+    override fun getUserFeed(
         authuser: InstagramUser,
         username: String,
-        cursor: Long?,
-        limit: Int,
     ): List<PostDetail> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
         if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
             throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
         }
-        val pageable = PageRequest.of(0, limit)
-        val posts = postRepository.findNewerPostsByUserIdAndCursor(user.id, cursor, pageable)
-        return posts.map { post ->
-            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
-            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null
-            PostMapper.toPostDetailDTO(post, isLiked, isSaved)
-        }
-    }
-
-    override fun loadOlderPosts(
-        authuser: InstagramUser,
-        username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostDetail> {
-        val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
-        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
-            throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
-        }
-        val pageable = PageRequest.of(0, limit)
-        val posts = postRepository.findOlderPostsByUserIdAndCursor(user.id, cursor, pageable)
+        val posts = postRepository.findPostsByUserId(user.id)
         return posts.map { post ->
             val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
             val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null

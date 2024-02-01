@@ -2,26 +2,18 @@ package com.wafflestudio.toyproject.waffle5gramserver.feed.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 
 interface UserFeedService {
     fun getUserFeedPreview(
         authuser: InstagramUser,
         username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostPreview>
+        pageable: Pageable,
+    ): Slice<PostPreview>
 
-    fun loadNewerPosts(
+    fun getUserFeed(
         authuser: InstagramUser,
         username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostDetail>
-
-    fun loadOlderPosts(
-        authuser: InstagramUser,
-        username: String,
-        cursor: Long?,
-        limit: Int,
     ): List<PostDetail>
 }
