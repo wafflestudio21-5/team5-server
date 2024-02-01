@@ -4,6 +4,9 @@ import com.wafflestudio.toyproject.waffle5gramserver.feed.service.PostPreview
 import com.wafflestudio.toyproject.waffle5gramserver.feed.service.SavedFeedService
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,23 +29,26 @@ class SavedFeedController(
         return ResponseEntity.ok(postPreviews)
     }
 
-    @GetMapping("/newer")
-    fun loadNewerPosts(
+    // 피드 조회 API
+    @GetMapping("")
+    fun getSavedFeed(
         @AuthenticationPrincipal authuser: InstagramUser,
-        @RequestParam(required = false) cursor: Long?,
-        @RequestParam(defaultValue = "10") limit: Int,
-    ): ResponseEntity<List<PostDetail>> {
-        val newerPosts = savedFeedService.loadNewerPosts(authuser.username, cursor, limit)
-        return ResponseEntity.ok(newerPosts)
-    }
+        @PageableDefault(size = 10) pageable: Pageable,
+    ): ResponseEntity<Any> {
+        val postsPage: Slice<PostDetail> = savedFeedService.getSavedFeed(authuser.id, pageable)
 
-    @GetMapping("/older")
-    fun loadOlderPosts(
-        @AuthenticationPrincipal authuser: InstagramUser,
-        @RequestParam(required = false) cursor: Long?,
-        @RequestParam(defaultValue = "10") limit: Int,
-    ): ResponseEntity<List<PostDetail>> {
-        val olderPosts = savedFeedService.loadOlderPosts(authuser.username, cursor, limit)
-        return ResponseEntity.ok(olderPosts)
+        val feedResponse =
+            FeedResponse(
+                posts = postsPage.content,
+                pageInfo =
+                    PageInfo(
+                        page = postsPage.number + 1,
+                        size = postsPage.size,
+                        offset = postsPage.pageable.offset,
+                        hasNext = postsPage.hasNext(),
+                        elements = postsPage.numberOfElements,
+                    ),
+            )
+        return ResponseEntity.ok(feedResponse)
     }
 }
