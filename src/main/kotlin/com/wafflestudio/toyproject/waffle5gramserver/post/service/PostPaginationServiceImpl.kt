@@ -6,6 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntityW
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.domain.SliceImpl
 import org.springframework.data.domain.Sort
@@ -24,17 +25,11 @@ class PostPaginationServiceImpl(
         size: Int,
         category: PostCategory?
     ): Slice<PostEntity> {
-        val totalPages = postRepository.count().toInt() / size + 1
-        val pageable = if (totalPages >= minPagesRandomApplied) {
-            val randomPage = Random.nextInt(0, totalPages - 1)
-            PageRequest.of(randomPage, size)
-        } else {
-            PageRequest.of(0, size)
-        }
+        val pageable = getRandomPageable(size)
         val postEntities = if (category == null) {
-            postRepository.findSlice(pageable)
+            postRepository.findSlice(pageable, user.id)
         } else {
-            postRepository.findSliceByCategory(pageable, category)
+            postRepository.findSliceByCategory(pageable, category, user.id)
         }
         return shuffleSlice(postEntities)
     }
@@ -52,9 +47,9 @@ class PostPaginationServiceImpl(
     ): Slice<PostEntity> {
         val pageable = PageRequest.of(page, size, Sort.by("createdAt").descending())
         return if (category == null) {
-            postRepository.findSlice(pageable)
+            postRepository.findSlice(pageable, user.id)
         } else {
-            postRepository.findSliceByCategory(pageable, category)
+            postRepository.findSliceByCategory(pageable, category, user.id)
         }
     }
 
@@ -83,6 +78,16 @@ class PostPaginationServiceImpl(
             postRepository.findSliceCommentDisplayedOrderByCommentCountDesc(pageable)
         } else {
             postRepository.findSliceCommentDisplayedOrderByCommentCountDescByCategory(pageable, category)
+        }
+    }
+
+    override fun getRandomPageable(size: Int): Pageable {
+        val totalPages = postRepository.count().toInt() / size + 1
+        return if (totalPages >= minPagesRandomApplied) {
+            val randomPage = Random.nextInt(0, totalPages - 1)
+            PageRequest.of(randomPage, size)
+        } else {
+            PageRequest.of(0, size)
         }
     }
 }

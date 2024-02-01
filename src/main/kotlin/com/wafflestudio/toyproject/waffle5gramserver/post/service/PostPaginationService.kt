@@ -4,6 +4,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategor
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntityWithCommentCount
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 
 interface PostPaginationService {
@@ -11,4 +12,6 @@ interface PostPaginationService {
     fun getLatestPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
     fun getMostLikedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntity>
     fun getMostCommentedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<PostEntityWithCommentCount>
+
+    fun getRandomPageable(size: Int): Pageable
 }
