@@ -53,6 +53,7 @@ enum class ErrorCode(
     // Feed Exceptions
 
     // Search Exceptions
+    RECENT_SEARCH_NOT_FOUND(404, "S001", "Recent search not found."),
 
     // Alarm Exceptions
 

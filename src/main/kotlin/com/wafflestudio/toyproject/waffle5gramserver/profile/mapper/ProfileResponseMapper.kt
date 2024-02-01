@@ -4,6 +4,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.Contactdto
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.FullProfileResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.NormalProfileResponse
 import com.wafflestudio.toyproject.waffle5gramserver.profile.dto.UserLinkdto
+import com.wafflestudio.toyproject.waffle5gramserver.user.dto.MiniProfile
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.ContactEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserLinkEntity
@@ -49,6 +50,17 @@ class ProfileResponseMapper {
                 bio = user.bio,
                 userLinks = user.userLinks.map { userLinkEntityToDTO(it) }.toMutableList(),
                 contacts = user.contacts.map { contactEntityToDTO(it) }.toMutableList(),
+            )
+        }
+
+        fun toMiniProfile(
+            user: UserEntity,
+        ): MiniProfile {
+            return MiniProfile(
+                userId = user.id,
+                username = user.username,
+                name = user.name,
+                profileImageUrl = user.profileImageUrl,
             )
         }
 
