@@ -4,9 +4,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.feed.service.PostPreview
 import com.wafflestudio.toyproject.waffle5gramserver.feed.service.UserFeedService
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
-import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping

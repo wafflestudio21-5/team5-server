@@ -17,10 +17,5 @@ interface PostSaveRepository : JpaRepository<PostSaveEntity, Long> {
         userId: Long,
     ): PostSaveEntity?
 
-    fun findByUserId(
-        userId: Long,
-        pageable: Pageable,
-    ): Slice<PostSaveEntity>
-
     fun findByUserId(userId: Long): List<PostSaveEntity>
 }

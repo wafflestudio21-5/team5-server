@@ -6,8 +6,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostReposit
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 
 @Service
