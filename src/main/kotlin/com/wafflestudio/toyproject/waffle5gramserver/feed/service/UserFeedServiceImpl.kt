@@ -47,13 +47,12 @@ class UserFeedServiceImpl(
     override fun getUserFeed(
         authuser: InstagramUser,
         username: String,
-        pageable: Pageable,
-    ): Slice<PostDetail> {
+    ): List<PostDetail> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
         if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
             throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
         }
-        val posts = postRepository.findPostsByUserId(user.id, pageable)
+        val posts = postRepository.findPostsByUserId(user.id)
         return posts.map { post ->
             val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
             val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null

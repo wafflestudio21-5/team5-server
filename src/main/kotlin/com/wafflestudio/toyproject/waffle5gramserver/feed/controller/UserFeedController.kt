@@ -4,7 +4,6 @@ import com.wafflestudio.toyproject.waffle5gramserver.feed.service.UserFeedServic
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
@@ -48,22 +47,8 @@ class UserFeedController(
     fun getUserFeed(
         @AuthenticationPrincipal authuser: InstagramUser,
         @PathVariable username: String,
-        @PageableDefault(size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
-    ): ResponseEntity<Any> {
-        val postsPage: Slice<PostDetail> = userFeedService.getUserFeed(authuser, username, pageable)
-
-        val feedResponse =
-            FeedResponse(
-                posts = postsPage.content,
-                pageInfo =
-                PageInfo(
-                    page = postsPage.number + 1,
-                    size = postsPage.size,
-                    offset = postsPage.pageable.offset,
-                    hasNext = postsPage.hasNext(),
-                    elements = postsPage.numberOfElements,
-                ),
-            )
-        return ResponseEntity.ok(feedResponse)
+    ): ResponseEntity<List<PostDetail>> {
+        val posts = userFeedService.getUserFeed(authuser, username)
+        return ResponseEntity.ok(posts)
     }
 }
