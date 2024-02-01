@@ -4,15 +4,19 @@ import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExplorePostSort
 import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExplorePreview
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMediasBrief
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostPaginationService
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 
 @Service
 class ExploreServiceImpl(
     private val postPaginationService: PostPaginationService,
+    private val postRepository: PostRepository
 ) : ExploreService {
 
     override fun getSlicedPosts(
@@ -53,6 +57,19 @@ class ExploreServiceImpl(
                 postId = it.id,
                 thumbnailUrl = it.medias.getOrNull(0)?.mediaUrl
             )
+        }
+    }
+
+    override fun getRandomDetailedSlicedPosts(
+        user: InstagramUser,
+        page: Int,
+        size: Int,
+    ): Slice<PostDetail> {
+        return postRepository.findSlicedPostDetails(
+            pageable = PageRequest.of(page, size),
+            currentUserId = user.id
+        ).map {
+            PostMapper.toPostMediaDetail(it)
         }
     }
 }

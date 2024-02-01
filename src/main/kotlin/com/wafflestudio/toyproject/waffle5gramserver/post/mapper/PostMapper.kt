@@ -1,5 +1,6 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.mapper
 
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostDetailQueryResult
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostAuthor
@@ -61,6 +62,29 @@ class PostMapper {
                 category = entity.category,
                 likeCount = entity.likeCount,
                 commentCount = commentCount
+            )
+        }
+
+        fun toPostMediaDetail(postDetailQueryResult: PostDetailQueryResult): PostDetail {
+            val post = postDetailQueryResult.getPostEntity()
+            val profileImageUrl = postDetailQueryResult.getProfileImageUrl()
+                ?: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/680px-Default_pfp.svg.png?20220226140232"
+            return PostDetail(
+                id = post.id,
+                author = PostAuthor(
+                    id = postDetailQueryResult.getUserId(),
+                    username = postDetailQueryResult.getUsername(),
+                    profileImageUrl = profileImageUrl
+                ),
+                content = post.content,
+                media = post.medias.map { toPostMediaDTO(it) },
+                liked = postDetailQueryResult.getPostLikeCount() >= 1,
+                likeCount = post.likeCount,
+                saved = postDetailQueryResult.getPostSaveCount() >= 1,
+                commentCount = postDetailQueryResult.getCommentCount().toInt(),
+                hideLike = !post.likeCountDisplayed,
+                createdAt = post.createdAt,
+                category = post.category
             )
         }
     }

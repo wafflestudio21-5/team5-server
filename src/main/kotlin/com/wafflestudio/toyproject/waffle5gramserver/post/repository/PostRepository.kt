@@ -98,4 +98,21 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
         """
     )
     fun findSliceCommentDisplayedOrderByCommentCountDescByCategory(pageable: Pageable, category: PostCategory): Slice<PostEntityWithCommentCount>
+
+    @Query(
+        """
+            SELECT p AS postEntity, 
+            p.user.id AS userId, 
+            p.user.username AS username, 
+            p.user.profileImageUrl AS profileImageUrl,
+            (SELECT COUNT(pl) FROM post_likes pl WHERE pl.userId = :currentUserId AND pl.postId = p.id) AS postLikeCount,
+            (SELECT COUNT(ps) FROM post_saves ps WHERE ps.userId = :currentUserId AND ps.postId = p.id) AS postSaveCount,
+            COUNT(c.id) AS commentCount
+            FROM posts p
+            INNER JOIN comments c
+            WHERE p.user.isPrivate = false
+            GROUP BY p
+        """
+    )
+    fun findSlicedPostDetails(pageable: Pageable, currentUserId: Long): Slice<PostDetailQueryResult>
 }
