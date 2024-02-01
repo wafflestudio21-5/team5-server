@@ -53,7 +53,7 @@ class TokenRefreshServiceImpl(
         cookiePath: String
     ) {
         val refreshTokenCookie = Cookie("refresh_token", token).apply {
-            path = cookiePath
+            path = "/"
             isHttpOnly = false
             secure = jwtProperties.refreshTokenCookieSecure
             maxAge = jwtProperties.ttlMinutesRefreshToken.toInt() * 60 // minutes to seconds

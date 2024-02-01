@@ -32,7 +32,7 @@ class ExploreController(
             ExploreResponseDto(
                 previews = slicedExplorePreview.content,
                 pageInfo = PageInfo(
-                    page = slicedExplorePreview.number,
+                    page = slicedExplorePreview.number + 1,
                     size = slicedExplorePreview.size,
                     offset = slicedExplorePreview.pageable.offset,
                     hasNext = slicedExplorePreview.hasNext(),
@@ -58,7 +58,7 @@ class ExploreController(
             ExploreFeedResponseDto(
                 posts = slicedPostDetails.content.shuffled(),
                 pageInfo = PageInfo(
-                    page = slicedPostDetails.number,
+                    page = slicedPostDetails.number + 1,
                     size = slicedPostDetails.size,
                     offset = slicedPostDetails.pageable.offset,
                     hasNext = slicedPostDetails.hasNext(),
