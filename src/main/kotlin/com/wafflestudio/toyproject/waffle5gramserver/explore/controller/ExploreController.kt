@@ -19,22 +19,21 @@ class ExploreController(
         exploreQueryDto: ExploreQueryDto,
         @AuthenticationPrincipal user: InstagramUser
     ): ResponseEntity<ExploreResponseDto> {
-        val slicedPosts = exploreService.getSlicedPosts(
+        val slicedExplorePreview = exploreService.getRandomSimpleSlicedPosts(
             user = user,
             page = exploreQueryDto.page,
             size = exploreQueryDto.size,
-            sortType = exploreQueryDto.sort,
             category = exploreQueryDto.category,
         )
         return ResponseEntity.ok(
             ExploreResponseDto(
-                postMediasBriefList = slicedPosts.content.toList(),
+                previews = slicedExplorePreview.content,
                 pageInfo = PageInfo(
-                    page = slicedPosts.number,
-                    size = slicedPosts.size,
-                    offset = slicedPosts.pageable.offset,
-                    hasNext = slicedPosts.hasNext(),
-                    elements = slicedPosts.numberOfElements
+                    page = slicedExplorePreview.number,
+                    size = slicedExplorePreview.size,
+                    offset = slicedExplorePreview.pageable.offset,
+                    hasNext = slicedExplorePreview.hasNext(),
+                    elements = slicedExplorePreview.numberOfElements
                 )
             )
         )

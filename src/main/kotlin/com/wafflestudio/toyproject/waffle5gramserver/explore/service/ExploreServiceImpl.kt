@@ -1,7 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.explore.service
 
-import com.wafflestudio.toyproject.waffle5gramserver.comment.repository.CommentRepository
 import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExplorePostSortType
+import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExplorePreview
 import com.wafflestudio.toyproject.waffle5gramserver.post.mapper.PostMapper
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostMediasBrief
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service
 @Service
 class ExploreServiceImpl(
     private val postPaginationService: PostPaginationService,
-    private val commentRepository: CommentRepository,
 ) : ExploreService {
 
     override fun getSlicedPosts(
@@ -40,6 +39,20 @@ class ExploreServiceImpl(
                 postPaginationService.getMostCommentedPosts(user, page, size, category).map {
                     PostMapper.toPostMediasBrief(it.getPostEntity(), it.getCommentCount())
                 }
+        }
+    }
+
+    override fun getRandomSimpleSlicedPosts(
+        user: InstagramUser,
+        page: Int,
+        size: Int,
+        category: PostCategory?
+    ): Slice<ExplorePreview> {
+        return postPaginationService.getRandomPosts(user, size, category).map {
+            ExplorePreview(
+                postId = it.id,
+                thumbnailUrl = it.medias.getOrNull(0)?.mediaUrl
+            )
         }
     }
 }

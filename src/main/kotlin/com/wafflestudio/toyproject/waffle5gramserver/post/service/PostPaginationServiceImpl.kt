@@ -2,6 +2,7 @@ package com.wafflestudio.toyproject.waffle5gramserver.post.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostCategory
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
+import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntityWithCommentCount
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.PageRequest
