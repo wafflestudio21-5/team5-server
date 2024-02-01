@@ -14,4 +14,6 @@ interface ExploreService {
     fun getRandomSimpleSlicedPosts(user: InstagramUser, page: Int, size: Int, category: PostCategory?): Slice<ExplorePreview>
 
     fun getRandomDetailedSlicedPosts(user: InstagramUser, page: Int, size: Int): Slice<PostDetail>
+
+    fun getPostById(user: InstagramUser, postId: Long): PostDetail
 }

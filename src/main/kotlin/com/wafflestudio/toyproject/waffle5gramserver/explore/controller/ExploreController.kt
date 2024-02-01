@@ -45,7 +45,7 @@ class ExploreController(
     @GetMapping("/api/v1/explore/{postId}")
     fun getFeeds(
         @PathVariable postId: String,
-        @RequestParam(name = "page", required = false) page: Int = 0,
+        @RequestParam(name = "page", required = false) page: Int = 1,
         @RequestParam(name = "size", required = false) size: Int = 6,
         @AuthenticationPrincipal user: InstagramUser
     ): ResponseEntity<ExploreFeedResponseDto> {

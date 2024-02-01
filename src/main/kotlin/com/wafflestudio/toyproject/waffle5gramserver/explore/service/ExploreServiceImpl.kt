@@ -69,4 +69,8 @@ class ExploreServiceImpl(
             PostMapper.toPostMediaDetail(it)
         }
     }
+
+    override fun getPostById(user: InstagramUser, postId: Long): PostDetail {
+        TODO("Not yet implemented")
+    }
 }
