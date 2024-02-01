@@ -180,6 +180,7 @@ class SecurityConfig {
         configuration.allowedOrigins = listOf(
             "https://www.waffle5gram.com",
             "https://waffle5gram.com",
+            "https://api.waffle5gram.com"
         )
         configuration.allowedMethods = listOf(
             "GET", "HEAD", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "TRACE",
@@ -199,6 +200,7 @@ class SecurityConfig {
             "https://www.waffle5gram.com",
             "https://waffle5gram.com",
             "http://localhost:5173",
+            "https://api.waffle5gram.com"
         )
         configuration.allowedMethods = listOf(
             "GET", "HEAD", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "TRACE",

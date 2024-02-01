@@ -52,7 +52,8 @@ class TokenRefreshServiceImpl(
         token: String,
         cookiePath: String
     ) {
-        val refreshTokenCookie = Cookie("refresh_token", token).apply {
+        val refreshTokenCookie = Cookie("refreshToken", token).apply {
+            domain = "waffle5gram.com"
             path = "/"
             isHttpOnly = false
             secure = jwtProperties.refreshTokenCookieSecure
