@@ -7,6 +7,8 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostSaveRep
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 
 @Service
@@ -39,29 +41,16 @@ class SavedFeedServiceImpl(
         }
     }
 
-    override fun loadNewerPosts(
-        username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostDetail> {
-        val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
-        val pageable = PageRequest.of(0, limit)
-        val posts = postRepository.findNewerPostsByUserIdAndCursor(user.id, cursor, pageable)
-        return posts.map { post ->
-            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
-            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null
-            PostMapper.toPostDetailDTO(post, isLiked, isSaved)
-        }
-    }
+    override fun getSavedFeed(
+        userId: Long,
+        pageable: Pageable,
+    ): Slice<PostDetail> {
+        val user = userRepository.findById(userId).orElseThrow { throw IllegalArgumentException("User not found") }
+        // 저장된 게시물을 조회
+        val postSaveEntities = postSaveRepository.findByUserId(user.id, pageable).content
+        val postIds = postSaveEntities.map { it.postId }
+        val posts = postRepository.findByIdIn(postIds, pageable)
 
-    override fun loadOlderPosts(
-        username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostDetail> {
-        val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
-        val pageable = PageRequest.of(0, limit)
-        val posts = postRepository.findOlderPostsByUserIdAndCursor(user.id, cursor, pageable)
         return posts.map { post ->
             val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
             val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null

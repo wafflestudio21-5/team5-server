@@ -1,6 +1,8 @@
 package com.wafflestudio.toyproject.waffle5gramserver.feed.service
 
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Slice
 
 interface SavedFeedService {
     fun getSavedFeedPreview(
@@ -9,15 +11,8 @@ interface SavedFeedService {
         limit: Int,
     ): List<PostPreview>
 
-    fun loadNewerPosts(
-        username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostDetail>
-
-    fun loadOlderPosts(
-        username: String,
-        cursor: Long?,
-        limit: Int,
-    ): List<PostDetail>
+    fun getSavedFeed(
+        userId: Long,
+        pageable: Pageable,
+    ): Slice<PostDetail>
 }
