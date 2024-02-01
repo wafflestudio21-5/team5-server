@@ -1,6 +1,5 @@
 package com.wafflestudio.toyproject.waffle5gramserver.post.repository
 
-import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostEntityWithCommentCount
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.jpa.repository.JpaRepository
