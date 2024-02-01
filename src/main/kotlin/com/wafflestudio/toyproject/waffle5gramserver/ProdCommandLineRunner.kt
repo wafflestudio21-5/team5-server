@@ -9,6 +9,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostMediaEntity
 import com.wafflestudio.toyproject.waffle5gramserver.post.repository.PostRepository
 import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostLikeService
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostSaveService
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.ContactEntity
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.ContactType
 import com.wafflestudio.toyproject.waffle5gramserver.user.repository.UserEntity
@@ -32,6 +33,7 @@ class ProdCommandLineRunner(
     private val postLikeService: PostLikeService,
     private val commentService: CommentService,
     private val followRepository: FollowRepository,
+    private val postSaveService: PostSaveService,
 ) : CommandLineRunner {
 
     private val txTemplate = TransactionTemplate(txManager)
@@ -215,6 +217,10 @@ class ProdCommandLineRunner(
                     postLikeService.create(postIdList[i], userIdList[j])
                     commentService.create(postIdList[i], "Good place", userIdList[j])
                 }
+            }
+            for (i in 1 until 7 step 2) {
+                postLikeService.create(i.toLong(), userIdList[0])
+                postSaveService.create(i.toLong() + 1, userIdList[0])
             }
         }
     }
