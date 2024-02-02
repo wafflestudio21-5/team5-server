@@ -29,7 +29,7 @@ spring:
           facebook:
             client-id: ${OAUTH2_FACEBOOK_CLIENT_ID}
             client-secret: ${OAUTH2_FACEBOOK_CLIENT_SECRET}
-            redirect-uri: 'https://waffle5gram.shop/login/oauth2/code/facebook'
+            redirect-uri: 'https://api.waffle5gram.com/login/oauth2/code/facebook'
             scope:
               - email
               - public_profile
