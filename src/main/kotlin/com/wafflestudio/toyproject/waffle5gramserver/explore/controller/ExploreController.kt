@@ -23,7 +23,7 @@ class ExploreController(
         exploreQueryDto: ExploreQueryDto,
         @AuthenticationPrincipal user: InstagramUser
     ): ResponseEntity<ExploreResponseDto> {
-        val slicedExplorePreview = exploreService.getRandomSimpleSlicedPosts(
+        val slicedExplorePreview = exploreService.getMostLikedSimpleSlicedPosts(
             user = user,
             page = exploreQueryDto.page,
             size = exploreQueryDto.size,

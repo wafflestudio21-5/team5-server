@@ -7,13 +7,13 @@ Content-Type: application/json
   "password": "password-0"
 }
 
-### 탐색 탭 프리뷰 조회 (카테고리 미지정)
+### 탐색 탭 프리뷰 조회 (카테고리 미지정) / 좋아요 순
 GET http://localhost:8080/api/v1/explore?page=0&size=8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY3ODQzNzZ9.FPXBNJLtqT0Slcyjh732fZQANGVDk6EYqUv9iXcJNeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY4ODY1NzF9.Tv-2VZuJRcQPOPq9dferukKO1KAiWZR0Bxj1EfE9P8Y
 
-### 탐색 탭 프리뷰 조회 (카테고리 지정)
+### 탐색 탭 프리뷰 조회 (카테고리 지정) / 좋아요 순
 GET http://localhost:8080/api/v1/explore?page=0&size=8&category=TRAVEL
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY3ODQzNzZ9.FPXBNJLtqT0Slcyjh732fZQANGVDk6EYqUv9iXcJNeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY4ODY1NzF9.Tv-2VZuJRcQPOPq9dferukKO1KAiWZR0Bxj1EfE9P8Y
 
 ### 탐색 탭 피드 조회 (1번 페이지)
 GET http://localhost:8080/api/v1/explore/3?page=1&size=12
