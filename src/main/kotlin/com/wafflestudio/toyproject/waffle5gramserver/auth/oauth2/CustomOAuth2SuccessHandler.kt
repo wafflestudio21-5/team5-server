@@ -18,7 +18,6 @@ class CustomOAuth2SuccessHandler(
 
     companion object {
         private const val SUCCESS_REDIRECT_URI = "https://www.waffle5gram.com/"
-        private const val REGISTER_REDIRECT_URI = "https://www.waffle5gram.com/signUp/username"
     }
 
     override fun onAuthenticationSuccess(
@@ -40,7 +39,7 @@ class CustomOAuth2SuccessHandler(
             redirectStrategy.sendRedirect(request, response, uri)
         } else {
             tokenRefreshService.addRefreshTokenCookie(response, refreshToken, "/api/v1/auth/facebook_signup")
-            val uri = addQueryParameter(REGISTER_REDIRECT_URI, "register")
+            val uri = addQueryParameter(SUCCESS_REDIRECT_URI, "register")
             redirectStrategy.sendRedirect(request, response, uri)
         }
     }
