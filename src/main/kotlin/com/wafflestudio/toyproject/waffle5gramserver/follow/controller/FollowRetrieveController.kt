@@ -1,7 +1,7 @@
 package com.wafflestudio.toyproject.waffle5gramserver.follow.controller
 
-import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.CommonFollowResponse
 import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.DiffFollowResponse
+import com.wafflestudio.toyproject.waffle5gramserver.follow.dto.IsRequestMiniProfile
 import com.wafflestudio.toyproject.waffle5gramserver.follow.exception.UserHimselfException
 import com.wafflestudio.toyproject.waffle5gramserver.follow.service.FollowRetrieveService
 import com.wafflestudio.toyproject.waffle5gramserver.global.error_handling.ErrorCode
@@ -48,10 +48,23 @@ class FollowRetrieveController(
     fun retrieveCommonUserBetweenUsersFollowerAndAuthUsersFollowing(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity</*ResultResponse*/CommonFollowResponse> {
+    ): ResponseEntity</*ResultResponse*/DiffFollowResponse> {
         val commonFollowResponse = followRetrieveService.getCommonUserBetweenUsersFollowerAndAuthUsersFollowing(user, username)
         // return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWER_FOLLOWING, commonFollowResponse))
-        return ResponseEntity.ok(commonFollowResponse)
+        return ResponseEntity.ok(
+            DiffFollowResponse(
+                count = commonFollowResponse.count,
+                miniProfiles = commonFollowResponse.miniProfiles.map {
+                    IsRequestMiniProfile(
+                        userId = it.userId,
+                        username = it.username,
+                        name = it.name,
+                        profileImageUrl = it.profileImageUrl,
+                        isRequest = false,
+                    )
+                }.toMutableList()
+            )
+        )
     }
 
     // 유저의 팔로워 중 현재 유저의 팔로잉이 아닌 목록 조회
@@ -70,10 +83,23 @@ class FollowRetrieveController(
     fun retrieveCommonFollowingBetweenUserAndAuthUser(
         @AuthenticationPrincipal user: InstagramUser,
         @PathVariable("username") username: String,
-    ): ResponseEntity</*ResultResponse*/CommonFollowResponse> {
+    ): ResponseEntity</*ResultResponse*/DiffFollowResponse> {
         val commonFollowResponse = followRetrieveService.getCommonFollowingBetweenUserAndAuthUser(user, username)
         // return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_COMMON_FOLLOWING_FOLLOWING, commonFollowResponse))
-        return ResponseEntity.ok(commonFollowResponse)
+        return ResponseEntity.ok(
+            DiffFollowResponse(
+                count = commonFollowResponse.count,
+                miniProfiles = commonFollowResponse.miniProfiles.map {
+                    IsRequestMiniProfile(
+                        userId = it.userId,
+                        username = it.username,
+                        name = it.name,
+                        profileImageUrl = it.profileImageUrl,
+                        isRequest = false,
+                    )
+                }.toMutableList()
+            )
+        )
     }
 
     // 유저의 팔로잉 중 현재 유저의 팔로잉이 아닌 목록 조회
