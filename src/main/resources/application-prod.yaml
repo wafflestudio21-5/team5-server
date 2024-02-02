@@ -8,8 +8,8 @@ spring:
     password: ${AWS_RDS_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: validate
+    show-sql: false
     properties:
       hibernate:
         default_batch_fetch_size: 50
