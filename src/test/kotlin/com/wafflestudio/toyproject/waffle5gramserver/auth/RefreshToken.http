@@ -1,7 +1,15 @@
-###
-GET http://localhost:8080/api/v1/auth/refresh_token
+POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY2OTkwNDh9.GuY1Fpu-_dalV6gdYH-LeSyg3IKx3pQVfnS6GQTtbWM"
+  "username": "user-0",
+  "password": "password-0"
+}
+
+###
+POST http://localhost:8080/api/v1/auth/refresh_token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY4ODM4MDd9.X14r_hQSkRONL1O0gP7of8VY6e3OUWM6ByYj_wJ_08E"
 }

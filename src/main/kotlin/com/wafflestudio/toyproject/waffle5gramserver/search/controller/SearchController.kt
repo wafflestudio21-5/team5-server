@@ -2,9 +2,12 @@ package com.wafflestudio.toyproject.waffle5gramserver.search.controller
 
 import com.wafflestudio.toyproject.waffle5gramserver.search.dto.MiniProfilePageResponse
 import com.wafflestudio.toyproject.waffle5gramserver.search.dto.RecentSearch
+import com.wafflestudio.toyproject.waffle5gramserver.search.dto.TextRequestDto
+import com.wafflestudio.toyproject.waffle5gramserver.search.dto.UsernameRequestDto
 import com.wafflestudio.toyproject.waffle5gramserver.search.service.SearchService
 import com.wafflestudio.toyproject.waffle5gramserver.user.dto.MiniProfile
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -48,9 +52,9 @@ class SearchController(
     @PostMapping("/recent/text")
     fun addTextToRecentSearch(
         @AuthenticationPrincipal authuser: InstagramUser,
-        @RequestParam("text") @NotBlank text: String,
+        @RequestBody(required = true) @Valid textRequestDto: TextRequestDto,
     ): ResponseEntity<Any> {
-        searchService.applyTextToRecentSearch(authuser, text)
+        searchService.applyTextToRecentSearch(authuser, textRequestDto.text)
         return ResponseEntity.ok(null)
     }
 
@@ -58,9 +62,9 @@ class SearchController(
     @PostMapping("/recent/user")
     fun addUserToRecentSearch(
         @AuthenticationPrincipal authuser: InstagramUser,
-        @RequestParam("username") @NotBlank username: String,
+        @RequestBody(required = true) @Valid usernameRequestDto: UsernameRequestDto,
     ): ResponseEntity<Any> {
-        searchService.applyUserToRecentSearch(authuser, username)
+        searchService.applyUserToRecentSearch(authuser, usernameRequestDto.username)
         return ResponseEntity.ok(null)
     }
 
