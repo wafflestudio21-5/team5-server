@@ -33,7 +33,8 @@
 ![Static Badge](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white&labelColor=%23009639) ![Static Badge](https://img.shields.io/badge/mysql-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white&labelColor=%234479A1)  ![Static Badge](https://img.shields.io/badge/amazon%20ec2-%23FF9900.svg?style=for-the-badge&logo=amazonec2&logoColor=white&labelColor=%23FF9900) ![Static Badge](https://img.shields.io/badge/docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white&labelColor=%232496ED)
 
 ## 서버 구성도
-![server](https://user-images.githubusercontent.com/72662822/216547325-5e281374-e3f4-405d-aa8c-4ac6b1c018c4.png)
+![server](https://github.com/wafflestudio21-5/team5-server/assets/102405643/3230dfb6-303a-48c7-ae3d-8036464a31e2)
+
 
 ## 사용한 컨벤션
 
