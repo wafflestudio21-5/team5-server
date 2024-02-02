@@ -79,7 +79,7 @@ class CommentServiceImpl(
         userId: Long,
     ) {
         val comment = commentRepository.findById(commentId).orElseThrow { CommentNotFoundException() }
-        if (comment.user.id != userId) {
+        if (comment.user.id != userId && comment.post.user.id != userId) {
             throw CommentNotAuthorizedException()
         }
         commentRepository.delete(comment)
