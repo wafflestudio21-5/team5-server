@@ -9,8 +9,8 @@
 6. [서버 구성도](#서버-구성도)
 ---
 ## 프로젝트 소개
-- 2023 와플스튜디오 Rookies 세미나에서 학습한 내용을 토대로 널리 사용되는 SNS인 인스타그램 서비스를 클론 코딩하는 프로젝트입니다.
-- 로그인 및 회원가입, 소셜 로그인, 피드 및 댓글 작성, 좋아요 생성 및 삭제, 알림 및 탐색 등 인스타그램 서비스의 기본 기능을 구현하였습니다. (+DM, 스토리, 릴스, ...)
+- 2023 와플스튜디오 Rookies 세미나에서 학습한 내용을 토대로 널리 사용되는 SNS인 인스타그램 서비스를 클론 코딩하는 프로젝트의 API 서버입니다.
+- 로그인 및 회원가입, 소셜 로그인, 피드 및 댓글 작성, 좋아요 생성 및 삭제, 탐색 등 인스타그램 서비스의 기본 기능을 구현하였습니다.
 - 추가로 탐색 탭의 아쉬웠던 기존 기능을 보완하기 위해 결과 정렬(좋아요 순, 최신순, 댓글 많은 순 등등), 키워드 기반 주제별 탐색 기능을 추가하였습니다. 
 ## 배포 링크
 - 배포 URL : 
@@ -26,3 +26,4 @@
 ![Static Badge](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white&labelColor=%23009639) ![Static Badge](https://img.shields.io/badge/mysql-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white&labelColor=%234479A1) ![Static Badge](https://img.shields.io/badge/redis-%23DC382D.svg?style=for-the-badge&logo=redis&logoColor=white&labelColor=%23DC382D) ![Static Badge](https://img.shields.io/badge/amazon%20ec2-%23FF9900.svg?style=for-the-badge&logo=amazonec2&logoColor=white&labelColor=%23FF9900) ![Static Badge](https://img.shields.io/badge/docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white&labelColor=%232496ED)
 
 ## 서버 구성도
+![server](https://user-images.githubusercontent.com/72662822/216547325-5e281374-e3f4-405d-aa8c-4ac6b1c018c4.png)
