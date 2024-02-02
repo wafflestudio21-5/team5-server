@@ -25,7 +25,7 @@ class ExploreController(
     ): ResponseEntity<ExploreResponseDto> {
         val slicedExplorePreview = exploreService.getMostLikedSimpleSlicedPosts(
             user = user,
-            page = exploreQueryDto.page,
+            page = exploreQueryDto.page - 1,
             size = exploreQueryDto.size,
             category = exploreQueryDto.category,
         )

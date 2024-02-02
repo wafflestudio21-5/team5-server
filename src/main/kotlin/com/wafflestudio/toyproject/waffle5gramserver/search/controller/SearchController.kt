@@ -44,7 +44,7 @@ class SearchController(
         @RequestParam("page") page: Int = 1,
         @RequestParam("size") size: Int = 20,
     ): ResponseEntity<MiniProfilePageResponse> {
-        val allList = searchService.getUserSearchAllList(authuser, text, page, size)
+        val allList = searchService.getUserSearchAllList(authuser, text, page - 1, size)
         return ResponseEntity.ok(allList)
     }
 
