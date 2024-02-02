@@ -1,0 +1,25 @@
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user-0",
+  "password": "password-0"
+}
+
+###
+POST http://localhost:8080/api/v1/search/recent/text
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY4ODM2Nzh9.s5VLZ7jv1GhWe6BBLGcuxwNtmHUm2HkshuryjbTm5N8
+Content-Type: application/json
+
+{
+  "text": "Hello"
+}
+
+###
+POST http://localhost:8080/api/v1/search/recent/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLTAiLCJleHAiOjE3MDY4ODM2Nzh9.s5VLZ7jv1GhWe6BBLGcuxwNtmHUm2HkshuryjbTm5N8
+Content-Type: application/json
+
+{
+  "username": "user-1"
+}
