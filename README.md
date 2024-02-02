@@ -7,7 +7,8 @@
 4. [서비스 소개 페이지](#서비스-소개-페이지)
 5. [사용 기술](#사용-기술)
 6. [서버 구성도](#서버-구성도)
-7. [사용한 컨벤션](#사용한-컨벤션)
+7. [ERD](#erd)
+8. [사용한 컨벤션](#사용한-컨벤션)
 ---
 ## 프로젝트 소개
 - 2023 와플스튜디오 Rookies 세미나에서 학습한 내용을 토대로 널리 사용되는 SNS인 인스타그램 서비스를 클론 코딩하는 프로젝트의 API 서버입니다.
@@ -34,6 +35,10 @@
 
 ## 서버 구성도
 ![server](https://github.com/wafflestudio21-5/team5-server/assets/102405643/3230dfb6-303a-48c7-ae3d-8036464a31e2)
+
+
+## ERD
+![Waffle5gram_ERD_v2-4](https://github.com/wafflestudio21-5/team5-server/assets/87258768/f23e4fc4-2bae-4455-bb66-6fcdd1750c3e)
 
 
 ## 사용한 컨벤션
