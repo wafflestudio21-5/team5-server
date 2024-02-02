@@ -71,7 +71,7 @@ class ReplyServiceImpl(
         userId: Long,
     ) {
         val reply = replyRepository.findById(replyId).orElseThrow { ReplyNotFoundException() }
-        if (reply.user.id != userId) {
+        if (reply.user.id != userId && reply.comment.post.id != userId) {
             throw ReplyNotAuthorizedException()
         }
         replyRepository.delete(reply)
