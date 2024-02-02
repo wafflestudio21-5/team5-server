@@ -26,7 +26,7 @@ class UserFeedServiceImpl(
         username: String,
     ): List<PostPreview> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
-        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
+        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null) && (user.id != authuser.id)) {
             throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
         }
         val posts = postRepository.findPostsByUserId(user.id)
@@ -46,7 +46,7 @@ class UserFeedServiceImpl(
         username: String,
     ): List<PostDetail> {
         val user = userRepository.findByUsername(username).orElseThrow { throw IllegalArgumentException("User not found") }
-        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null)) {
+        if (user.isPrivate && (followRepository.findByFollowerUserIdAndFolloweeUserId(authuser.id, user.id) == null) && (user.id != authuser.id)) {
             throw PrivateException(ErrorCode.USER_PRIVATE_NOT_FOLLOWING)
         }
         val posts = postRepository.findPostsByUserId(user.id)
