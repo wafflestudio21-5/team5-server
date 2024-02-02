@@ -39,7 +39,7 @@
 ## 사용한 컨벤션
 
 ### Code Convention
-- 팀원 간 코드 스타일을 맞추고 가독성을 높여 코드 리뷰를 원할하게 하기 위해 ktlint를 사용하였습니다.
+- 팀원 간 코드 스타일을 맞추고 가독성을 높여 코드 리뷰를 원활하게 하기 위해 ktlint를 사용하였습니다.
 - 제일 많이 쓰이는 jlleitschuh/ktlint-gradle을 사용하였습니다.
 - Github Action 을 이용하여 main 브랜치에 PR 올릴때마다 자동으로 스타일 검사를 하도록 설정하였습니다.
 ### Commit Convention
@@ -48,4 +48,3 @@
 ### Git Branch & merge 전략
 - 토이 프로젝트의 성격을 고려하여 간단한 Branching 전략인 Github-flow를 사용했습니다.
 - 또한, main 브랜치의 중요도를 고려하여 깔끔한 history를 위해 Squash Merge를 사용했습니다.
-

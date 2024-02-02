@@ -51,8 +51,8 @@ class UserFeedServiceImpl(
         }
         val posts = postRepository.findPostsByUserId(user.id)
         return posts.map { post ->
-            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, user.id) != null
-            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, user.id) != null
+            val isLiked = postLikeRepository.findByPostIdAndUserId(post.id, authuser.id) != null
+            val isSaved = postSaveRepository.findByPostIdAndUserId(post.id, authuser.id) != null
             PostMapper.toPostDetailDTO(post, isLiked, isSaved)
         }
     }
