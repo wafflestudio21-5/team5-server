@@ -6,7 +6,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.auth.service.TokenRefreshSe
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class RefreshTokenController(
     private val tokenRefreshService: TokenRefreshService
 ) {
-    @GetMapping("/api/v1/auth/refresh_token")
+    @PostMapping("/api/v1/auth/refresh_token")
     fun refreshToken(
         @RequestBody refreshTokenDto: RefreshTokenDto,
         response: HttpServletResponse
