@@ -33,6 +33,7 @@ class SearchServiceImpl(
         // text랑 유저네임 혹은 네임이 비슷한 유저들의 목록을 반환
         // 자신이 팔로우하는 유저 먼저 뽑고, 자신을 팔로우하는 유저 나중에 뽑아서 합치기
         // 최대 5개까지 미니프로필 응답
+        // 5개가 되지 않는다면 전체 유저에서 추가로 조회해서 5개 맞추어서 응답
         val ResultUsers = userRepository.findAllByText(text)
         val userfollows = followRepository.findAllByFollowerUserId(authUser.id).map { it.followee }.toMutableList()
         val userfollowings = followRepository.findAllByFolloweeUserId(authUser.id).map { it.follower }.toMutableList()
@@ -48,7 +49,8 @@ class SearchServiceImpl(
             return finalSearchResult.map { ProfileResponseMapper.toMiniProfile(it) }.toMutableList()
         } else {
             val finalSearchResult = followSearchResult.union(followingSearchResult)
-            return finalSearchResult.map { ProfileResponseMapper.toMiniProfile(it) }.toMutableList()
+            val normalSearchResult = ResultUsers.subtract(userfollows).subtract(userfollowings).take(5 - finalSearchResult.size)
+            return finalSearchResult.union(normalSearchResult).map { ProfileResponseMapper.toMiniProfile(it) }.toMutableList()
         }
     }
 
