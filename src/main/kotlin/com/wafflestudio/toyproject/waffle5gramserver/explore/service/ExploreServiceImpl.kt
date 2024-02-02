@@ -79,4 +79,15 @@ class ExploreServiceImpl(
             PostMapper.toPostMediaDetail(it)
         }
     }
+
+    override fun getMostLikedSimpleSlicedPosts(
+        user: InstagramUser,
+        page: Int,
+        size: Int,
+        category: PostCategory?
+    ): Slice<ExplorePreview> {
+        return postPaginationService.getMostLikedPosts(user, page, size, category).map {
+            PostMapper.toExplorePreview(it)
+        }
+    }
 }
