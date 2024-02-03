@@ -38,7 +38,6 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
         """
             SELECT p FROM posts p
             WHERE p.user.isPrivate = false
-            AND p.likeCountDisplayed = true
         """,
     )
     fun findSliceLikeCountDisplayed(pageable: Pageable): Slice<PostEntity>
@@ -47,7 +46,6 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
         """
             SELECT p FROM posts p
             WHERE p.user.isPrivate = false
-            AND p.likeCountDisplayed = true
             AND p.category = :category
         """,
     )
