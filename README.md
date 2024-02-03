@@ -4,7 +4,7 @@
 1. [프로젝트 소개](#프로젝트-소개)
 2. [배포 링크](#배포-링크)
 3. [팀원 구성](#팀원-구성)
-4. [서비스 소개 페이지](#서비스-소개-페이지)
+4. [프로젝트 뷰](#프로젝트-뷰)
 5. [사용 기술](#사용-기술)
 6. [서버 구성도](#서버-구성도)
 7. [ERD](#erd)
@@ -27,8 +27,23 @@
 
 ## 배포 링크
 - 배포링크 : https://api.waffle5gram.com
-## 서비스 소개 페이지
-![Notion Link](https://ancient-vinyl-ddb.notion.site/a2b526a9c9a84c8da75b6d403cbbb410?pvs=4)
+
+## 프로젝트 뷰
+- 로그인, 홈 피드
+<img width="476" alt="로그인" src="https://github.com/wafflestudio21-5/team5-server/assets/87258768/ef1ba1a1-08a1-45c7-b06f-c11b32d4f800">
+<img width="494" alt="홈 피드" src="https://github.com/wafflestudio21-5/team5-server/assets/87258768/b41c2bd0-82d6-4209-8797-a5f96f2299c3">
+
+
+- 카테고리별 탐색, 인물 검색
+<img width="485" alt="카테고리 탐색 탭" src="https://github.com/wafflestudio21-5/team5-server/assets/87258768/f7173726-b10a-4ee9-baa8-ca1d9b5f7e56">
+<img width="431" alt="인물 검색" src="https://github.com/wafflestudio21-5/team5-server/assets/87258768/852503c7-a379-4d9f-83c2-bc99fe50db79">
+
+
+- 게시물 업로드, 사용자 프로필
+<img width="501" alt="게시물 생성" src="https://github.com/wafflestudio21-5/team5-server/assets/87258768/8eca4838-5457-482d-9452-afabc0ce43d1">
+<img width="483" alt="프로필" src="https://github.com/wafflestudio21-5/team5-server/assets/87258768/f04e7488-b8ed-4794-a44c-13778f5fac48">
+
+
 ## 사용 기술
 ![Static Badge](https://img.shields.io/badge/Kotlin-%237F52FF.svg?style=for-the-badge&logo=Kotlin&logoColor=white) ![Static Badge](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white&labelColor=%236DB33F) ![Static Badge](https://img.shields.io/badge/springboot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white&labelColor=%236DB33F) ![Static Badge](https://img.shields.io/badge/spring%20security-%236DB33F.svg?style=for-the-badge&logo=springsecurity&logoColor=white&labelColor=%236DB33F)
 ![Static Badge](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white&labelColor=%23009639) ![Static Badge](https://img.shields.io/badge/mysql-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white&labelColor=%234479A1)  ![Static Badge](https://img.shields.io/badge/amazon%20ec2-%23FF9900.svg?style=for-the-badge&logo=amazonec2&logoColor=white&labelColor=%23FF9900) ![Static Badge](https://img.shields.io/badge/docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white&labelColor=%232496ED)
