@@ -5,6 +5,7 @@ import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExploreQueryDto
 import com.wafflestudio.toyproject.waffle5gramserver.explore.dto.ExploreResponseDto
 import com.wafflestudio.toyproject.waffle5gramserver.explore.service.ExploreService
 import com.wafflestudio.toyproject.waffle5gramserver.feed.controller.PageInfo
+import com.wafflestudio.toyproject.waffle5gramserver.post.service.PostDetail
 import com.wafflestudio.toyproject.waffle5gramserver.user.service.InstagramUser
 import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
@@ -65,9 +66,10 @@ class ExploreController(
                     page = page,
                     size = size - 1
                 )
-                val postDetails = mutableListOf(
-                    firstPostDetail.content[0]
-                )
+                val postDetails: MutableList<PostDetail> = mutableListOf()
+                firstPostDetail.content.map {
+                    postDetails.add(it)
+                }
                 randomPostDetails.content.shuffled().map {
                     postDetails.add(it)
                 }
